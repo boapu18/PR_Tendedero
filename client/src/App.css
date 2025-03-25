@@ -33,7 +33,7 @@
   
   }
   
-  .submit-button {
+  .main-button {
     background: #7D06B5;
     color: white;
     border: none;
@@ -47,8 +47,10 @@
     height: 0;
     overflow: hidden;
   }
-  
-  
+
+  .report-card-bg {
+    background-color: #EABDFF;
+  }
   
   
   

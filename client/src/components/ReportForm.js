@@ -118,7 +118,7 @@ function ReportForm() {
                     {/* Buttons */}
                     <div className="button-group d-flex justify-content-end gap-2">
                         <button type="button" className="cancel-button">Cancelar</button>
-                        <button type="submit" className="submit-button">Enviar denuncia</button>
+                        <button type="submit" className="main-button">Enviar denuncia</button>
                     </div>
                 </form>
             </div>
