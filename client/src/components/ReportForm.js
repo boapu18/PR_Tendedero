@@ -8,7 +8,11 @@ function ReportForm() {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm();
+    } = useForm({
+        defaultValues: {
+            typeReport: "anonymous"
+        }
+        });
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
@@ -22,6 +26,10 @@ function ReportForm() {
     useEffect(() => {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
+    }, []);
+
+    useEffect(() => {
+        setShowAdditionalInfo(false);
     }, []);
 
     // Province and cantons mapping
