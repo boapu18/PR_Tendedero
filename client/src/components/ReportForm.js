@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Tooltip } from "bootstrap";
 import Swal from 'sweetalert2';
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function ReportForm() {
 
@@ -12,6 +13,13 @@ function ReportForm() {
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
     const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+
+    const navigate = useNavigate();
+
+
+    const handleCancelClick = () => {
+        navigate("/home");
+    };
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
@@ -72,7 +80,7 @@ function ReportForm() {
     const filteredCantons = selectedProvince ? provinceData[selectedProvince] || [] : [];
 
     return (
-        <div className="container py-5">
+        <div className="container py-4">
             {/* Main card container for the form */}
             <div className="bg-white shadow rounded-4 p-5">
                 <form onSubmit={handleSubmit(onSubmit)}>
@@ -103,8 +111,7 @@ function ReportForm() {
 
                     {/* Additional fields that show conditionally */}
                     <div
-                        className={`transition-opacity ${showAdditionalInfo ? "opacity-100 visible" : "opacity-0 invisible"}`}
-                        style={{ minHeight: "200px", transition: "opacity 0.5s ease" }}
+                        className={`${showAdditionalInfo ? "" : "invisible"}`}
                     >
                         {/* Email input */}
                         <div className="mb-4">
@@ -114,7 +121,7 @@ function ReportForm() {
 
                         <div className="row mb-5">
                             {/* Province selector */}
-                            <div className="col-auto me-5">
+                            <div className="col-auto me-4 mb-4 mb-lg-0">
                                 <label className="form-label">Provincia</label>
                                 <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => setSelectedProvince(e.target.value)}>
                                     <option value="">Seleccione una provincia</option>
@@ -125,7 +132,7 @@ function ReportForm() {
                             </div>
                             
                             {/* Canton selector */}
-                            <div className="col-auto me-5">
+                            <div className="col-auto me-4 mb-4 mb-lg-0">
                                 <label className="form-label">Cantón</label>
                                 <select className="form-select fixed-width-select" {...register("canton")} disabled={!selectedProvince}>
                                     <option value="">Seleccione un cantón</option>
@@ -136,7 +143,7 @@ function ReportForm() {
                             </div>
 
                             {/* Age range selector */}
-                            <div className="col-auto me-5">
+                            <div className="col-auto me-4 mb-4 mb-lg-0">
                                 <label className="form-label">Rango de edad</label>
                                 <select className="form-select fixed-width-select" {...register("age")}>
                                     <option value="">Seleccione</option>
@@ -149,8 +156,8 @@ function ReportForm() {
                     </div>
 
                     {/* Buttons */}
-                    <div className="button-group d-flex justify-content-end gap-2">
-                        <button type="button" className="cancel-button">Cancelar</button>
+                    <div className="d-flex justify-content-end mt-5 gap-3">
+                        <button type="button" onClick={handleCancelClick} className="cancel-button">Cancelar</button>
                         <button type="submit" className="main-button">Enviar denuncia</button>
                     </div>
                 </form>

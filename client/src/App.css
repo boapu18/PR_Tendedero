@@ -3,20 +3,11 @@
   }
   
   .fixed-width-select {
-    width: 200px;      /* Puedes ajustar el valor según tu diseño */
-    min-width: 200px;
-    max-width: 200px;
+    width: 230px;      /* Puedes ajustar el valor según tu diseño */
+    min-width: 230px;
+    max-width: 230px;
   }
-  
-  /* Button styles */
-  .button-group {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px;
-    gap: 10px;
-    margin-top: 130px;
-  }
-  
+    
   .cancel-button {
     background: #ABABAB;
     color: white;
