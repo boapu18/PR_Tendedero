@@ -11,24 +11,22 @@ function ReportList() {
     const [page, setPage] = useState(1);
     const observer = useRef();
 
-    const simulateDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
     const fetchReports = useCallback(async () => {
 
         setLoadingReports(true);
 
         try {
-            const response = await axios.get('https://jsonplaceholder.typicode.com/posts', {
-                params: {_page: page, _limit: 14}
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
+                params: {page: page, order: 'crono'} // TODO: cambiar a rand cuando este lista la historia
             });
-            await simulateDelay(2000);
     
-            const newReports = response.data;
-            console.log(page)
+            const newReports = response.data.data;
+            console.log(response.data.data)
             setReports((prevReports) => [...prevReports, ...newReports]);
             setMoreReports(newReports.length > 0);
         } catch (e){
             console.log('Error');
+            console.log(e);
         } finally {
             setLoadingReports(false);
         }
@@ -77,7 +75,7 @@ function ReportList() {
                         key={i} 
                         ref={reports.length === i + 1 ? lastReportRef : null}
                         className="col-12 col-lg-6 mb-4">
-                        <ReportCard reportMainText={report.body} reportFooterText={report.title}/>
+                        <ReportCard report={report}/>
                     </div>
                 )
             })
