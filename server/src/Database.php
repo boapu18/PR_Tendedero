@@ -1,7 +1,6 @@
 <?php
 
 namespace src;
-use Exception;
 use MongoDB\Client;
 
 class Database {
@@ -9,6 +8,10 @@ class Database {
     private $client;
     private $db;
 
+    /**
+     * Inicializa un cliente con la base de datos de MongoDB.
+     * Coloca la base de datos del tendedero virtual.
+     */
     public function __construct(){
         
         $uri = $_ENV['MONGO_DB_URI'];

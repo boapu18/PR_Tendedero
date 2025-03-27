@@ -3,46 +3,58 @@
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\Factory\AppFactory;
+use src\ReportController;
 
 require __DIR__ . '/../vendor/autoload.php';
-use src\ReportController;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $dotenv -> load();
 
 $app = AppFactory::create();
 
+/**
+ * Da formato al objeto de respuesta para enviar los datos en JSON junto con el estatus.
+ * 
+ * @param Response $response El objeto de la respuesta.
+ * @param string[] $data Los datos a enviar en formato JSON.
+ * @param int $status El estatus de la respuesta.
+ * @return Response El objeto de respuesta con los datos en JSON en el cuerpo, los encabezados con el contenido en JSON y el estatus.
+ */
 function withJson($response, $data, $status){
-    $response->getBody()->write((string)json_encode($data, JSON_UNESCAPED_UNICODE));
-    $response = $response->withHeader('Content-Type', 'application/json')->withStatus($status);
+    $response -> getBody() -> write((string)json_encode($data, JSON_UNESCAPED_UNICODE));
+    $response = $response -> withHeader('Content-Type', 'application/json') -> withStatus($status);
     return $response;
 }
 
 // Middleware para permitir CORS
-$app->add(function ($request, $handler) {
-    $response = $handler->handle($request);
+$app -> add(function ($request, $handler) {
+    $response = $handler -> handle($request);
     return $response
-        ->withHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+        ->withHeader('Access-Control-Allow-Origin', '*')
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
         ->withHeader('Access-Control-Allow-Credentials', 'true');
 });
 
-$app->options('/{routes:.+}', function ($request, $response, $args) {
+$app -> options('/{routes:.+}', function ($request, $response, $args) {
     return $response;
 });
 
-$app -> get('/reports', function (Request $request, Response $response, $args) {
+// -------------------------------------------------------------------------------------------------------------------------
+// Endpoints del API
+// -------------------------------------------------------------------------------------------------------------------------
+
+$app -> get('/report', function (Request $request, Response $response, $args) {
 
     $params = $request -> getQueryParams();
-    $order = $params['order'];
-    $page = $params['page'];
+    $order = $params['order'] ?? null;
+    $page = $params['page'] ?? null;
 
-    if ($order != 'crono' && $order != 'rand'){
+    if (is_null($order) || ($order != 'crono' && $order != 'rand')){
         return withJson($response, ['status' => 'error', 'message' => 'El orden no es válido'], 400);    
     }
 
-    if (!is_numeric($page) || (int)$page <= 0) {
+    if (is_null($page) || !is_numeric($page) || (int)$page <= 0) {
         return withJson($response, ['status' => 'error', 'message' => 'El número de página no es válido'], 400);
     }
 
@@ -65,8 +77,6 @@ $app -> get('/reports', function (Request $request, Response $response, $args) {
         // TODO: Poner el mensaje del error en un log
         return withJson($response, ['status' => 'error', 'message' => 'Se produjo un error inesperado, intente nuevamente más tarde'], 500);
     }
-
-   
 });
 
 $app->post('/report', function (Request $request, Response $response, $args) {

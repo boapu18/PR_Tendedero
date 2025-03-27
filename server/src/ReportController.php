@@ -11,7 +11,12 @@ class ReportController {
         $this -> database = new Database();
     }
 
-    // Obtiene un batch de denuncias ordenadas en orden cronológico
+    /**
+     * Obtiene un batch de denuncias ordenadas en orden cronológico
+     * 
+     * @param int $page El número de página del batch.
+     * @return array[] Un array de documentos, donde cada documento es una denuncia.
+     */
     public function getReportsInChronologicalOrder($page){
 
         $limit = 14;
@@ -19,7 +24,7 @@ class ReportController {
 
         $reportCollection = $this -> database -> getCollection('Report');
 
-        $fields = ['content' => 1, 'province' => 1, 'canton' => 1, 'ageBracket' => 1];
+        $fields = ['content' => 1, 'province' => 1, 'canton' => 1, 'ageBracket' => 1, '_id' => 0];
 
         $cursor = $reportCollection -> find([], [
             'skip' => $skip,
