@@ -1,61 +1,87 @@
 <?php
 
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
-use Slim\Factory\AppFactory;
-use src\ReportController;
+include "../utils/loadEnv.php";
+include "../src/ReportController.php";
 
-require __DIR__ . '/../vendor/autoload.php';
+// -------------------------------------------------------------------------------------------------------------------------
+// Configuraciones de CORS
+// -------------------------------------------------------------------------------------------------------------------------
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv -> load();
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 
-$app = AppFactory::create();
-
-/**
- * Da formato al objeto de respuesta para enviar los datos en JSON junto con el estatus.
- * 
- * @param Response $response El objeto de la respuesta.
- * @param string[] $data Los datos a enviar en formato JSON.
- * @param int $status El estatus de la respuesta.
- * @return Response El objeto de respuesta con los datos en JSON en el cuerpo, los encabezados con el contenido en JSON y el estatus.
- */
-function withJson($response, $data, $status){
-    $response -> getBody() -> write((string)json_encode($data, JSON_UNESCAPED_UNICODE));
-    $response = $response -> withHeader('Content-Type', 'application/json') -> withStatus($status);
-    return $response;
+if ($_SERVER["REQUEST_METHOD"] == "OPTIONS"){
+    exit(0);
 }
 
-// Middleware para permitir CORS
-$app -> add(function ($request, $handler) {
-    $response = $handler -> handle($request);
-    return $response
-        ->withHeader('Access-Control-Allow-Origin', '*')
-        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-        ->withHeader('Access-Control-Allow-Credentials', 'true');
-});
+// -------------------------------------------------------------------------------------------------------------------------
+// Entrada del servidor
+// -------------------------------------------------------------------------------------------------------------------------
 
-$app -> options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
+$requestUri = $_SERVER["REQUEST_URI"];
+$requestMethod = $_SERVER["REQUEST_METHOD"];
+$uri = parse_url($requestUri, PHP_URL_PATH);
+
+if ($uri == "/report"){
+
+    switch($requestMethod){
+        case "GET":
+            getReport();
+            break;
+        case "POST":
+            postReport();
+            break;
+        default:
+            respondWithError("Método no permitido", 405);
+            break;
+    }
+
+} else {
+    respondWithError("Ruta no encontrada", 404);
+}
+
+// -------------------------------------------------------------------------------------------------------------------------
+// Funciones de manejo de respuestas
+// -------------------------------------------------------------------------------------------------------------------------
+
+function respondWithError($message, $statusCode){
+    header("Content-Type: application/json");
+    http_response_code($statusCode);
+    echo json_encode(["status" => "error", "message" => $message]);
+    exit;
+}
+
+function respondWithSuccess($data, $statusCode){
+    header("Content-Type: application/json");
+    http_response_code($statusCode);
+    echo json_encode(["status" => "success", "data" => $data]);
+    exit;
+}
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Endpoints del API
 // -------------------------------------------------------------------------------------------------------------------------
 
-$app -> get('/report', function (Request $request, Response $response, $args) {
+function getReport(){
 
-    $params = $request -> getQueryParams();
-    $order = $params['order'] ?? null;
-    $page = $params['page'] ?? null;
+    $page = isset($_GET["page"]) ? $_GET["page"] : null;
+    $order = isset($_GET["order"]) ? $_GET["order"] : null;
+    $id = isset($_GET["id"]) ? $_GET["id"] : null;
 
-    if (is_null($order) || ($order != 'crono' && $order != 'rand')){
-        return withJson($response, ['status' => 'error', 'message' => 'El orden no es válido'], 400);    
+    if (is_null($id)){
+        getReportBatch($page, $order);
+    }
+}
+
+function getReportBatch($page, $order){
+
+    if (is_null($order) || ($order != "crono" && $order != "rand")){
+        respondWithError("El orden no es válido", 400);    
     }
 
     if (is_null($page) || !is_numeric($page) || (int)$page <= 0) {
-        return withJson($response, ['status' => 'error', 'message' => 'El número de página no es válido'], 400);
+        respondWithError("El número de página no es válido", 400);
     }
 
     try {
@@ -64,31 +90,47 @@ $app -> get('/report', function (Request $request, Response $response, $args) {
 
         $reports = null;
 
-        if ($order == 'crono'){
+        if ($order == "crono"){
             $reports = $reportController -> getReportsInChronologicalOrder((int)$page);
         } else {
             $reports = [];
         }
 
-        return withJson($response, ['status' => 'success', 'data' => $reports], 200);
-
+        respondWithSuccess($reports, 200);
 
     } catch (Exception $e){
         // TODO: Poner el mensaje del error en un log
-        return withJson($response, ['status' => 'error', 'message' => 'Se produjo un error inesperado, intente nuevamente más tarde'], 500);
+        respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
     }
-});
+}
 
-$app->post('/report', function (Request $request, Response $response, $args) {
-    $body = json_decode($request->getBody(), true);
+function postReport(){
+
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    $content = $data["description"] ?? null;
+    $province = $data["province"] ?? null;
+    $canton = $data["canton"] ?? null;
+    $email = $data["email"] ?? null;
+    $ageBracket = $data["age"] ?? null;
+    $reportType = $data["typeReport"] ?? null;
+
+    // TODO: Validar datos
 
     try {
-        $reportController = new ReportController();
-        $result = $reportController->submitReport($body);
-        return withJson($response, ['status' => 'success', 'message' => $result], 200);
-    } catch (Exception $e) {
-        return withJson($response, ['status' => 'error', 'message' => $e->getMessage()], 400);
-    }
-});
 
-$app -> run();
+        $reportController = new ReportController();
+
+        $result = $reportController -> registerReport($content, $province, $canton, $email, $ageBracket);
+
+        if ($result){
+            respondWithSuccess([], 200);
+        } else {
+            respondWithError("No se pudo registrar la denuncia, intente nuevamente más tarde", 500);
+        }
+
+    } catch (Exception $e){
+        // TODO: Poner el mensaje del error en un log
+        respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
+    } 
+}

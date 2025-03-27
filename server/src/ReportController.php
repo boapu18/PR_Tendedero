@@ -1,7 +1,6 @@
 <?php
 
-namespace src;
-use Exception;
+include "Database.php";
 
 class ReportController {
 
@@ -12,7 +11,7 @@ class ReportController {
     }
 
     /**
-     * Obtiene un batch de denuncias ordenadas en orden cronológico
+     * Obtiene un batch de denuncias ordenadas en orden cronológico. No filtra por estado.
      * 
      * @param int $page El número de página del batch.
      * @return array[] Un array de documentos, donde cada documento es una denuncia.
@@ -20,50 +19,58 @@ class ReportController {
     public function getReportsInChronologicalOrder($page){
 
         $limit = 14;
-        $skip = ($page - 1) * $limit;
+        $offset = ($page - 1) * $limit;
 
-        $reportCollection = $this -> database -> getCollection('Report');
+        $conn = $this -> database -> connect();
 
-        $fields = ['content' => 1, 'province' => 1, 'canton' => 1, 'ageBracket' => 1, '_id' => 0];
+        $query = "SELECT content, province, canton, ageBracket FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ? ";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("ii", $limit, $offset);
+        
+        $stmt -> execute();
+        $result = $stmt -> get_result();
 
-        $cursor = $reportCollection -> find([], [
-            'skip' => $skip,
-            'limit' => $limit,
-            'projection' => $fields,
-        ]);
+        $this -> database -> close();
+        $stmt -> close();
 
-        $reports = iterator_to_array($cursor);
+        if ($result -> num_rows > 0){
 
-        return $reports;
+            $reports = [];
+
+            while ($row = $result -> fetch_assoc()){
+                $reports[] = $row;
+            }
+
+            return $reports;
+
+        } else {
+            return [];
+        }
     }
 
-    public function submitReport($data) {
+    /**
+     * Registra una denuncia en la base de datos. Asume que los datos fueron validados previamente.
+     * 
+     * @param string $content El contenido de la denuncia.
+     * @param string $province La provincia, puede venir en null si el usuario no la coloco.
+     * @param string $canton EL cantón, puede venir en null si el usuario no lo coloco.
+     * @param string $email El correo, puede venir en null si el usuario no lo coloco.
+     * @param string $ageBracket, puede venir en null si el usuario no lo coloco.
+     * @return boll Retorna true si se registró la denuncia, y false en el caso contrario.
+     */
+    public function registerReport($content, $province, $canton, $email, $ageBracket){
 
-        if (!isset($data['description']) || trim($data['description']) === '') {
-            throw new Exception("La descripción es obligatoria.");
-        }
+        $conn = $this -> database -> connect();
 
-        $report = [
-            'content' => $data['description'],
-            'type' => $data['typeReport'],
-            'createdAt' => new \MongoDB\BSON\UTCDateTime()
-        ];
+        $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket);
+        
+        $result = $stmt -> execute();
 
-        if ($data['typeReport'] === 'addictional-information') {
-            $report['email'] = $data['email'] ?? null;
-            $report['province'] = $data['province'] ?? null;
-            $report['canton'] = $data['canton'] ?? null;
-            $report['ageBracket'] = $data['age'] ?? null;
-        }
+        $this -> database -> close();
+        $stmt -> close();
 
-        // Save to database
-        $reportCollection = $this->database->getCollection('Report');
-        $insertResult = $reportCollection->insertOne($report);
-
-        if ($insertResult->getInsertedCount() === 0) {
-            throw new Exception("No se pudo guardar la denuncia.");
-
-        }
-        return "Denuncia registrada con éxito.";
+        return $result;
     }
 }
