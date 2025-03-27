@@ -74,7 +74,7 @@ function ReportForm() {
     return (
         <div className="container py-5">
             {/* Main card container for the form */}
-            <div className="bg-white shadow rounded-4 p-5 form-card">
+            <div className="bg-white shadow rounded-4 p-5">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     {/* Form title and subtitle */}
                     <h2 className="mb-3">Formulario de Registro de Denuncia</h2>
