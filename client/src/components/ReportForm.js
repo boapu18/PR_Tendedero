@@ -106,7 +106,7 @@ function ReportForm() {
                             <label className="form-check-label">Denuncia con información adicional</label>
                         </div>
                         {/* Tooltip icon for additional info */}
-                        <i className="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Incluye tu correo y edad para más contexto."></i>
+                        <i className="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Al seleccionar esta opción usted nos ayuda a enriquecer la investigación. Los datos son opcionales"></i>
                     </div>
 
                     {/* Additional fields that show conditionally */}
@@ -147,9 +147,12 @@ function ReportForm() {
                                 <label className="form-label">Rango de edad</label>
                                 <select className="form-select fixed-width-select" {...register("age")}>
                                     <option value="">Seleccione</option>
-                                    <option value="16-25">16-25</option>
-                                    <option value="26-35">26-35</option>
-                                    <option value="36+">36+</option>
+                                    <option value="Menos de 18 años">Menos de 18 años</option>
+                                    <option value="18-24 años">18-24 años</option>
+                                    <option value="25-34 años">25-34 años</option>
+                                    <option value="45-54 años">45-54 años</option>
+                                    <option value="55-64 años">55-64 años</option>
+                                    <option value="65 años o más">65 años o más</option>
                                 </select>
                             </div>
                         </div>
