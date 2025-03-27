@@ -4,7 +4,7 @@ import ReportVisualizer from "./pages/ReportVisualizer";
 
 function App() {
   return (
-    <ReportVisualizer />
+    <FormPage />
   );
 }
 

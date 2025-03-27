@@ -18,6 +18,20 @@ function withJson($response, $data, $status){
     return $response;
 }
 
+// Middleware para permitir CORS
+$app->add(function ($request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+        ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->withHeader('Access-Control-Allow-Credentials', 'true');
+});
+
+$app->options('/{routes:.+}', function ($request, $response, $args) {
+    return $response;
+});
+
 $app -> get('/reports', function (Request $request, Response $response, $args) {
 
     $params = $request -> getQueryParams();
@@ -53,6 +67,18 @@ $app -> get('/reports', function (Request $request, Response $response, $args) {
     }
 
    
+});
+
+$app->post('/report', function (Request $request, Response $response, $args) {
+    $body = json_decode($request->getBody(), true);
+
+    try {
+        $reportController = new ReportController();
+        $result = $reportController->submitReport($body);
+        return withJson($response, ['status' => 'success', 'message' => $result], 200);
+    } catch (Exception $e) {
+        return withJson($response, ['status' => 'error', 'message' => $e->getMessage()], 400);
+    }
 });
 
 $app -> run();

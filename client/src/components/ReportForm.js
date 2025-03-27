@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Tooltip } from "bootstrap";
+import Swal from 'sweetalert2';
+import axios from "axios";
 
 function ReportForm() {
     // Initialize form handling with react-hook-form
@@ -19,9 +21,39 @@ function ReportForm() {
     const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
 
     // Function executed when form is submitted
-    const onSubmit = (data) => {
-        console.log("Datos enviados:", data);
-    };
+    const onSubmit = async (data) => {
+    console.log("Datos enviados:", data);
+
+    try {
+        const response = await axios.post("http://localhost:8080/report", data);
+
+        Swal.fire({
+            title: 'Éxito',
+            text: response.data.message,
+            background: '#e6ffe6',
+            color: '#121212',
+            confirmButtonText: 'Aceptar',
+            confirmButtonColor: '#0FCB06',
+            icon: 'success',
+            customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-swal-confirm'
+            }
+        });
+
+    } catch (error) {
+        Swal.fire({
+            title: 'Error del servidor',
+            text: error.response?.data?.message,
+            icon: 'error',
+            confirmButtonText: 'Aceptar'
+        });
+    }
+};
+    
+      
+    
 
     useEffect(() => {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');

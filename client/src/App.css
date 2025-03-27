@@ -51,6 +51,22 @@
   .report-card-bg {
     background-color: #EABDFF;
   }
-  
-  
+
+  /* Success message box*/  
+  .custom-swal-popup {
+    border-radius: 15px;
+    padding: 2rem;
+}
+
+.custom-swal-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+}
+
+.custom-swal-confirm {
+    font-size: 1rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 6px;
+}
+
   
