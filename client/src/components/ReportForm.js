@@ -5,16 +5,9 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 
 function ReportForm() {
+
     // Initialize form handling with react-hook-form
-    const {
-        register,
-        handleSubmit,
-        formState: { errors },
-    } = useForm({
-        defaultValues: {
-            typeReport: "anonymous"
-        }
-        });
+    const {register, handleSubmit, formState: { errors }} = useForm({defaultValues: {typeReport: "anonymous"}});
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
@@ -22,39 +15,39 @@ function ReportForm() {
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
-    console.log("Datos enviados:", data);
+        
+        console.log("Datos enviados:", data);
+        
+        try {
+            
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
+            
+            Swal.fire({
+                title: 'Éxito',
+                text: response.data.message,
+                background: '#e6ffe6',
+                color: '#121212',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#0FCB06',
+                icon: 'success',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    confirmButton: 'custom-swal-confirm'
+                }
+            });
 
-    try {
-        const response = await axios.post("http://localhost:8080/report", data);
-
-        Swal.fire({
-            title: 'Éxito',
-            text: response.data.message,
-            background: '#e6ffe6',
-            color: '#121212',
-            confirmButtonText: 'Aceptar',
-            confirmButtonColor: '#0FCB06',
-            icon: 'success',
-            customClass: {
-                popup: 'custom-swal-popup',
-                title: 'custom-swal-title',
-                confirmButton: 'custom-swal-confirm'
-            }
-        });
-
-    } catch (error) {
-        Swal.fire({
-            title: 'Error del servidor',
-            text: error.response?.data?.message,
-            icon: 'error',
-            confirmButtonText: 'Aceptar'
-        });
-    }
-};
+        } catch (error) {
+            
+            Swal.fire({
+                title: 'Error del servidor',
+                text: error.response?.data?.message,
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+            });
+        }
+    };
     
-      
-    
-
     useEffect(() => {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
