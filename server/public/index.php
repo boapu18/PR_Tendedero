@@ -93,7 +93,7 @@ function getReportBatch($page, $order){
         if ($order == "crono"){
             $reports = $reportController -> getReportsInChronologicalOrder((int)$page);
         } else {
-            $reports = [];
+            $reports = $reportController -> getReportsInRandomOrder((int)$page);;
         }
 
         respondWithSuccess($reports, 200);

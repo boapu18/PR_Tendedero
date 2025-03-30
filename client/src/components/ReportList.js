@@ -17,7 +17,7 @@ function ReportList() {
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
-                params: {page: page, order: 'crono'} // TODO: cambiar a rand cuando este lista la historia
+                params: {page: page, order: 'rand'} 
             });
     
             const newReports = response.data.data;
