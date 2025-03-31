@@ -9,6 +9,7 @@ function ReportList() {
     const [loadingReports, setLoadingReports] = useState(false);
     const [moreReports, setMoreReports] = useState(true);
     const [page, setPage] = useState(1);
+    const [error, setError] = useState(false);
     const observer = useRef();
 
     const fetchReports = useCallback(async () => {
@@ -19,14 +20,19 @@ function ReportList() {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
                 params: {page: page, order: 'rand'} 
             });
-    
-            const newReports = response.data.data;
-            console.log(response.data.data)
-            setReports((prevReports) => [...prevReports, ...newReports]);
-            setMoreReports(newReports.length > 0);
+
+            if (response.data.data){
+                const newReports = response.data.data;
+                setReports((prevReports) => [...prevReports, ...newReports]);
+                setMoreReports(newReports.length > 0);
+            } else {
+                throw new Error();
+            }
+            
         } catch (e){
-            console.log('Error');
-            console.log(e);
+            console.log('Error'); // QUITAR EN PROD
+            console.log(e);       // QUITAR EN PROD
+            setError(true);
         } finally {
             setLoadingReports(false);
         }
@@ -85,6 +91,7 @@ function ReportList() {
 
       <div className="d-flex justify-content-center align-items-center my-4">
         {loadingReports && <p>Cargando...</p>}
+        {error && <p>Ocurrió un error al cargar las denuncias</p>}
       </div>
 
     </div>
