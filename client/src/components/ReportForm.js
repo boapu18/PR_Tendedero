@@ -29,29 +29,47 @@ function ReportForm() {
         try {
             
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
+
+            if (response){
+                
+                Swal.fire({
+                    title: 'Éxito',
+                    text: response?.data?.message,
+                    background: '#e6ffe6',
+                    color: '#121212',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#0FCB06',
+                    icon: 'success',
+                    customClass: {
+                        popup: 'custom-swal-popup',
+                        title: 'custom-swal-title',
+                        confirmButton: 'custom-swal-confirm'
+                    }
+                }).then((result) => {
+                    navigate("/home");
+                });
+                
+            } else {
+                throw new Error();
+            }
             
+        } catch (error) {
+
+            const errorMessage = error.response?.data?.message? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
+
             Swal.fire({
-                title: 'Éxito',
-                text: response.data.message,
-                background: '#e6ffe6',
+                title: 'Error',
+                text: errorMessage,
+                background: '#ffe9e5',
                 color: '#121212',
                 confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#0FCB06',
-                icon: 'success',
+                confirmButtonColor: '#dd2404',
+                icon: 'error',
                 customClass: {
                     popup: 'custom-swal-popup',
                     title: 'custom-swal-title',
                     confirmButton: 'custom-swal-confirm'
                 }
-            });
-
-        } catch (error) {
-            
-            Swal.fire({
-                title: 'Error del servidor',
-                text: error.response?.data?.message,
-                icon: 'error',
-                confirmButtonText: 'Aceptar'
             });
         }
     };
