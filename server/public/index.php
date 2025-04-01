@@ -52,10 +52,10 @@ function respondWithError($message, $statusCode){
     exit;
 }
 
-function respondWithSuccess($data, $statusCode){
+function respondWithSuccess($data, $message, $statusCode){
     header("Content-Type: application/json");
     http_response_code($statusCode);
-    echo json_encode(["status" => "success", "data" => $data]);
+    echo json_encode(["status" => "success", "message" => $message, "data" => $data]);
     exit;
 }
 
@@ -96,10 +96,10 @@ function getReportBatch($page, $order){
             $reports = $reportController -> getReportsInRandomOrder((int)$page);;
         }
 
-        respondWithSuccess($reports, 200);
+        respondWithSuccess($reports, "Denuncias obtenidas exitosamente", 200);
 
     } catch (Exception $e){
-        // TODO: Poner el mensaje del error en un log
+        error_log($e -> getMessage());
         respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
     }
 }
@@ -124,13 +124,13 @@ function postReport(){
         $result = $reportController -> registerReport($content, $province, $canton, $email, $ageBracket);
 
         if ($result){
-            respondWithSuccess([], 200);
+            respondWithSuccess(null, "La denuncia se ha registrado exitosamente", 200);
         } else {
             respondWithError("No se pudo registrar la denuncia, intente nuevamente más tarde", 500);
         }
 
     } catch (Exception $e){
-        // TODO: Poner el mensaje del error en un log
+        error_log($e -> getMessage());
         respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
     } 
 }

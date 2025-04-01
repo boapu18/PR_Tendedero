@@ -11,7 +11,7 @@ class Database {
     public function __construct() {
         $this -> host = getenv('HOST');
         $this -> user = getenv('USER');
-        $this -> password = getenv('PASSWORD');
+        $this -> password = getenv('PASSWORDA');
         $this -> database = getenv('DATABASE');
     }
 
@@ -19,6 +19,10 @@ class Database {
 
         if (!$this -> conn){
             $this -> conn = new mysqli($this -> host, $this -> user, $this -> password, $this -> database);
+
+            if ($this -> conn -> connect_error){
+                throw new Exception("No se ha podido establecer la conexión con la base de datos");
+            }
         }
 
         return $this -> conn;
