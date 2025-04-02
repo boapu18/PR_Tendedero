@@ -11,7 +11,8 @@ class ReportController {
     }
 
     /**
-     * Obtiene un batch de denuncias ordenadas en orden cronológico. No filtra por estado.
+     * Obtiene un batch de denuncias ordenadas en orden cronológico. No filtra por estado. Las
+     * denuncias incluyen el contenido e información adicional.
      * 
      * @param int $page El número de página del batch.
      * @return array[] Un array de documentos, donde cada documento es una denuncia.
@@ -51,7 +52,7 @@ class ReportController {
     /**
      * Obtiene un batch de denuncias ordenadas en orden aleatorio, por medio de una semilla.
      * La semilla se genera a partir de la IP del usuario y la fecha y hora actual.
-     * No filtra por estado.
+     * No filtra por estado. Las denuncias solo incluyen el contenido.
      * 
      * @param int $page El número de página del batch.
      * @return array[] Un array de documentos, donde cada documento es una denuncia.
@@ -71,7 +72,7 @@ class ReportController {
         $ip = str_replace(".", "", $ip);
         $seed = ($ip + $minuteGroup + $hour + $day + $month); 
     
-        $query = "SELECT content, province, canton, ageBracket FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
+        $query = "SELECT content FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("iii", $seed, $limit, $offset);
     
