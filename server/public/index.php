@@ -115,7 +115,21 @@ function postReport(){
     $ageBracket = $data["age"] ?? null;
     $reportType = $data["typeReport"] ?? null;
 
-    // TODO: Validar datos
+    if (!$content || trim($content) === "") {
+        respondWithError("La descripción es obligatoria", 400);
+    }
+
+    $wordCount = str_word_count(strip_tags($content));
+    if ($wordCount > 500) {
+        respondWithError("La descripción no puede tener más de 500 palabras", 400);
+    }
+
+    if ($reportType === "addictional-information") {
+
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            respondWithError("El correo electrónico no es válido", 400);
+        }
+    }
 
     try {
 

@@ -8,11 +8,12 @@ import { useNavigate } from "react-router-dom";
 function ReportForm() {
 
     // Initialize form handling with react-hook-form
-    const {register, handleSubmit, formState: { errors }} = useForm({defaultValues: {typeReport: "anonymous"}});
+    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { typeReport: "anonymous" } });
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
     const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+    const [descriptionLength, setDescriptionLength] = useState(0);
 
     const navigate = useNavigate();
 
@@ -23,15 +24,15 @@ function ReportForm() {
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
-        
+
         console.log("Datos enviados:", data);
-        
+
         try {
-            
+
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
 
-            if (response){
-                
+            if (response) {
+
                 Swal.fire({
                     title: 'Éxito',
                     text: response?.data?.message,
@@ -48,14 +49,14 @@ function ReportForm() {
                 }).then((result) => {
                     navigate("/home");
                 });
-                
+
             } else {
                 throw new Error();
             }
-            
+
         } catch (error) {
 
-            const errorMessage = error.response?.data?.message? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
+            const errorMessage = error.response?.data?.message ? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
 
             Swal.fire({
                 title: 'Error',
@@ -73,7 +74,7 @@ function ReportForm() {
             });
         }
     };
-    
+
     useEffect(() => {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
@@ -109,7 +110,18 @@ function ReportForm() {
                     {/* Description */}
                     <div className="mb-4">
                         <label className="form-label">Descripción *</label>
-                        <textarea className="form-control" rows={4} {...register("description", { required: "La descripción es obligatoria" })} />
+                        <textarea
+                            className="form-control"
+                            rows={4}
+                            maxLength={500}
+                            {...register("description", {
+                                required: "La descripción es obligatoria",
+                                onChange: (e) => setDescriptionLength(e.target.value.length)
+                            })}
+                        />
+                        <div className="text-end mt-1" style={{ fontSize: "0.9rem", color: descriptionLength >= 500 ? "red" : "#666" }}>
+                            {descriptionLength}/500
+                        </div>
                         {errors.description && <div className="text-danger mt-1">{errors.description.message}</div>}
                     </div>
 
@@ -148,7 +160,7 @@ function ReportForm() {
                                     ))}
                                 </select>
                             </div>
-                            
+
                             {/* Canton selector */}
                             <div className="col-auto me-4 mb-4 mb-lg-0">
                                 <label className="form-label">Cantón</label>
