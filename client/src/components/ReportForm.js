@@ -19,7 +19,7 @@ function ReportForm() {
 
 
     const handleCancelClick = () => {
-        navigate("/home");
+        navigate("/");
     };
 
     // Function executed when form is submitted
@@ -47,7 +47,7 @@ function ReportForm() {
                         confirmButton: 'custom-swal-confirm'
                     }
                 }).then((result) => {
-                    navigate("/home");
+                    navigate("/");
                 });
 
             } else {
