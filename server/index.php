@@ -1,7 +1,7 @@
 <?php
 
-include "../utils/loadEnv.php";
-include "../src/ReportController.php";
+include "loadEnv.php";
+include "ReportController.php";
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Configuraciones de CORS
@@ -20,6 +20,11 @@ if ($_SERVER["REQUEST_METHOD"] == "OPTIONS"){
 // -------------------------------------------------------------------------------------------------------------------------
 
 $requestUri = $_SERVER["REQUEST_URI"];
+
+if (strpos($requestUri, "/backend") == 0){
+    $requestUri = substr($requestUri, 18);
+}
+
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 $uri = parse_url($requestUri, PHP_URL_PATH);
 
