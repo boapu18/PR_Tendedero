@@ -25,8 +25,6 @@ function ReportForm() {
     // Function executed when form is submitted
     const onSubmit = async (data) => {
 
-        console.log("Datos enviados:", data);
-
         try {
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);

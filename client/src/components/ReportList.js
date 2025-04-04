@@ -30,8 +30,6 @@ function ReportList() {
             }
             
         } catch (e){
-            console.log('Error'); // QUITAR EN PROD
-            console.log(e);       // QUITAR EN PROD
             setError(true);
         } finally {
             setLoadingReports(false);
