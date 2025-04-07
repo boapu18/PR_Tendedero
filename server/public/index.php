@@ -1,6 +1,7 @@
 <?php
 
 include "../src/loadEnv.php";
+include "../src/Report.php";
 include "../src/ReportController.php";
 
 // -------------------------------------------------------------------------------------------------------------------------
@@ -136,11 +137,13 @@ function postReport(){
         }
     }
 
+    $report = new Report($content, $province, $canton, $email, $ageBracket);
+
     try {
 
         $reportController = new ReportController();
 
-        $result = $reportController -> registerReport($content, $province, $canton, $email, $ageBracket);
+        $result = $reportController -> registerReport($report);
 
         if ($result){
             respondWithSuccess(null, "La denuncia se ha registrado exitosamente", 200);

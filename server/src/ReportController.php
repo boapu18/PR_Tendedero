@@ -96,20 +96,17 @@ class ReportController {
     /**
      * Registra una denuncia en la base de datos. Asume que los datos fueron validados previamente.
      * 
-     * @param string $content El contenido de la denuncia.
-     * @param string $province La provincia, puede venir en null si el usuario no la coloco.
-     * @param string $canton EL cantón, puede venir en null si el usuario no lo coloco.
-     * @param string $email El correo, puede venir en null si el usuario no lo coloco.
-     * @param string $ageBracket, puede venir en null si el usuario no lo coloco.
-     * @return boll Retorna true si se registró la denuncia, y false en el caso contrario.
+     * @param Report $report Un objeto con el reporte a registrar.
+     * @return bool Retorna true si se registró la denuncia, y false en el caso contrario.
      */
-    public function registerReport($content, $province, $canton, $email, $ageBracket){
+    public function registerReport($report){
 
         $conn = $this -> database -> connect();
 
         $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket);
+        $stmt -> bind_param("sssss", $report -> getContent(), $report -> getProvince(), $report -> getCanton(), 
+                                     $report -> getEmail(), $report -> getAgeBracket());
         
         $result = $stmt -> execute();
 
