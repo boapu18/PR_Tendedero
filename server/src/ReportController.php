@@ -24,7 +24,7 @@ class ReportController {
 
         $conn = $this -> database -> connect();
 
-        $query = "SELECT content, province, canton, ageBracket FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ? ";
+        $query = "SELECT content FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ? ";
         $stmt = $conn -> prepare($query);
         $stmt -> bind_param("ii", $limit, $offset);
         
@@ -61,7 +61,7 @@ class ReportController {
         $limit = 14;
         $offset = ($page - 1) * $limit;
     
-        $conn = $this->database->connect();
+        $conn = $this -> database -> connect();
     
         $ip = $_SERVER['REMOTE_ADDR'];
         $minuteGroup = floor(date("i") / 10); 
@@ -73,18 +73,18 @@ class ReportController {
         $seed = ($ip + $minuteGroup + $hour + $day + $month); 
     
         $query = "SELECT content FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("iii", $seed, $limit, $offset);
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("iii", $seed, $limit, $offset);
     
-        $stmt->execute();
-        $result = $stmt->get_result();
+        $stmt -> execute();
+        $result = $stmt -> get_result();
     
-        $this->database->close();
-        $stmt->close();
+        $this -> database -> close();
+        $stmt -> close();
     
-        if ($result->num_rows > 0) {
+        if ($result -> num_rows > 0) {
             $reports = [];
-            while ($row = $result->fetch_assoc()) {
+            while ($row = $result -> fetch_assoc()) {
                 $reports[] = $row;
             }
             return $reports;

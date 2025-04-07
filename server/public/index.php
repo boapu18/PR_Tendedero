@@ -131,7 +131,7 @@ function postReport(){
 
     if ($reportType === "addictional-information") {
 
-        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (trim($email) !== "" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             respondWithError("El correo electrónico no es válido", 400);
         }
     }
