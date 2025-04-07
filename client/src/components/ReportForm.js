@@ -111,14 +111,14 @@ function ReportForm() {
                         <textarea
                             className="form-control"
                             rows={4}
-                            maxLength={500}
+                            maxLength={2000}
                             {...register("description", {
                                 required: "La descripción es obligatoria",
                                 onChange: (e) => setDescriptionLength(e.target.value.length)
                             })}
                         />
-                        <div className="text-end mt-1" style={{ fontSize: "0.9rem", color: descriptionLength >= 500 ? "red" : "#666" }}>
-                            {descriptionLength}/500
+                        <div className="text-end mt-1" style={{ fontSize: "0.9rem", color: descriptionLength >= 2000 ? "red" : "#666" }}>
+                            {descriptionLength}/2000
                         </div>
                         {errors.description && <div className="text-danger mt-1">{errors.description.message}</div>}
                     </div>
