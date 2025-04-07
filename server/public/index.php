@@ -126,7 +126,7 @@ function postReport(){
 
     $wordCount = str_word_count(strip_tags($content));
     if ($wordCount > 2000) {
-        respondWithError("La descripción no puede tener más de 2000 caracteres", 400);
+        respondWithError("La descripción no puede tener más de 2000 caracteres.", 400);
     }
 
     if ($reportType === "addictional-information") {
