@@ -102,11 +102,15 @@ class ReportController {
     public function registerReport($report){
 
         $conn = $this -> database -> connect();
+        $content = $report -> getContent();
+        $province = $report -> getProvince();
+        $canton =  $report -> getCanton();
+        $email = $report -> getEmail();
+        $ageBracket = $report -> getAgeBracket();
 
         $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("sssss", $report -> getContent(), $report -> getProvince(), $report -> getCanton(), 
-                                     $report -> getEmail(), $report -> getAgeBracket());
+        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket);
         
         $result = $stmt -> execute();
 
