@@ -8,11 +8,11 @@ import { useNavigate } from "react-router-dom";
 function ReportForm() {
 
     // Initialize form handling with react-hook-form
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { typeReport: "anonymous" } });
+    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
-    const [showAdditionalInfo, setShowAdditionalInfo] = useState(false);
+    const [showAdditionalInfo, setShowAdditionalInfo] = useState(true);
     const [descriptionLength, setDescriptionLength] = useState(0);
 
     const navigate = useNavigate();
@@ -20,11 +20,13 @@ function ReportForm() {
 
     const handleCancelClick = () => {
         navigate("/");
-    };
+    }; 
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
 
+        console.log("Datos enviados:", data);
+        
         try {
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
@@ -78,9 +80,6 @@ function ReportForm() {
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
     }, []);
 
-    useEffect(() => {
-        setShowAdditionalInfo(false);
-    }, []);
 
     // Province and cantons mapping
     const provinceData = {
