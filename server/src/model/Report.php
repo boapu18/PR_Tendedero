@@ -1,6 +1,6 @@
 <?php
 
-class Report {
+class Report implements JsonSerializable {
 
     private $id;
     private $content;
@@ -74,5 +74,23 @@ class Report {
     
     public function setState($state){
         $this -> state = $state;
+    }
+    
+
+    public function jsonSerialize() {
+        
+        $data = [
+            'id' => $this -> id,
+            'content' => $this -> content,
+            'province' => $this -> province,
+            'canton' => $this -> canton,
+            'email' => $this -> email,
+            'ageBracket' => $this -> ageBracket,
+            'state' => $this -> state,
+        ];
+
+        return array_filter($data, function($value) {
+            return $value !== null;
+        });
     }
 }

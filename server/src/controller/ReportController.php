@@ -1,0 +1,195 @@
+<?php
+
+require_once  __DIR__ . "/../database/Database.php";
+
+class ReportController {
+
+    private $database;
+
+    public function __construct(){
+        $this -> database = new Database();
+    }
+
+    /**
+     * Obtiene la cantidad total de denuncias registradas con el estado dado.
+     * @param int $state El estado de los reportes que se quieren contar. Si es null, se cuentan todos.
+     * @return int La cantidad total de denuncias registradas con el estado dato.
+     */
+    public function getReportsCount($state){
+        $conn = $this -> database -> connect();
+
+        if ($state){
+            $query = "SELECT COUNT(*) FROM Report WHERE state = ?;";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param("i", $state);
+        } else {
+            $query = "SELECT COUNT(*) FROM Report;";
+            $stmt = $conn -> prepare($query);
+        }
+        
+        $stmt -> execute();
+
+        $count = 0;
+        $stmt -> bind_result($count);
+        $stmt -> fetch();
+
+        $this -> database -> close();
+        $stmt -> close();
+
+        return $count;
+    }
+
+    /**
+     * Obtiene un batch de denuncias ordenadas en orden cronológico.
+     * 
+     * @param int $page El número de página del batch.
+     * @param int $state El estado para filtrar las denuncias.
+     * @return Report[] Un array de objetos Report, donde cada objeto es un reporte.
+     */
+    public function getReportsInChronologicalOrder($page, $state){
+
+        $limit = 14;
+        $offset = ($page - 1) * $limit;
+
+        $conn = $this -> database -> connect();
+
+        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ? OR ? IS NULL) ORDER BY creationDate DESC LIMIT ? OFFSET ? ";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("iiii", $state, $state, $limit, $offset);
+        
+        $stmt -> execute();
+        $result = $stmt -> get_result();
+
+        $this -> database -> close();
+        $stmt -> close();
+
+        if ($result -> num_rows > 0){
+
+            $reports = [];
+
+            while ($row = $result -> fetch_assoc()){
+                
+                $report = new Report(
+                    $row['content'],  
+                    $row['province'], 
+                    $row['canton'],  
+                    $row['email'], 
+                    $row['ageBracket'],
+                    $row['id'], 
+                    $row['state']
+                );
+
+                $reports[] = $report;
+            }
+
+            return $reports;
+
+        } else {
+            return [];
+        }
+    }
+
+    /**
+     * Obtiene un batch de denuncias ordenadas en orden aleatorio, por medio de una semilla.
+     * La semilla se genera a partir de la IP del usuario y la fecha y hora actual.
+     * No filtra por estado.
+     * 
+     * @param int $page El número de página del batch.
+     * @return Report[] Un array de objetos Report, donde cada objeto es un reporte.
+     */
+    public function getReportsInRandomOrder($page) {
+
+        $limit = 14;
+        $offset = ($page - 1) * $limit;
+    
+        $conn = $this -> database -> connect();
+    
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $minuteGroup = floor(date("i") / 10); 
+        $hour = date("H");
+        $day = date("j");
+        $month = date("n");
+    
+        $ip = str_replace(".", "", $ip);
+        $seed = ($ip + $minuteGroup + $hour + $day + $month); 
+    
+        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("iii", $seed, $limit, $offset);
+    
+        $stmt -> execute();
+        $result = $stmt -> get_result();
+    
+        $this -> database -> close();
+        $stmt -> close();
+    
+        if ($result -> num_rows > 0) {
+
+            $reports = [];
+
+            while ($row = $result -> fetch_assoc()) {
+                
+                $report = new Report(
+                    $row['content'],  
+                    $row['province'], 
+                    $row['canton'],  
+                    $row['email'], 
+                    $row['ageBracket'],
+                    $row['id'], 
+                    $row['state']
+                );
+                
+                $reports[] = $report;
+            }
+
+            return $reports;
+
+        } else {
+            return [];
+        }
+    }
+    
+    /**
+     * Registra una denuncia en la base de datos. Asume que los datos fueron validados previamente.
+     * 
+     * @param Report $report Un objeto con el reporte a registrar.
+     * @return bool Retorna true si se registró la denuncia, y false en el caso contrario.
+     */
+    public function registerReport($report){
+
+        $conn = $this -> database -> connect();
+        $content = $report -> getContent();
+        $province = $report -> getProvince();
+        $canton =  $report -> getCanton();
+        $email = $report -> getEmail();
+        $ageBracket = $report -> getAgeBracket();
+
+        $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket);
+        
+        $result = $stmt -> execute();
+
+        $this -> database -> close();
+        $stmt -> close();
+
+        return $result;
+    }
+
+    /**
+     * Retorna un reporte por su ID.
+     * 
+     * @param int $reportId El ID del reporte a obtener.
+     * @return Report|null El reporte obtenido, o null si no existe.
+     */
+    public function getReportById($reportId){}
+
+    /**
+     * Actualiza el estado de una denuncia.
+     * 
+     * @param int $reportId El ID del reporte a actualizar el estado.
+     * @param int $state El nuevo estado del reporte.
+     * @return bool Retorna true si el estado se actualizó correctamente, y false en el caso contrario.
+     */
+    public function updateReportState($reportId, $state){}
+}
