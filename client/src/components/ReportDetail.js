@@ -102,7 +102,7 @@ function DetailReport() {
                 </div>
 
                 {/* State*/}
-                <div className="d-flex flex-column align-items-end mb-4">
+                <div className="d-flex flex-column align-items-end" style={{ marginBottom: "6rem" }}>
                     <div style={{ width: "200px" }}>
                         <label className="form-label">Estado</label>
                         <select
