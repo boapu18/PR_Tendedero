@@ -182,7 +182,37 @@ class ReportController {
      * @param int $reportId El ID del reporte a obtener.
      * @return Report|null El reporte obtenido, o null si no existe.
      */
-    public function getReportById($reportId){}
+    public function getReportById($reportId){
+        
+        $conn = $this -> database -> connect();
+
+        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE id = ?";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("i", $reportId);
+        $stmt -> execute();
+
+        $result = $stmt -> get_result();
+        $report = null;
+
+        if($result -> num_rows > 0){
+            $row = $result -> fetch_assoc();
+            $report = [
+                "id" => $row["id"],
+                "content" => $row["content"],
+                "province" => $row["province"],
+                "canton" => $row["canton"],
+                "ageBracket" => $row["ageBracket"],
+                "email" => $row["email"],
+                "state" => $row["state"]
+            ];  
+        }
+
+        $this -> database -> close();
+        $stmt -> close();
+
+        return $report; 
+    }
+
 
     /**
      * Actualiza el estado de una denuncia.

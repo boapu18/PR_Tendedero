@@ -97,7 +97,29 @@ class ReportRouter{
         }
     }
 
-    public function getReport(){}
+    public function getReport(){
+
+        $uri = $_SERVER['REQUEST_URI'];
+        preg_match("/\/report\/(\d+)/", $uri, $matches);
+        $id = $matches[1] ?? null;
+
+        if(!$id || !is_numeric($id)){
+            respondWithError("ID de reporte no válido", 400);
+            return;
+        }
+        try{
+            $report = $this -> reportController -> getReportById((int)$id);
+
+            if($report){
+                respondWithError($report, "Denuncia obtenida correctamente", 200);
+            } else {
+                respondWithError("Denuncia no encontrada", 404);
+            }
+        } catch (Exception $e) {
+            error_log($e -> getMessage());
+            respondWithError("Se produjo un error inesperado", 500);
+        }
+    }
 
     public function patchReport(){}
 }
