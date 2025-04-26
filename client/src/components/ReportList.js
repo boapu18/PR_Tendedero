@@ -22,7 +22,7 @@ function ReportList() {
             });
 
             if (response.data.data){
-                const newReports = response.data.data;
+                const newReports = response.data.data.reports;
                 setReports((prevReports) => [...prevReports, ...newReports]);
                 setMoreReports(newReports.length > 0);
             } else {
