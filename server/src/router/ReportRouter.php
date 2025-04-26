@@ -111,7 +111,7 @@ class ReportRouter{
             $report = $this -> reportController -> getReportById((int)$id);
 
             if($report){
-                respondWithError($report, "Denuncia obtenida correctamente", 200);
+                respondWithSuccess($report, "Denuncia obtenida correctamente", 200);
             } else {
                 respondWithError("Denuncia no encontrada", 404);
             }
