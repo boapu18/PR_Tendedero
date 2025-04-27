@@ -5,6 +5,7 @@ import TermsPage from "./pages/TermsPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import TermsProtectedRoute from "./protecters/TermsProtectedRoute";
 import AdminMainPage from "./pages/AdminMainPage";
+import LogginPage from "./pages/LogginPage";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
           <Route path="terms-of-use" element={<TermsPage/>}></Route>
         </Route>
         <Route path="/admin">
-          <Route index element={<AdminMainPage/>}></Route>
+          <Route index element={<LogginPage/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>
