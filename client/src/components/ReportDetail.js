@@ -11,32 +11,18 @@ const states = {
 function DetailReport() {
     const { id } = useParams(); 
     const [reportData, setReportData] = useState(null);
-
-    /*const [reportData, setReportData] = useState({
-        description: "Aquí va una descripción de ejemplo para probar el diseño.",
-        email: "ejemplo@correo.com",
-        province: "San José",
-        canton: "Escazú",
-        ageBracket: "18-24 años",
-        status: 0
-    });*/
-
-
     
     useEffect(() => {
       axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`)
         .then(response => {
           setReportData(response.data.data);
+          //console.log("Detalle de la denuncia", response.data.data);
         })
         .catch(error => {
           console.error("Error cargando la denuncia:", error);
         });
     }, [id]);
-    
 
-    /*const handleChangeStatus = (e) => {
-        setReportData({ ...reportData, status: parseInt(e.target.value) });
-    };*/
 
     const handleBack = () => {
         window.history.back();
@@ -116,7 +102,7 @@ function DetailReport() {
                         <select
                             className="form-select"
                             value={reportData.state}
-                            disabled
+                            onChange={(e) => setReportData({ ...reportData, state: parseInt(e.target.value) })}
                         >
                             {Object.entries(states).map(([key, value]) => (
                                 <option key={key} value={key}>
