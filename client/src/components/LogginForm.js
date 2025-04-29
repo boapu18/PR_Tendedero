@@ -53,15 +53,15 @@ function LogginForm() {
   return (
     <div className="container py-4">
         {/* Main card container for the form */}
-        <div className="bg-white shadow rounded-4 p-5" style={{ minHeight: '600px'}}>
+        <div className="bg-white shadow rounded-4 p-5" style={{ minHeight: '700px', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
+          <h1 className="text-center mb-5" style={{marginBottom: "800"}}>Tendedero Virtual de Denuncia</h1>
             {/* Form submission handler */}
             <form onSubmit={handleSubmit(onLoggin)}>
                 {/* Form title and subtitle */}
-                <h1 className="mb-8 text-center">Tendedero Virtual de Denuncia</h1>
-                <h2 className="mb-20 text-center">Iniciar Sesión</h2>
+                <h2 className="mt-5 mb-5 text-center">Iniciar Sesión</h2>
                 {/* Username input field */}
-                <div className="mb-5 text-center" style={{ width: "100%", maxWidth: '400px', margin: '0 auto' }}>
-                    <label htmlFor="username" className="form-label">Usuario</label>
+                <div className="mb-3 text-center" style={{ width: "350px", maxWidth: '350px', margin: '0 auto' }}>
+                  <label htmlFor="username" className="form-label text-start d-block">Usuario</label>
                     <input
                         type="text"
                         className={`form-control ${errors.username ? 'is-invalid' : ''}`}
@@ -74,8 +74,8 @@ function LogginForm() {
                     {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
                 </div>
                 {/* Password input field */}  
-                <div className="mb-5 text-center" style={{ width: "100%", maxWidth: '400px', margin: '0 auto' }}>
-                    <label htmlFor="password" className="form-label">Contraseña</label>
+                <div className="mb-3 text-center" style={{ width: "350px", maxWidth: '350px', margin: '0 auto' }}>
+                  <label htmlFor="password" className="form-label text-start d-block">Contraseña</label>
                     <input
                         type="password"
                         className={`form-control ${errors.password ? 'is-invalid' : ''}`}
@@ -88,7 +88,7 @@ function LogginForm() {
                     {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
                 </div>
                 {/* Buttons */}
-                <div className="text-center">
+                <div className="mt-5 mb-5 text-center">
                         <button type="submit" className="main-button">Iniciar Sesión</button>
                 </div>
             </form> 
