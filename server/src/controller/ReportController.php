@@ -221,5 +221,19 @@ class ReportController {
      * @param int $state El nuevo estado del reporte.
      * @return bool Retorna true si el estado se actualizó correctamente, y false en el caso contrario.
      */
-    public function updateReportState($reportId, $state){}
+    public function updateReportState($reportId, $state){
+
+        $conn = $this->database->connect();
+
+        $query = "UPDATE Report SET state = ? WHERE id = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("ii", $state, $reportId);
+
+        $success = $stmt -> execute();
+
+        $stmt -> close();
+        $this -> database -> close();
+
+        return $success;
+    }
 }

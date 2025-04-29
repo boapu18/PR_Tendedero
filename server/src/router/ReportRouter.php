@@ -121,5 +121,47 @@ class ReportRouter{
         }
     }
 
-    public function patchReport(){}
+    public function patchReport() {
+        // Get the requested URLI
+        $uri = $_SERVER['REQUEST_URI'];
+
+        // Extracts the ID number from the URI using a regular expression 
+        preg_match("/\/report\/(\d+)/", $uri, $matches);
+        $id = $matches[1] ?? null;
+    
+        // Validates if the id is valid
+        if (!$id || !is_numeric($id)) {
+            respondWithError("ID de denuncia no válido", 400);
+            return;
+        }
+    
+        // Decodesthe request body 
+        $data = json_decode(file_get_contents("php://input"), true);
+        $newState = $data["state"] ?? null;
+    
+        // Verify that the status is numeric and within the allowed values. 
+        if (!is_numeric($newState) || !in_array((int)$newState, [0, 1, 2])) {
+            respondWithError("Estado no válido", 400);
+            return;
+        }
+    
+        try {
+            // Calls the controller to update the state in the database 
+            $success = $this->reportController->updateReportState((int)$id, (int)$newState);
+    
+            // If the update was successful, respond with success
+            if ($success) {
+                respondWithSuccess(null, "Estado actualizado correctamente", 200);
+
+            // If there was a problem, respond with an internal error
+            } else {
+                respondWithError("No se pudo actualizar el estado", 500);
+
+            }
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            respondWithError("Se produjo un error inesperado", 500);
+
+        }
+    }
 }
