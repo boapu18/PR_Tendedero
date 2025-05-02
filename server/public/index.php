@@ -35,7 +35,7 @@ $authRouter = new AuthRouter();
 $router -> get("/report", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);
 $router -> post("/report", [$reportRouter, 'postReport']);
-$router -> patch("/report", [$reportRouter, 'patchReport']);
+$router -> patch("/report/:id", [$reportRouter, 'patchReport']);
 
 $router -> post("/auth/login", [$authRouter, 'login']);
 $router -> post("/auth/logout", [$authRouter, 'logout']);

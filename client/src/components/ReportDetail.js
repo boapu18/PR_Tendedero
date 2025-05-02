@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"; 
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const states = {
     0: "En espera",
@@ -22,6 +23,19 @@ function DetailReport() {
           console.error("Error cargando la denuncia:", error);
         });
     }, [id]);
+
+    const handleChangeStatus = (e) => {
+        const newState = parseInt(e.target.value);
+
+        axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, {state: newState})
+            .then(() => {
+                Swal.fire("Éxito", "Estado actualizado correctamente", "success");
+                setReportData(prev => ({ ...prev, state: newState}));
+            })
+            .catch(() => {
+                Swal.fire("Error", "No se pudo actualizar el estado", "error");
+            });
+    };
 
 
     const handleBack = () => {
@@ -102,7 +116,7 @@ function DetailReport() {
                         <select
                             className="form-select"
                             value={reportData.state}
-                            onChange={(e) => setReportData({ ...reportData, state: parseInt(e.target.value) })}
+                            onChange={handleChangeStatus}
                         >
                             {Object.entries(states).map(([key, value]) => (
                                 <option key={key} value={key}>
