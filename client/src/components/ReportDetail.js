@@ -26,16 +26,42 @@ function DetailReport() {
 
     const handleChangeStatus = (e) => {
         const newState = parseInt(e.target.value);
-
-        axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, {state: newState})
-            .then(() => {
-                Swal.fire("Éxito", "Estado actualizado correctamente", "success");
-                setReportData(prev => ({ ...prev, state: newState}));
-            })
-            .catch(() => {
-                Swal.fire("Error", "No se pudo actualizar el estado", "error");
+      
+        axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, { state: newState })
+          .then(() => {
+            Swal.fire({
+              title: 'Éxito',
+              text: 'Estado actualizado correctamente',
+              background: '#e6f4ea',
+              color: '#121212',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#198754', 
+              icon: 'success',
+              customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-swal-confirm'
+              }
             });
-    };
+            setReportData(prev => ({ ...prev, state: newState }));
+          })
+          .catch(() => {
+            Swal.fire({
+              title: 'Error',
+              text: 'No se pudo actualizar el estado',
+              background: '#ffe9e5',
+              color: '#121212',
+              confirmButtonText: 'Aceptar',
+              confirmButtonColor: '#dd2404',
+              icon: 'error',
+              customClass: {
+                popup: 'custom-swal-popup',
+                title: 'custom-swal-title',
+                confirmButton: 'custom-swal-confirm'
+              }
+            });
+          });
+      };
 
 
     const handleBack = () => {
