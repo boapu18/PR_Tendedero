@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 function ReportForm() {
 
     // Initialize form handling with react-hook-form
-    const { register, handleSubmit, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
@@ -24,6 +24,14 @@ function ReportForm() {
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
+
+        if(data.typeReport === "anonymous"){
+            delete data.email;
+            delete data.province;
+            delete data.canton;
+            delete data.age;
+        }
+
 
         console.log("Datos enviados:", data);
         
@@ -150,7 +158,7 @@ function ReportForm() {
                             {/* Province selector */}
                             <div className="col-auto me-4 mb-4 mb-lg-0">
                                 <label className="form-label">Provincia</label>
-                                <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => setSelectedProvince(e.target.value)}>
+                                <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => {setSelectedProvince(e.target.value); setValue("canton", "")}}>
                                     <option value="">Seleccione una provincia</option>
                                     {Object.keys(provinceData).map((province) => (
                                         <option key={province} value={province}>{province}</option>

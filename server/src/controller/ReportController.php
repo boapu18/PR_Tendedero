@@ -159,10 +159,10 @@ class ReportController {
 
         $conn = $this -> database -> connect();
         $content = $report -> getContent();
-        $province = $report -> getProvince();
-        $canton =  $report -> getCanton();
-        $email = $report -> getEmail();
-        $ageBracket = $report -> getAgeBracket();
+        $province = $report -> getProvince() ?? "";
+        $canton =  $report -> getCanton() ?? "";
+        $email = $report -> getEmail() ?? "";
+        $ageBracket = $report -> getAgeBracket() ?? "";
 
         $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
