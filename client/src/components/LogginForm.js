@@ -6,7 +6,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function LogginForm() {
-  // Initialize form handling with react-hook-form
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const navigate = useNavigate();
@@ -52,14 +51,10 @@ function LogginForm() {
 
   return (
     <div className="container py-4">
-        {/* Main card container for the form */}
         <div className="bg-white shadow rounded-4 p-5" style={{ minHeight: '700px', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
           <h1 className="text-center mb-5" style={{marginBottom: "800"}}>Tendedero Virtual de Denuncia</h1>
-            {/* Form submission handler */}
             <form onSubmit={handleSubmit(onLoggin)}>
-                {/* Form title and subtitle */}
                 <h2 className="mt-5 mb-5 text-center">Iniciar Sesión</h2>
-                {/* Username input field */}
                 <div className="mb-3 text-center" style={{ width: "350px", maxWidth: '350px', margin: '0 auto' }}>
                   <label htmlFor="username" className="form-label text-start d-block">Usuario</label>
                     <input
@@ -72,8 +67,7 @@ function LogginForm() {
                         title="Ingrese su nombre de usuario"
                     />
                     {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
-                </div>
-                {/* Password input field */}  
+                </div> 
                 <div className="mb-3 text-center" style={{ width: "350px", maxWidth: '350px', margin: '0 auto' }}>
                   <label htmlFor="password" className="form-label text-start d-block">Contraseña</label>
                     <input

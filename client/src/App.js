@@ -17,7 +17,7 @@ function App() {
           <Route path="terms-of-use" element={<TermsPage/>}></Route>
         </Route>
         <Route path="/admin">
-          <Route index element={<LogginPage/>}></Route>
+          <Route index element={<AdminMainPage/>}></Route>
         </Route>
       </Routes>
     </BrowserRouter>

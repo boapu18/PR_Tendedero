@@ -40,5 +40,6 @@ $router -> patch("/report/:id", [$reportRouter, 'patchReport']);
 $router -> post("/auth/login", [$authRouter, 'login']);
 $router -> post("/auth/logout", [$authRouter, 'logout']);
 $router -> get("/auth/logged-in", [$authRouter, 'isLoggedIn']);
+$router -> get("/auth/download-csv", [$authRouter, 'downloadCSV']);
 
 $router -> dispatch();

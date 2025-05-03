@@ -37,4 +37,13 @@ class AuthRouter {
             respondWithSuccess(["authenticated" => false], "Cierre de sesión exitoso", 401);
         }
     }
+
+    public function downloadCSV() {
+        $this -> authController -> downloadCSV();
+        if ($this -> authController -> downloadCSV()) {
+            respondWithSuccess(["authenticated" => true], "Descargando CSV...", 200);
+        } else {
+            respondWithError(["authenticated" => false], "No se pudo descargar el archivo", 401);
+        }
+    }
 }
