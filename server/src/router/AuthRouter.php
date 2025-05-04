@@ -32,9 +32,9 @@ class AuthRouter {
     public function isLoggedIn() {
 
         if ($this -> authController -> isLoggedIn()) {
-            respondWithSuccess(["authenticated" => true], "Cierre de sesión exitoso", 200);
+            respondWithSuccess(["authenticated" => true], "El usuario está autenticado", 200);
         } else {
-            respondWithSuccess(["authenticated" => false], "Cierre de sesión exitoso", 401);
+            respondWithSuccess(["authenticated" => false], "El usuario no está autenticado", 401);
         }
     }
 

@@ -31,9 +31,6 @@ function ReportForm() {
             delete data.canton;
             delete data.age;
         }
-
-
-        console.log("Datos enviados:", data);
         
         try {
 

@@ -1,52 +1,52 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Tooltip } from "bootstrap";
 import Swal from 'sweetalert2';
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Tooltip } from "bootstrap";
 
 function LogginForm() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+  
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const navigate = useNavigate();
+  const onLoggin = async (data) => {
 
-    const onLoggin = async (data) => {
-      console.log(data);
-      try {
+    try {
 
-        const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, data);
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, 
+        data, {
+        withCredentials: true
+      });
 
-        if (response) {
-          console.log(data);
-          alert("Inicio de sesión exitoso");
-          } else {
-            throw new Error();
-          }
-
-      } catch (error) {
-
-        const errorMessage = error.response?.data?.message ? error.response.data.message : "Contraseña o usuarios incorrectos";
-
-        Swal.fire({
-          title: 'Error',
-          text: errorMessage,
-          background: '#ffe9e5',
-          color: '#121212',
-          confirmButtonText: 'Aceptar',
-          confirmButtonColor: '#dd2404',
-          icon: 'error',
-          customClass: {
-          popup: 'custom-swal-popup',
-          title: 'custom-swal-title',
-          confirmButton: 'custom-swal-confirm'
-          }
-        });
+      if (response) {
+        window.location.reload();
+      } else {
+        throw new Error();
       }
+
+    } catch (error) {
+
+      const errorMessage = error.response?.data?.message ? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
+
+      Swal.fire({
+        title: 'Error',
+        text: errorMessage,
+        background: '#ffe9e5',
+        color: '#121212',
+        confirmButtonText: 'Aceptar',
+        confirmButtonColor: '#dd2404',
+        icon: 'error',
+        customClass: {
+        popup: 'custom-swal-popup',
+        title: 'custom-swal-title',
+        confirmButton: 'custom-swal-confirm'
+        }
+      });
     }
+  }
 
   useEffect(() => {
-          const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-          tooltips.forEach((tooltip) => new Tooltip(tooltip));
+    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+    tooltips.forEach((tooltip) => new Tooltip(tooltip));
   }, []);
 
   return (
