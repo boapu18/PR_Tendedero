@@ -26,7 +26,9 @@ function AdminProtectedRoute({ children }){
 
     if (loading){
         return (
-            <div>Cargando...</div>
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <p>Cargando...</p>
+            </div>
         );
     }
 

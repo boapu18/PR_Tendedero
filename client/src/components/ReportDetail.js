@@ -10,6 +10,7 @@ const states = {
 };
 
 function DetailReport() {
+
     const { id } = useParams(); 
     const [reportData, setReportData] = useState(null);
     
@@ -17,7 +18,6 @@ function DetailReport() {
       axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`)
         .then(response => {
           setReportData(response.data.data);
-          //console.log("Detalle de la denuncia", response.data.data);
         })
         .catch(error => {
           console.error("Error cargando la denuncia:", error);
@@ -63,11 +63,9 @@ function DetailReport() {
           });
       };
 
-
     const handleBack = () => {
         window.history.back();
     };
-
 
     if (!reportData) {
         return <div className="container py-5"><p>Cargando denuncia...</p></div>;
@@ -136,7 +134,7 @@ function DetailReport() {
                 </div>
 
                 {/* State*/}
-                <div className="d-flex flex-column align-items-end" style={{ marginBottom: "6rem" }}>
+                <div className="d-flex flex-column align-items-end mb-5">
                     <div style={{ width: "200px" }}>
                         <label className="form-label">Estado</label>
                         <select
