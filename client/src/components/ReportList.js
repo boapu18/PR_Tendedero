@@ -18,7 +18,7 @@ function ReportList() {
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
-                params: {page: page, order: 'rand'} 
+                params: {page: page, order: 'rand', state: 1} 
             });
 
             if (response.data.data){

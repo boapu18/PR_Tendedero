@@ -53,9 +53,15 @@ class ReportController {
 
         $conn = $this -> database -> connect();
 
-        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ? OR ? IS NULL) ORDER BY creationDate DESC LIMIT ? OFFSET ? ";
-        $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("iiii", $state, $state, $limit, $offset);
+        if (is_null($state)){
+            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param("ii", $limit, $offset);
+        } else {
+            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ?) ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param("iii", $state, $limit, $offset);
+        }
         
         $stmt -> execute();
         $result = $stmt -> get_result();
@@ -92,12 +98,12 @@ class ReportController {
     /**
      * Obtiene un batch de denuncias ordenadas en orden aleatorio, por medio de una semilla.
      * La semilla se genera a partir de la IP del usuario y la fecha y hora actual.
-     * No filtra por estado.
      * 
      * @param int $page El número de página del batch.
+     * @param int $state El estado para filtrar las denuncias.
      * @return Report[] Un array de objetos Report, donde cada objeto es un reporte.
      */
-    public function getReportsInRandomOrder($page) {
+    public function getReportsInRandomOrder($page, $state) {
 
         $limit = 14;
         $offset = ($page - 1) * $limit;
@@ -112,10 +118,16 @@ class ReportController {
     
         $ip = str_replace(".", "", $ip);
         $seed = ($ip + $minuteGroup + $hour + $day + $month); 
-    
-        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
-        $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("iii", $seed, $limit, $offset);
+        
+        if (is_null($state)){
+            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param("iii", $seed, $limit, $offset);
+        } else {
+            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ?) ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $stmt = $conn -> prepare($query);
+            $stmt -> bind_param("iiii", $state, $seed, $limit, $offset);
+        }
     
         $stmt -> execute();
         $result = $stmt -> get_result();

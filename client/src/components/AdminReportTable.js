@@ -24,6 +24,8 @@ function AdminReportTable(){
                 params: {page: page, order: 'crono', state: reportState || null} 
             });
 
+            console.log(response.data.data)
+
             if (response.data.data){
                 const newReports = response.data.data.reports;
                 const newTotalPages = response.data.data.totalPages;

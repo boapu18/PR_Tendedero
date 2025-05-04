@@ -34,9 +34,9 @@ class ReportRouter{
             $reports = null;
     
             if ($order == "crono"){
-                $reports = $this -> reportController -> getReportsInChronologicalOrder((int)$page, (int)$state);
+                $reports = $this -> reportController -> getReportsInChronologicalOrder((int)$page, $state);
             } else {
-                $reports = $this -> reportController -> getReportsInRandomOrder((int)$page);
+                $reports = $this -> reportController -> getReportsInRandomOrder((int)$page, $state);
             }
     
             $totalCount = $this -> reportController -> getReportsCount((int)$state);
