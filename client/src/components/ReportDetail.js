@@ -32,10 +32,10 @@ function DetailReport() {
             Swal.fire({
               title: 'Éxito',
               text: 'Estado actualizado correctamente',
-              background: '#e6f4ea',
+              background: '#e6ffe6',
               color: '#121212',
               confirmButtonText: 'Aceptar',
-              confirmButtonColor: '#198754', 
+              confirmButtonColor: '#0FCB06', 
               icon: 'success',
               customClass: {
                 popup: 'custom-swal-popup',

@@ -97,17 +97,17 @@ class ReportRouter{
         }
     }
 
-    public function getReport(){
+    public function getReport($params){
 
-        $uri = $_SERVER['REQUEST_URI'];
-        preg_match("/\/report\/(\d+)/", $uri, $matches);
-        $id = $matches[1] ?? null;
+        $id = $params['id'];
 
         if(!$id || !is_numeric($id)){
-            respondWithError("ID de reporte no válido", 400);
+            respondWithError("Id de reporte no válido", 400);
             return;
         }
+
         try{
+
             $report = $this -> reportController -> getReportById((int)$id);
 
             if($report){
@@ -121,13 +121,9 @@ class ReportRouter{
         }
     }
 
-    public function patchReport() {
-        // Get the requested URLI
-        $uri = $_SERVER['REQUEST_URI'];
+    public function patchReport($params) {
 
-        // Extracts the ID number from the URI using a regular expression 
-        preg_match("/\/report\/(\d+)/", $uri, $matches);
-        $id = $matches[1] ?? null;
+        $id = $params['id'];
     
         // Validates if the id is valid
         if (!$id || !is_numeric($id)) {
@@ -135,7 +131,7 @@ class ReportRouter{
             return;
         }
     
-        // Decodesthe request body 
+        // Decodes the request body 
         $data = json_decode(file_get_contents("php://input"), true);
         $newState = $data["state"] ?? null;
     
@@ -147,7 +143,7 @@ class ReportRouter{
     
         try {
             // Calls the controller to update the state in the database 
-            $success = $this->reportController->updateReportState((int)$id, (int)$newState);
+            $success = $this -> reportController -> updateReportState((int)$id, (int)$newState);
     
             // If the update was successful, respond with success
             if ($success) {
@@ -156,12 +152,11 @@ class ReportRouter{
             // If there was a problem, respond with an internal error
             } else {
                 respondWithError("No se pudo actualizar el estado", 500);
-
             }
+            
         } catch (Exception $e) {
-            error_log($e->getMessage());
+            error_log($e -> getMessage());
             respondWithError("Se produjo un error inesperado", 500);
-
         }
     }
 }
