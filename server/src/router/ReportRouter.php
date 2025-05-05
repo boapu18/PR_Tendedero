@@ -27,6 +27,8 @@ class ReportRouter{
         if (!is_null($state) && ((int)$state != 0 && (int)$state != 1 && (int)$state != 2)) {
             respondWithError("El estado no es válido", 400);
         }
+
+        $this -> routeProtecter -> checkGetReportsPermissions((int)$state);
     
         try {
     

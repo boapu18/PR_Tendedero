@@ -15,6 +15,17 @@ class RouteProtecter {
         }
     }
 
+    public function checkGetReportsPermissions($state){
+
+        if ($this -> authController -> isLoggedIn()){
+            return;
+        }
+
+        if ($state !== 1){
+            respondWithError("Usuario no autenticado", 401);
+        }
+    }
+
     public function filterReportInformation($reports){
 
         if (!$this -> authController -> isLoggedIn()){
