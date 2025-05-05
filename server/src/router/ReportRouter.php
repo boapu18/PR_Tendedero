@@ -159,4 +159,13 @@ class ReportRouter{
             respondWithError("Se produjo un error inesperado", 500);
         }
     }
+
+    public function downloadCSV() {
+        if ($this -> reportController -> downloadCSV()) {
+            respondWithSuccess(null, "Descargando CSV...", 200);
+        } else {
+            respondWithError(null, "No se pudo descargar el archivo", 401);
+        }
+    }
+    
 }

@@ -248,4 +248,35 @@ class ReportController {
 
         return $success;
     }
+
+    /**
+     * Descarga un archivo CSV con todos los reportes.
+     */
+    public function downloadCSV() {
+        $conn = $this->database->connect();
+    
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="Reportes.csv"');
+    
+        $output = fopen('php://output', 'w');
+        fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); 
+    
+        $headers = ['Contenido', 'Provincia', 'Canton', 'Rango de edad', 'Email'];
+        fputcsv($output, $headers, ';');
+    
+        $result = $conn->query("SELECT content, province, canton, ageBracket, email FROM Report");
+    
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $cleanedRow = array_map(function($value) {
+                    return str_replace(';', ',', $value);
+                }, $row);
+                fputcsv($output, $cleanedRow, ';');
+            }
+        }
+    
+        $conn->close();
+        fclose($output);
+        exit;
+    }
 }

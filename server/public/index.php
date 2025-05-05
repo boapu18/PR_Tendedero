@@ -37,10 +37,10 @@ $router -> get("/report", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);
 $router -> post("/report", [$reportRouter, 'postReport']);
 $router -> patch("/report/:id", [$reportRouter, 'patchReport']);
+$router -> get("/reports/download-csv", [$reportRouter, 'downloadCSV']);
 
 $router -> post("/auth/login", [$authRouter, 'login']);
 $router -> post("/auth/logout", [$authRouter, 'logout']);
 $router -> get("/auth/logged-in", [$authRouter, 'isLoggedIn']);
-$router -> get("/auth/download-csv", [$authRouter, 'downloadCSV']);
 
 $router -> dispatch();

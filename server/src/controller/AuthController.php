@@ -43,26 +43,5 @@ class AuthController {
 
         session_destroy();
     }
-
-    public function downloadCSV() {
-        $conn = $this -> database -> connect();
-        header('Content-Type: text/csv');
-        header('Content-Disposition: attachment;filename="Reportes.csv"');
-
-        $output = fopen('php://output', 'w');
-
-        $result = $conn->query("SELECT * FROM Report");
-
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            fputcsv($output, array_keys($row));
-            fputcsv($output, $row);
-            while ($row = $result->fetch_assoc()) {
-                fputcsv($output, $row);
-            }
-        }
-
-        fclose($output);
-        $conn->close();
-    }
+    
 }
