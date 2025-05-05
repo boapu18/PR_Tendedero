@@ -40,7 +40,7 @@ class ReportRouter{
                 $reports = $this -> reportController -> getReportsInRandomOrder((int)$page, $state);
             }
     
-            $totalCount = $this -> reportController -> getReportsCount((int)$state);
+            $totalCount = $this -> reportController -> getReportsCount($state);
             $totalPages = ceil($totalCount / 14);
             $filteredReports = $this -> routeProtecter -> filterReportInformation($reports);
     

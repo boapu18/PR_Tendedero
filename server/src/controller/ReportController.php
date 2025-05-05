@@ -12,13 +12,13 @@ class ReportController {
 
     /**
      * Obtiene la cantidad total de denuncias registradas con el estado dado.
-     * @param int $state El estado de los reportes que se quieren contar. Si es null, se cuentan todos.
+     * @param int|null $state El estado de los reportes que se quieren contar. Si es null, se cuentan todos.
      * @return int La cantidad total de denuncias registradas con el estado dato.
      */
     public function getReportsCount($state){
         $conn = $this -> database -> connect();
 
-        if ($state){
+        if (!is_null($state)){
             $query = "SELECT COUNT(*) FROM Report WHERE state = ?;";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("i", $state);
@@ -43,7 +43,7 @@ class ReportController {
      * Obtiene un batch de denuncias ordenadas en orden cronológico.
      * 
      * @param int $page El número de página del batch.
-     * @param int $state El estado para filtrar las denuncias.
+     * @param int|null $state El estado para filtrar las denuncias.
      * @return Report[] Un array de objetos Report, donde cada objeto es un reporte.
      */
     public function getReportsInChronologicalOrder($page, $state){
@@ -100,7 +100,7 @@ class ReportController {
      * La semilla se genera a partir de la IP del usuario y la fecha y hora actual.
      * 
      * @param int $page El número de página del batch.
-     * @param int $state El estado para filtrar las denuncias.
+     * @param int|null $state El estado para filtrar las denuncias.
      * @return Report[] Un array de objetos Report, donde cada objeto es un reporte.
      */
     public function getReportsInRandomOrder($page, $state) {
