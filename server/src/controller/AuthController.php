@@ -15,6 +15,13 @@ class AuthController {
         $this -> password = getenv('APP_ADMIN_PASSWORD');
     }
     
+    /**
+     * Inicia sesión con el usuario y contraseña proporcionados.
+     * 
+     * @param string $username El nombre de usuario.
+     * @param string $password La contraseña.
+     * @return bool Retorna true si el usuario y contraseña son correctos, y false en el caso contrario.
+     */
     public function login($username, $password) {
         
         if ($username === $this -> username && $password === $this -> password) {
@@ -26,10 +33,18 @@ class AuthController {
         return false;
     }
 
+    /**
+     * Verifica si el usuario está autenticado.
+     * 
+     * @return bool Retorna true si el usuario está autenticado, y false en el caso contrario.
+     */
     public function isLoggedIn() {
         return !empty($_SESSION['logged_in']);
     }
 
+    /**
+     * Cierra la sesión del usuario.
+     */
     public function logout() {
         $_SESSION = [];
 
