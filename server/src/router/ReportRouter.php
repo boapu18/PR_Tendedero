@@ -125,31 +125,25 @@ class ReportRouter{
 
         $id = $params['id'];
     
-        // Validates if the id is valid
         if (!$id || !is_numeric($id)) {
             respondWithError("ID de denuncia no válido", 400);
             return;
         }
     
-        // Decodes the request body 
         $data = json_decode(file_get_contents("php://input"), true);
         $newState = $data["state"] ?? null;
     
-        // Verify that the status is numeric and within the allowed values. 
         if (!is_numeric($newState) || !in_array((int)$newState, [0, 1, 2])) {
             respondWithError("Estado no válido", 400);
             return;
         }
     
         try {
-            // Calls the controller to update the state in the database 
+
             $success = $this -> reportController -> updateReportState((int)$id, (int)$newState);
     
-            // If the update was successful, respond with success
             if ($success) {
                 respondWithSuccess(null, "Estado actualizado correctamente", 200);
-
-            // If there was a problem, respond with an internal error
             } else {
                 respondWithError("No se pudo actualizar el estado", 500);
             }
@@ -161,10 +155,11 @@ class ReportRouter{
     }
 
     public function downloadCSV() {
-        if ($this -> reportController -> downloadCSV()) {
-            respondWithSuccess(null, "Descargando CSV...", 200);
-        } else {
-            respondWithError(null, "No se pudo descargar el archivo", 401);
+        try {
+            $this -> reportController -> downloadCSV();
+        } catch (Exception $e) {
+            error_log($e -> getMessage());
+            respondWithError("Se produjo un error inesperado", 500);
         }
     }
     
