@@ -1,14 +1,13 @@
 <?php
 
-require_once  __DIR__ . "/../model/Report.php";
-require_once  __DIR__ . "/../controller/ReportController.php";
-
 class ReportRouter{
 
     private $reportController;
+    private $routeProtecter;
 
-    public function __construct(){
-        $this -> reportController = new ReportController();
+    public function __construct($reportController, $routeProtecter){
+        $this -> reportController = $reportController;
+        $this -> routeProtecter = $routeProtecter;
     }
 
     public function getReports(){
@@ -41,8 +40,9 @@ class ReportRouter{
     
             $totalCount = $this -> reportController -> getReportsCount((int)$state);
             $totalPages = ceil($totalCount / 14);
+            $filteredReports = $this -> routeProtecter -> filterReportInformation($reports);
     
-            $data = ["reports" => $reports, "totalCount" => $totalCount, "page" => (int)$page, "totalPages" => $totalPages];
+            $data = ["reports" => $filteredReports, "totalCount" => $totalCount, "page" => (int)$page, "totalPages" => $totalPages];
     
             respondWithSuccess($data, "Denuncias obtenidas exitosamente", 200);
     
@@ -99,6 +99,8 @@ class ReportRouter{
 
     public function getReport($params){
 
+        $this -> routeProtecter -> checkAuth();
+
         $id = $params['id'];
 
         if(!$id || !is_numeric($id)){
@@ -122,6 +124,8 @@ class ReportRouter{
     }
 
     public function patchReport($params) {
+
+        $this -> routeProtecter -> checkAuth();
 
         $id = $params['id'];
     
@@ -155,6 +159,9 @@ class ReportRouter{
     }
 
     public function downloadCSV() {
+
+        $this -> routeProtecter -> checkAuth();
+
         try {
             $this -> reportController -> downloadCSV();
         } catch (Exception $e) {

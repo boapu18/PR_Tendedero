@@ -1,13 +1,11 @@
 <?php
 
-require_once  __DIR__ . "/../controller/AuthController.php";
-
 class AuthRouter {
 
     private $authController;
 
-    public function __construct(){
-        $this -> authController = new AuthController();
+    public function __construct($authController){
+        $this -> authController = $authController;
     }
     
     public function login() {
@@ -37,5 +35,5 @@ class AuthRouter {
             respondWithSuccess(["authenticated" => false], "El usuario no está autenticado", 401);
         }
     }
-    
+
 }

@@ -1,10 +1,22 @@
 <?php
 
-require_once  __DIR__ . "/../src/utils.php";
-require_once  __DIR__ . "/../src/loadEnv.php";
+require_once  __DIR__ . "/../src/utils/utils.php";
+require_once  __DIR__ . "/../src/utils/loadEnv.php";
+
+require_once  __DIR__ . "/../src/model/Report.php";
+
+require_once  __DIR__ . "/../src/database/Database.php";
+
+require_once  __DIR__ . "/../src/utils/RouteProtecter.php";
+
+require_once  __DIR__ . "/../src/controller/AuthController.php";
+require_once  __DIR__ . "/../src/controller/ReportController.php";
+
 require_once  __DIR__ . "/../src/router/ReportRouter.php";
 require_once  __DIR__ . "/../src/router/AuthRouter.php";
+
 require_once  __DIR__ . "/../src/router/Router.php";
+
 
 // -------------------------------------------------------------------------------------------------------------------------
 // Configuraciones de CORS para desarrollo, en producción no son necesarias
@@ -30,8 +42,12 @@ if ($is_dev) {
 // -------------------------------------------------------------------------------------------------------------------------
 
 $router = new Router();
-$reportRouter = new ReportRouter();
-$authRouter = new AuthRouter();
+$database = new Database();
+$authController = new AuthController();
+$routeProtecter = new RouteProtecter($authController);
+$reportController = new ReportController($database);
+$reportRouter = new ReportRouter($reportController, $routeProtecter);
+$authRouter = new AuthRouter($authController);
 
 $router -> get("/report", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);

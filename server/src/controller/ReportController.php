@@ -6,8 +6,8 @@ class ReportController {
 
     private $database;
 
-    public function __construct(){
-        $this -> database = new Database();
+    public function __construct($database){
+        $this -> database = $database;
     }
 
     /**

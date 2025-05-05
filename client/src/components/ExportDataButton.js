@@ -1,7 +1,19 @@
 import React from "react";
+import axios from "axios";
 
 const handleExportDataButtonClick = async () => {
-  window.open(`${process.env.REACT_APP_API_URL}/reports/download-csv`, '_blank');
+  const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports/download-csv`, {
+    responseType: 'blob',
+    withCredentials: true
+  });
+
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'Reportes.csv');
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 };
 
 function ExportDataButton() {

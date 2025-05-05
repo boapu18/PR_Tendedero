@@ -15,7 +15,7 @@ function DetailReport() {
     const [reportData, setReportData] = useState(null);
     
     useEffect(() => {
-      axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`)
+      axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`, { withCredentials: true })
         .then(response => {
           setReportData(response.data.data);
         })
@@ -27,7 +27,7 @@ function DetailReport() {
     const handleChangeStatus = (e) => {
         const newState = parseInt(e.target.value);
       
-        axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, { state: newState })
+        axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, { state: newState }, { withCredentials: true })
           .then(() => {
             Swal.fire({
               title: 'Éxito',

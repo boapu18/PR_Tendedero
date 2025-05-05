@@ -21,7 +21,8 @@ function AdminReportTable(){
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
-                params: {page: page, order: 'crono', state: reportState || null} 
+                params: {page: page, order: 'crono', state: reportState || null},
+                withCredentials: true
             });
 
             if (response.data.data){
