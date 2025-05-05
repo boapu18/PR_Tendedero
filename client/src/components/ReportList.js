@@ -17,7 +17,7 @@ function ReportList() {
         setLoadingReports(true);
 
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API_URL}/report`, {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports`, {
                 params: {page: page, order: 'rand', state: 1} 
             });
 

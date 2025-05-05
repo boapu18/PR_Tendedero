@@ -49,7 +49,7 @@ $reportController = new ReportController($database);
 $reportRouter = new ReportRouter($reportController, $routeProtecter);
 $authRouter = new AuthRouter($authController);
 
-$router -> get("/report", [$reportRouter, 'getReports']);
+$router -> get("/reports", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);
 $router -> post("/report", [$reportRouter, 'postReport']);
 $router -> patch("/report/:id", [$reportRouter, 'patchReport']);
