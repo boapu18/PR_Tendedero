@@ -1,8 +1,11 @@
 import React from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
 
 function LogOutButton(){
+
+    const navigate = useNavigate();
 
     const handleLogOutButtonClick = async () => {
         try {
@@ -12,6 +15,7 @@ function LogOutButton(){
             });
 
             if (response){
+                navigate("/admin");
                 window.location.reload();
             } else {
                 throw new Error();
