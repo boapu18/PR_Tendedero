@@ -13,17 +13,26 @@ function DetailReport() {
 
     const { id } = useParams(); 
     const [reportData, setReportData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
     
     useEffect(() => {
-      axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`, { withCredentials: true })
-        .then(response => {
-          setReportData(response.data.data);
-        })
-        .catch(error => {
-          console.error("Error cargando la denuncia:", error);
-        });
-    }, [id]);
+        setLoading(true);
+        setError(false);
+    
+        axios.get(`${process.env.REACT_APP_API_URL}/report/${id}`, { withCredentials: true })
+          .then(response => {
+            setReportData(response.data.data);
+            setLoading(false);
+          })
+          .catch(err => {
+            console.error("Error cargando la denuncia:", err);
+            setError(true);
+            setLoading(false);
+          });
+      }, [id]);
 
+    
     const handleChangeStatus = (e) => {
         const newState = parseInt(e.target.value);
       
@@ -67,96 +76,106 @@ function DetailReport() {
         window.history.back();
     };
 
-    if (!reportData) {
-        return <div className="container py-5"><p>Cargando denuncia...</p></div>;
-    }
 
     return (
         <div className="container py-4">
-            <div className="bg-white shadow rounded-4 p-5">
-                <h2 className="mb-4">Detalle de Denuncia</h2>
-
-                {/* Description */}
-                <div className="mb-4">
-                    <label className="form-label">Descripción</label>
-                    <textarea
-                        className="form-control"
-                        rows={5}
-                        value={reportData.content}
-                        readOnly
-                    />
-                </div>
-
-                {/* Email */}
-                <div className="mb-4">
-                    <label className="form-label">Correo electrónico</label>
-                    <input
-                        type="email"
-                        className="form-control w-50"
-                        value={reportData.email || ""}
-                        readOnly
-                    />
-                </div>
-
-                {/* Province */}
-                <div className="row mb-4">
-                    <div className="col-auto me-4 mb-3 mb-lg-0">
-                        <label className="form-label">Provincia</label>
-                        <input
-                            type="text"
-                            className="form-control fixed-width-select"
-                            value={reportData.province || ""}
-                            readOnly
-                        />
-                    </div>
-
-                {/* Canton */}
-                    <div className="col-auto me-4 mb-3 mb-lg-0">
-                        <label className="form-label">Cantón</label>
-                        <input
-                            type="text"
-                            className="form-control fixed-width-select"
-                            value={reportData.canton || ""}
-                            readOnly
-                        />
-                    </div>
-
-                    {/* Age */}
-                    <div className="col-auto me-4 mb-3 mb-lg-0">
-                        <label className="form-label">Rango de edad</label>
-                        <input
-                            type="text"
-                            className="form-control fixed-width-select"
-                            value={reportData.ageBracket || ""}
-                            readOnly
-                        />
-                    </div>
-                </div>
-
-                {/* State*/}
-                <div className="d-flex flex-column align-items-end mb-5">
-                    <div style={{ width: "200px" }}>
-                        <label className="form-label">Estado</label>
-                        <select
-                            className="form-select"
-                            value={reportData.state}
-                            onChange={handleChangeStatus}
-                        >
-                            {Object.entries(states).map(([key, value]) => (
-                                <option key={key} value={key}>
-                                    {value}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                </div>
-
-                {/* Button*/}
-                <div className="d-flex justify-content-end">
-                    <button className="cancel-button" onClick={handleBack}>
-                        Regresar
-                    </button>
-                </div>
+            <div className="bg-white shadow rounded-4 p-5 text-center">
+                {/* Loader */}
+                {loading && <p className="my-5">Cargando denuncia...</p>}
+    
+                {/* Error */}
+                {!loading && error && (
+                    <p className="text-danger my-5">Ocurrió un error al cargar la denuncia.</p>
+                )}
+    
+                {/* Main content */}
+                {!loading && !error && reportData && (
+                    <>
+                        <h2 className="mb-4 text-start">Detalle de Denuncia</h2>
+    
+                        {/* Description */}
+                        <div className="mb-4 text-start">
+                            <label className="form-label">Descripción</label>
+                            <textarea
+                                className="form-control"
+                                rows={5}
+                                value={reportData.content}
+                                readOnly
+                            />
+                        </div>
+    
+                        {/* Email */}
+                        <div className="mb-4 text-start">
+                            <label className="form-label">Correo electrónico</label>
+                            <input
+                                type="email"
+                                className="form-control w-50"
+                                value={reportData.email || ""}
+                                readOnly
+                            />
+                        </div>
+    
+                        {/* Province */}
+                        <div className="row mb-4 text-start">
+                            <div className="col-auto me-4 mb-3 mb-lg-0">
+                                <label className="form-label">Provincia</label>
+                                <input
+                                    type="text"
+                                    className="form-control fixed-width-select"
+                                    value={reportData.province || ""}
+                                    readOnly
+                                />
+                            </div>
+    
+                            {/* Canton */}
+                            <div className="col-auto me-4 mb-3 mb-lg-0">
+                                <label className="form-label">Cantón</label>
+                                <input
+                                    type="text"
+                                    className="form-control fixed-width-select"
+                                    value={reportData.canton || ""}
+                                    readOnly
+                                />
+                            </div>
+    
+                            {/* Age */}
+                            <div className="col-auto me-4 mb-3 mb-lg-0">
+                                <label className="form-label">Rango de edad</label>
+                                <input
+                                    type="text"
+                                    className="form-control fixed-width-select"
+                                    value={reportData.ageBracket || ""}
+                                    readOnly
+                                />
+                            </div>
+                        </div>
+    
+                        {/* State*/}
+                        <div className="d-flex flex-column align-items-end mb-5">
+                            <div style={{ width: "200px" }}>
+                                <label className="form-label">Estado</label>
+                                <select
+                                    className="form-select"
+                                    value={reportData.state}
+                                    onChange={handleChangeStatus}
+                                >
+                                    {Object.entries(states).map(([key, value]) => (
+                                        <option key={key} value={key}>
+                                            {value}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+    
+                        {/* Button*/}
+                        <div className="d-flex justify-content-end">
+                            <button className="cancel-button" onClick={handleBack}>
+                                Regresar
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
         </div>
     );
