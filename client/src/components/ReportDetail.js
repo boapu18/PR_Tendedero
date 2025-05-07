@@ -76,6 +76,10 @@ function DetailReport() {
         window.history.back();
     };
 
+    const handleBackError = () => {
+        window.history.back();
+    }
+
 
     return (
         <div className="container py-4">
@@ -85,8 +89,14 @@ function DetailReport() {
     
                 {/* Error */}
                 {!loading && error && (
-                    <p className="text-danger my-5">Ocurrió un error al cargar la denuncia.</p>
+                    <div>
+                        <p className="text-danger my-5">Ocurrió un error al cargar la denuncia.</p>
+                        <button className="cancel-button" onClick={handleBackError}>
+                            Regresar
+                        </button>
+                    </div>
                 )}
+
     
                 {/* Main content */}
                 {!loading && !error && reportData && (
