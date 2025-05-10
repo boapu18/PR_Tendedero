@@ -262,18 +262,32 @@ class ReportController {
         $output = fopen('php://output', 'w');
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); 
     
-        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico'];
+        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico', 'Estado'];
         fputcsv($output, $headers, ';');
     
-        $result = $conn -> query("SELECT content, province, canton, ageBracket, email FROM Report");
+        $result = $conn -> query("SELECT content, province, canton, ageBracket, email, state FROM Report ORDER BY creationDate DESC");
+
+        $stateMap = [
+            0 => 'En espera',
+            1 => 'Aceptada',
+            2 => 'Archivada'
+        ];
     
         if ($result -> num_rows > 0) {
 
             while ($row = $result -> fetch_assoc()) {
+                
+                $row['content'] = str_replace(';', ',', $row['content']);
+                $stateText = $stateMap[$row['state']];
 
-                $cleanedRow = array_map(function($value) {
-                    return str_replace(';', ',', $value);
-                }, $row);
+                $cleanedRow = [
+                    $row['content'],
+                    $row['province'],
+                    $row['canton'],
+                    $row['ageBracket'],
+                    $row['email'],
+                    $stateText
+                ];
 
                 fputcsv($output, $cleanedRow, ';');
             }
