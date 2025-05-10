@@ -51,7 +51,7 @@ function LogginForm() {
 
   return (
     <div className="container py-4">
-        <div className="bg-white shadow rounded-4 p-5" style={{ minHeight: '700px', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
+        <div className="bg-white shadow rounded-4 p-5 my-2" style={{ minHeight: 'calc(100vh - 4rem)', display: "flex", flexDirection: "column", justifyContent: "start", alignItems: "center" }}>
           <h1 className="text-center mb-5" style={{marginBottom: "800"}}>Tendedero Virtual de Denuncia</h1>
             <form onSubmit={handleSubmit(onLoggin)}>
                 <h2 className="mt-5 mb-5 text-center">Iniciar Sesión</h2>
