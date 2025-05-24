@@ -1,6 +1,6 @@
 import React from "react";
-import ReportForm from "../components/ReportForm";
-import PurpleBackground from "../components/PurpleBackground";
+import ReportForm from "../components/report/ReportForm";
+import PurpleBackground from "../components/utils/PurpleBackground";
 
 function FormPage() {
   return (

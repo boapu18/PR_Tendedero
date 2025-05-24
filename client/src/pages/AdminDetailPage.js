@@ -1,6 +1,6 @@
 import React from "react";
-import ReportDetail from "../components/ReportDetail";
-import PurpleBackground from "../components/PurpleBackground";
+import ReportDetail from "../components/report/ReportDetail";
+import PurpleBackground from "../components/utils/PurpleBackground";
 
 function AdminDetailPage() {
   return (

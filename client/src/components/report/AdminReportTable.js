@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import TablePagination from "./TablePagination";
+import TablePagination from "../utils/TablePagination";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import ExportDataButton from "./ExportDataButton";

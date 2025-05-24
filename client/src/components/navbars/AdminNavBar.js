@@ -1,5 +1,5 @@
 import React from "react";
-import LogOutButton from "./LogOutButton";
+import LogOutButton from "../auth/LogOutButton";
 
 function AdminNavBar(){
 

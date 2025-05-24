@@ -1,6 +1,6 @@
 import React from 'react';
-import PurpleBackground from "../components/PurpleBackground";
-import Terms from '../components/Terms';
+import PurpleBackground from "../components/utils/PurpleBackground";
+import Terms from '../components/utils/Terms';
 
 function TermsPage(){
 

@@ -1,6 +1,6 @@
 import React from "react";
-import PurpleBackground from "../components/PurpleBackground";
-import LogginForm from "../components/LogginForm";
+import PurpleBackground from "../components/utils/PurpleBackground";
+import LogginForm from "../components/auth/LogginForm";
 
 function LogginPage() {
   return (

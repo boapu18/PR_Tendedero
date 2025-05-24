@@ -1,7 +1,7 @@
 import React from "react";
-import NavBar from "../components/ClientNavBar";
-import ReportList from "../components/ReportList";
-import OrganizationData from "../components/OrganizationData";
+import NavBar from "../components/navbars/ClientNavBar";
+import ReportList from "../components/report/ReportList";
+import OrganizationData from "../components/utils/OrganizationData";
 
 function ReportVisualizer(){
     

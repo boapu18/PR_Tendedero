@@ -1,6 +1,6 @@
 import React from "react";
-import AdminReportTable from "../components/AdminReportTable";
-import AdminNavBar from "../components/AdminNavBar";
+import AdminReportTable from "../components/report/AdminReportTable";
+import AdminNavBar from "../components/navbars/AdminNavBar";
 
 function AdminMainPage(){
     

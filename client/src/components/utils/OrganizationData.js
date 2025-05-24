@@ -1,6 +1,6 @@
 import React from "react";
-import UNEDLogo from "../assets/uned-logo.png";
-import AMECLogo from "../assets/amec-logo.png";
+import UNEDLogo from "../../assets/uned-logo.png";
+import AMECLogo from "../../assets/amec-logo.png";
 
 function OrganizationData(){
 

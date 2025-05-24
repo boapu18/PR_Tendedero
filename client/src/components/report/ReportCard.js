@@ -1,5 +1,5 @@
 import React from "react";
-import clip from "../assets/clip.png";
+import clip from "../../assets/clip.png";
 
 function ReportCard({ report }){
     
