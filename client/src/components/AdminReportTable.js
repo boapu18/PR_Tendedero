@@ -69,8 +69,8 @@ function AdminReportTable(){
     return (
         <div className="my-5">
 
-            <div className="d-flex justify-content-between align-items-center mb-4">
-                <h2>Denuncias registradas</h2>
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                <h2 className="mb-4 mb-md-0">Denuncias registradas</h2>
                 <ExportDataButton/>
             </div>
 
@@ -93,7 +93,7 @@ function AdminReportTable(){
                                 <th scope="col" className="align-middle">Cantón</th>
                                 <th scope="col" className="align-middle">
                                     Estado                 
-                                    <select className="form-select" style={{maxWidth: "150px"}} value={reportState} onChange={onChangeReportState}>
+                                    <select className="form-select" style={{width: "130px"}} value={reportState} onChange={onChangeReportState}>
                                         <option value="">Todos</option>
                                         {Object.entries(states).map(([key, value]) => (
                                             <option key={key} value={key}>{value}</option>
@@ -107,8 +107,8 @@ function AdminReportTable(){
                             {reports.map((report) => (
                                 <tr key={report.id}>
                                     <td className="text-truncate content-cell" style={{maxWidth: "200px"}}>{report.content}</td>
-                                    <td>{report.email}</td>
-                                    <td>{report.ageBracket}</td>
+                                    <td className="text-truncate content-cell" style={{maxWidth: "200px"}}>{report.email}</td>
+                                    <td >{report.ageBracket}</td>
                                     <td>{report.province}</td>
                                     <td>{report.canton}</td>
                                     <td>{states[report.state]}</td>

@@ -1,11 +1,40 @@
+  
+  html {
+    font-size: 16px;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+  
   .bg-gradient-purple {
     background: linear-gradient(to bottom, #EABDFF, #CA57FF, #7D06B5);
   }
+
+  @media (max-width: 767.98px) {
+
+    .bg-gradient-purple {
+      background: none !important;
+    }
+  }
   
   .fixed-width-select {
-    width: 230px;      /* Puedes ajustar el valor según tu diseño */
+    width: 230px;      
     min-width: 230px;
     max-width: 230px;
+  }
+
+  .fixed-width-email{
+    width: 510px;      
+    min-width: 230px;
+    max-width: 510px;
+  }
+
+  .fixed-width-login-input{
+    width: 350px;      
+    min-width: 350px;
+    max-width: 350px;
   }
     
   .cancel-button {
@@ -33,11 +62,6 @@
     overflow: hidden;
   }
 
-  .report-card-bg {
-    background-color: #EABDFF;
-  }
-
-  /* Success message box*/  
   .custom-swal-popup {
     border-radius: 15px;
     padding: 2rem;
@@ -54,4 +78,25 @@
     border-radius: 6px;
 }
 
-  
+.report-card-container {
+  position: relative;
+  padding-top: 70px;
+}
+
+.clip-img {
+  position: absolute;
+  top: -43px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 80px;
+  width: 30px;
+  z-index: 10;
+}
+
+.report-card-content {
+  background-color: #EABDFF;
+  padding: 30px;
+  padding-top: 45px;
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+

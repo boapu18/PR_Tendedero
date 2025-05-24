@@ -69,7 +69,7 @@ function ReportList() {
     
     return (
     
-    <div className="my-5">
+    <div className="mb-5" style={{marginTop: "80px"}}>
       <div className="d-flex flex-wrap">
 
         {
@@ -78,7 +78,7 @@ function ReportList() {
                     <div 
                         key={i} 
                         ref={reports.length === i + 1 ? lastReportRef : null}
-                        className="col-12 col-lg-6 mb-4">
+                        className="col-12 col-xl-6 border-top border-1 border-secondary" style={{marginBottom: "4rem"}}> 
                         <ReportCard report={report}/>
                     </div>
                 )

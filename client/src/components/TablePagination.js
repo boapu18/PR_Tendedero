@@ -6,7 +6,14 @@ function TablePagination({page, totalPages, toPage}){
 
     useEffect(() => {
         const newPageNumbers = [];
-        for (let i = page; i <= Math.min(page + 2, totalPages); i++) {
+
+        const groupSize = 5;
+
+        const currentGroup = Math.floor((page - 1) / groupSize);
+        const startPage = currentGroup * groupSize + 1;
+        const endPage = Math.min(startPage + groupSize - 1, totalPages);
+
+        for (let i = startPage; i <= endPage; i++) {
             newPageNumbers.push(i);
         }
 

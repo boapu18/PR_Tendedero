@@ -82,8 +82,7 @@ function DetailReport() {
 
 
     return (
-        <div className="container py-4">
-            <div className="bg-white shadow rounded-4 p-5 text-center">
+        <>
                 {/* Loader */}
                 {loading && <p className="my-5">Cargando denuncia...</p>}
     
@@ -108,7 +107,7 @@ function DetailReport() {
                             <label className="form-label">Descripción</label>
                             <textarea
                                 className="form-control"
-                                rows={5}
+                                rows={4}
                                 value={reportData.content}
                                 readOnly
                             />
@@ -119,7 +118,7 @@ function DetailReport() {
                             <label className="form-label">Correo electrónico</label>
                             <input
                                 type="email"
-                                className="form-control w-50"
+                                className="form-control fixed-width-email"
                                 value={reportData.email || ""}
                                 readOnly
                             />
@@ -186,8 +185,7 @@ function DetailReport() {
                         </div>
                     </>
                 )}
-            </div>
-        </div>
+        </>
     );
 }
 
