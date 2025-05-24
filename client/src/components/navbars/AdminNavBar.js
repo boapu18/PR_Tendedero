@@ -1,11 +1,18 @@
 import React from "react";
 import LogOutButton from "../auth/LogOutButton";
+import { useNavigate } from "react-router-dom";
 
 function AdminNavBar(){
 
-    const handleConfigButtonClick = () => {};
+    const navigate = useNavigate();
+
+    const handleConfigButtonClick = () => {
+        navigate("/admin/config");
+    };
     
-    const handleAdminReportsButtonClick = () => {};
+    const handleAdminReportsButtonClick = () => {
+        navigate("/admin");
+    };
 
     return (
     
@@ -43,8 +50,18 @@ function AdminNavBar(){
               <div className="offcanvas-body">
                 <div className="d-flex flex-column">
 
-                    <button className="main-button mb-3" onClick={handleAdminReportsButtonClick}>Administrar denuncias</button>
-                    <button className="main-button mb-3" onClick={handleConfigButtonClick}>Configuración</button>
+                    <button 
+                        className="main-button mb-3" 
+                        onClick={handleAdminReportsButtonClick} 
+                        data-bs-dismiss="offcanvas">
+                            Administrar denuncias
+                    </button>
+                    <button 
+                        className="main-button mb-3" 
+                        onClick={handleConfigButtonClick} 
+                        data-bs-dismiss="offcanvas">
+                            Configuración
+                    </button>
                     <LogOutButton/>
     
                 </div>

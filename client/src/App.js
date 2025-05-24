@@ -7,6 +7,8 @@ import TermsProtectedRoute from "./protecters/TermsProtectedRoute";
 import AdminMainPage from "./pages/AdminMainPage";
 import AdminProtectedRoute from "./protecters/AdminProtectedRoute";
 import AdminDetailPage from "./pages/AdminDetailPage";
+import AdminReportTable from "./components/report/AdminReportTable";
+import AdminConfig from "./components/admin/AdminConfig";
 
 function App() {
   return (
@@ -17,10 +19,11 @@ function App() {
           <Route path="report" element={<TermsProtectedRoute><FormPage/></TermsProtectedRoute>}></Route>
           <Route path="terms-of-use" element={<TermsPage/>}></Route>
         </Route>
-        <Route path="/admin">
-          <Route index element={<AdminProtectedRoute><AdminMainPage/></AdminProtectedRoute>}></Route>
-          <Route path="report/:id" element={<AdminProtectedRoute><AdminDetailPage/></AdminProtectedRoute>}></Route>
+        <Route path="/admin" element={<AdminProtectedRoute><AdminMainPage/></AdminProtectedRoute>}>
+          <Route index element={<AdminReportTable/>}></Route>
+          <Route path="config" element={<AdminConfig/>}></Route>
         </Route>
+        <Route path="/admin/report/:id" element={<AdminProtectedRoute><AdminDetailPage/></AdminProtectedRoute>}/>
       </Routes>
     </BrowserRouter>
   );

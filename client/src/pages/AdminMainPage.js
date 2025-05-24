@@ -1,5 +1,5 @@
 import React from "react";
-import AdminReportTable from "../components/report/AdminReportTable";
+import { Outlet } from "react-router-dom";
 import AdminNavBar from "../components/navbars/AdminNavBar";
 
 function AdminMainPage(){
@@ -13,7 +13,7 @@ function AdminMainPage(){
                 
                 <div className="col-12 col-md-8">
                     <AdminNavBar/>
-                    <AdminReportTable/>
+                    <Outlet/>
                 </div>
 
                 <div className="col-12 col-md-2">
