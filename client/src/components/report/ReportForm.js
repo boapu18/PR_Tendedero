@@ -20,18 +20,18 @@ function ReportForm() {
 
     const handleCancelClick = () => {
         navigate("/");
-    }; 
+    };
 
     // Function executed when form is submitted
     const onSubmit = async (data) => {
 
-        if(data.typeReport === "anonymous"){
+        if (data.typeReport === "anonymous") {
             delete data.email;
             delete data.province;
             delete data.canton;
             delete data.age;
         }
-        
+
         try {
 
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
@@ -155,7 +155,7 @@ function ReportForm() {
                     {/* Province selector */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Provincia</label>
-                        <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => {setSelectedProvince(e.target.value); setValue("canton", "")}}>
+                        <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => { setSelectedProvince(e.target.value); setValue("canton", "") }}>
                             <option value="">Seleccione una provincia</option>
                             {Object.keys(provinceData).map((province) => (
                                 <option key={province} value={province}>{province}</option>
@@ -188,6 +188,38 @@ function ReportForm() {
                         </select>
                     </div>
                 </div>
+
+                {/* Nuevos campos agregados */}
+                <div className="row mb-5">
+                    {/* Identidad de género */}
+                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                        <label className="form-label">Identidad de género</label>
+                        <select className="form-select fixed-width-select" {...register("genderIdentity")}>
+                            <option value="">Seleccione</option>
+                            <option value="Mujer">Mujer</option>
+                            <option value="Hombre">Hombre</option>
+                            <option value="Mujer trans">Mujer trans</option>
+                            <option value="Hombre trans">Hombre trans</option>
+                            <option value="Persona no binaria">Persona no binaria</option>
+                            <option value="Persona de género fluido">Persona de género fluido</option>
+                            <option value="Persona agénero">Persona agénero</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    {/* Rol dentro de la institución */}
+                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                        <label className="form-label">Rol dentro de la institución</label>
+                        <select className="form-select fixed-width-select" {...register("roleInInstitution")}>
+                            <option value="">Seleccione</option>
+                            <option value="Persona estudiante">Persona estudiante</option>
+                            <option value="Persona docente">Persona docente</option>
+                            <option value="Persona administrativa">Persona administrativa</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+
             </div>
 
             {/* Buttons */}
