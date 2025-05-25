@@ -173,10 +173,12 @@ class ReportController {
         $canton =  $report -> getCanton() ?? "";
         $email = $report -> getEmail() ?? "";
         $ageBracket = $report -> getAgeBracket() ?? "";
+        $genderIdentity = $report->getGenderIdentity() ?? "";
+        $roleInInstitution = $report->getoleInInstitutions() ?? "";
 
-        $query = "INSERT INTO Report(content, province, canton, email, ageBracket) VALUES(?, ?, ?, ?, ?)";
+        $query = "INSERT INTO Report(content, province, canton, email, ageBracket, genderIdentity, roleInInstitution) VALUES(?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket);
+        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution);
         
         $result = $stmt -> execute();
 
@@ -196,7 +198,7 @@ class ReportController {
         
         $conn = $this -> database -> connect();
 
-        $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE id = ?";
+        $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE id = ?";
         $stmt = $conn -> prepare($query);
         $stmt -> bind_param("i", $reportId);
         $stmt -> execute();
@@ -213,7 +215,9 @@ class ReportController {
                 "canton" => $row["canton"],
                 "ageBracket" => $row["ageBracket"],
                 "email" => $row["email"],
-                "state" => $row["state"]
+                "state" => $row["state"],
+                "genderIdentity" => $row["genderIdentity"] ?? "",
+                "roleInInstitution" => $row["roleInInstitution"] ?? ""
             ];  
         }
 
