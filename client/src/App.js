@@ -8,7 +8,7 @@ import AdminMainPage from "./pages/AdminMainPage";
 import AdminProtectedRoute from "./protecters/AdminProtectedRoute";
 import AdminDetailPage from "./pages/AdminDetailPage";
 import AdminReportTable from "./components/report/AdminReportTable";
-import AdminConfig from "./components/admin/AdminConfig";
+import AdminSettings from "./components/admin/AdminSettings";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         </Route>
         <Route path="/admin" element={<AdminProtectedRoute><AdminMainPage/></AdminProtectedRoute>}>
           <Route index element={<AdminReportTable/>}></Route>
-          <Route path="config" element={<AdminConfig/>}></Route>
+          <Route path="config" element={<AdminSettings/>}></Route>
         </Route>
         <Route path="/admin/report/:id" element={<AdminProtectedRoute><AdminDetailPage/></AdminProtectedRoute>}/>
       </Routes>
