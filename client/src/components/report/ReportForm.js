@@ -189,9 +189,8 @@ function ReportForm() {
                     </div>
                 </div>
 
-                {/* Nuevos campos agregados */}
                 <div className="row mb-5">
-                    {/* Identidad de género */}
+                    {/* Gender Identity */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Identidad de género</label>
                         <select className="form-select fixed-width-select" {...register("genderIdentity")}>
@@ -207,7 +206,7 @@ function ReportForm() {
                         </select>
                     </div>
 
-                    {/* Rol dentro de la institución */}
+                    {/* Role within the institution */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Rol dentro de la institución</label>
                         <select className="form-select fixed-width-select" {...register("roleInInstitution")}>
