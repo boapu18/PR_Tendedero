@@ -8,12 +8,13 @@ import { useNavigate } from "react-router-dom";
 function ReportForm() {
 
     // Initialize form handling with react-hook-form
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
 
     // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
-    const [showAdditionalInfo, setShowAdditionalInfo] = useState(true);
     const [descriptionLength, setDescriptionLength] = useState(0);
+    const typeReport = watch("typeReport");
+    const showAdditionalInfo = typeReport === "addictional-information";
 
     const navigate = useNavigate();
 
@@ -61,7 +62,7 @@ function ReportForm() {
 
         } catch (error) {
 
-            const errorMessage = error.response?.data?.message ? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
+            const errorMessage = error.response?.data?.message ?? "Se produjo un error inesperado, intente nuevamente más tarde";
 
             Swal.fire({
                 title: 'Error',
@@ -128,12 +129,12 @@ function ReportForm() {
             <div className="d-flex align-items-start gap-4 mb-4">
 
                 <div className="form-check">
-                    <input className="form-check-input" type="radio" value="anonymous" {...register("typeReport", { required: true })} onChange={() => setShowAdditionalInfo(false)} />
+                    <input className="form-check-input" type="radio" value="anonymous" {...register("typeReport", { required: true })} />
                     <label className="form-check-label">Denuncia anónima</label>
                 </div>
 
                 <div className="form-check">
-                    <input className="form-check-input" type="radio" value="addictional-information" {...register("typeReport", { required: true })} onChange={() => setShowAdditionalInfo(true)} />
+                    <input className="form-check-input" type="radio" value="addictional-information" {...register("typeReport", { required: true })} />
                     <label className="form-check-label">Denuncia con información adicional</label>
                 </div>
 

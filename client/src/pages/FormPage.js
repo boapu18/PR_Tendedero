@@ -7,10 +7,7 @@ function FormPage() {
     <PurpleBackground>
       <div className="form-container">
         <div className="container py-4">
-          <div className="d-none d-md-block bg-white shadow rounded-4 p-5 m-2">
-            <ReportForm/>
-          </div>
-          <div className="d-block d-md-none p-1">
+          <div className="p-1 p-md-5 m-0 m-md-2 rounded-0 shadow-none rounded-4 shadow bg-white">
             <ReportForm/>
           </div>
         </div>

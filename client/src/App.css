@@ -12,12 +12,12 @@
     background: linear-gradient(to bottom, #EABDFF, #CA57FF, #7D06B5);
   }
 
-  @media (max-width: 767.98px) {
+  @media (max-width: 768px) {
 
     .bg-gradient-purple {
       background: none !important;
     }
-  }
+  }  
   
   .fixed-width-select {
     width: 230px;      
