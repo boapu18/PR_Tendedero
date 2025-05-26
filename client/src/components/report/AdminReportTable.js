@@ -91,6 +91,8 @@ function AdminReportTable(){
                                 <th scope="col" className="align-middle">Rango de edad</th>
                                 <th scope="col" className="align-middle">Provincia</th>
                                 <th scope="col" className="align-middle">Cantón</th>
+                                <th scope="col" className="align-middle">Identidad de género</th>
+                                <th scope="col" className="align-middle">Rol en la institución</th>
                                 <th scope="col" className="align-middle">Fecha</th>
                                 <th scope="col" className="align-middle">
                                     Estado                 
@@ -112,6 +114,8 @@ function AdminReportTable(){
                                     <td >{report.ageBracket}</td>
                                     <td>{report.province}</td>
                                     <td>{report.canton}</td>
+                                    <td>{report.genderIdentity}</td>
+                                    <td>{report.roleInInstitution}</td>
                                     <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
                                     <td>{states[report.state]}</td>
                                     <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
