@@ -17,7 +17,7 @@ class SettingController {
 
         $conn = $this -> database -> connect();
 
-        $query = "SELECT id, name, value FROM Setting";
+        $query = "SELECT name, value FROM Setting";
         $stmt = $conn -> prepare($query);
 
         $stmt -> execute();
@@ -33,7 +33,6 @@ class SettingController {
             while ($row = $result -> fetch_assoc()) {
                 
                 $setting = new Setting(
-                    $row['id'],  
                     $row['name'], 
                     $row['value']
                 );
@@ -57,5 +56,43 @@ class SettingController {
     public function updateSettings($settings){
 
         $conn = $this -> database -> connect();
+
+        $conn -> begin_transaction();
+
+        $query = "UPDATE Setting SET value = ? WHERE name = ?";
+        $stmt = $conn -> prepare($query);
+
+        try {
+
+            foreach ($settings as $setting) {
+
+                $value = $setting -> getValueStr();
+                $name = $setting -> getName();
+
+                $stmt -> bind_param("ss", $value, $name);
+
+                if (!$stmt->execute()) {
+                    throw new Exception($stmt -> error);
+                }
+            }
+            
+            $conn -> commit();
+            $this -> database -> close();
+            $stmt -> close();
+
+            return true;
+
+        } catch (Exception $e){
+
+            error_log($e -> getMessage());
+
+            if (isset($conn) && $conn -> in_transaction) {
+                $conn -> rollback();
+                $this -> database -> close();
+                $stmt -> close();
+            }
+
+            return false;
+        }
     }
 }

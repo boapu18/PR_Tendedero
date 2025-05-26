@@ -46,13 +46,16 @@ if ($is_dev) {
 
 $router = new Router();
 $database = new Database();
+
 $authController = new AuthController();
 $settingController = new SettingController($database);
-$routeProtecter = new RouteProtecter($authController);
 $reportController = new ReportController($database);
+
+$routeProtecter = new RouteProtecter($authController);
+
 $reportRouter = new ReportRouter($reportController, $routeProtecter);
 $authRouter = new AuthRouter($authController);
-$settingRouter = new SettingRouter($settingController);
+$settingRouter = new SettingRouter($settingController, $routeProtecter);
 
 $router -> get("/reports", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);

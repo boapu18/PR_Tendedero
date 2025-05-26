@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 function AdminSettings() {
     
-    const { register, setValue, watch } = useForm();
+    const { register, setValue, watch, handleSubmit } = useForm();
     const [loadingSettings, setLoadingSettings] = useState(false);
     const [error, setError] = useState(false);
 
@@ -37,6 +38,55 @@ function AdminSettings() {
         fetchSettings();
     }, [fetchSettings]);
 
+
+    const onSubmit = async (data) => {
+        
+        const payload = Object.entries(data).map(([name, value]) => ({name, value}));
+        
+        try {
+            const response = await axios.patch(`${process.env.REACT_APP_API_URL}/settings`, { 
+                settings: payload 
+            }, {
+                withCredentials: true
+            });
+
+            const successMessage = response?.data?.message ?? "Configuraciones actualizadas exitosamente";
+            
+            Swal.fire({
+                title: 'Éxito',
+                text: successMessage,
+                background: '#e6ffe6',
+                color: '#121212',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#0FCB06',
+                icon: 'success',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    confirmButton: 'custom-swal-confirm'
+                }
+            });
+        } catch (error) {
+            
+            const errorMessage = error.response?.data?.message ?? "Ocurrió un error al actualizar las configuraciones";
+            
+            Swal.fire({
+                title: 'Error',
+                text: errorMessage,
+                background: '#ffe9e5',
+                color: '#121212',
+                confirmButtonText: 'Aceptar',
+                confirmButtonColor: '#dd2404',
+                icon: 'error',
+                customClass: {
+                    popup: 'custom-swal-popup',
+                    title: 'custom-swal-title',
+                    confirmButton: 'custom-swal-confirm'
+                }
+            });
+        }
+    };
+    
     return (
         <div className="my-5">
 
@@ -50,7 +100,7 @@ function AdminSettings() {
             </div>
 
             {(!error && !loadingSettings) &&
-                <form>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-3 row">
                         <div className="col">
                             <label className="col-form-label fw-bold">Habilitar Enlace a Formulario Externo</label>
@@ -91,6 +141,13 @@ function AdminSettings() {
                             />
                         </div>
                     </div>
+
+                    <div className="d-flex justify-content-end mt-5">
+                        <button type="submit" className="main-button">
+                            Guardar cambios
+                        </button>
+                    </div>
+
                 </form>
             }
 

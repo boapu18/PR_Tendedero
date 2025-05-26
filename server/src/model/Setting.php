@@ -2,19 +2,31 @@
 
 class Setting implements JsonSerializable {
 
-    private $id;
     private $name;
     private $value;
 
-
-    public function __construct($id, $name, $value){
-        $this -> id = $id;
+    public function __construct($name, $value){
         $this -> name = $name;
-        $this -> value = $value;
+        $this -> value = $this -> interpretValue($value);
     }
 
-    public function getId() {
-        return $this -> id;
+    private function interpretValue($value) {
+        
+        $lower = strtolower(trim($value));
+    
+        if (in_array($lower, ['true', 'yes', 'on'], true)) {
+            return true;
+        }
+    
+        if (in_array($lower, ['false', 'no', 'off'], true)) {
+            return false;
+        }
+    
+        if (is_numeric($value)) {
+            return strpos($value, '.') !== false ? (float)$value : (int)$value;
+        }
+    
+        return $value;
     }
 
     public function getName() {
@@ -25,8 +37,11 @@ class Setting implements JsonSerializable {
         return $this -> value;
     }
 
-    public function setId($id) {
-        $this -> id = $id;
+    public function getValueStr() {
+        if (is_bool($this->value)) {
+            return $this->value ? 'true' : 'false';
+        }
+        return (string) $this->value;
     }
 
     public function setName($name) {
@@ -39,9 +54,8 @@ class Setting implements JsonSerializable {
 
     public function jsonSerialize() {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'value' => $this->value
+            'name' => $this -> name,
+            'value' => $this -> value
         ];
     }
 }
