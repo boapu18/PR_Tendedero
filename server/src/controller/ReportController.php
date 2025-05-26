@@ -52,11 +52,11 @@ class ReportController {
         $conn = $this -> database -> connect();
 
         if (is_null($state)){
-            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("ii", $limit, $offset);
         } else {
-            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ?) ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE (state = ?) ORDER BY creationDate DESC LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iii", $state, $limit, $offset);
         }
@@ -79,8 +79,11 @@ class ReportController {
                     $row['canton'],  
                     $row['email'], 
                     $row['ageBracket'],
+                    $row['genderIdentity'] ?? "",
+                    $row['roleInInstitution'] ?? "",
                     $row['id'], 
-                    $row['state']
+                    $row['state'],
+                    
                 );
 
                 $reports[] = $report;
@@ -118,11 +121,11 @@ class ReportController {
         $seed = ($ip + $minuteGroup + $hour + $day + $month); 
         
         if (is_null($state)){
-            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iii", $seed, $limit, $offset);
         } else {
-            $query = "SELECT id, content, province, canton, ageBracket, email, state FROM Report WHERE (state = ?) ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE (state = ?) ORDER BY RAND(?) LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iiii", $state, $seed, $limit, $offset);
         }
@@ -145,8 +148,10 @@ class ReportController {
                     $row['canton'],  
                     $row['email'], 
                     $row['ageBracket'],
+                    $row['genderIdentity'] ?? "",
+                    $row['roleInInstitution'] ?? "",
                     $row['id'], 
-                    $row['state']
+                    $row['state'], 
                 );
                 
                 $reports[] = $report;
@@ -174,11 +179,11 @@ class ReportController {
         $email = $report -> getEmail() ?? "";
         $ageBracket = $report -> getAgeBracket() ?? "";
         $genderIdentity = $report->getGenderIdentity() ?? "";
-        $roleInInstitution = $report->getoleInInstitutions() ?? "";
+        $roleInInstitution = $report->getRoleInInstitution() ?? "";
 
         $query = "INSERT INTO Report(content, province, canton, email, ageBracket, genderIdentity, roleInInstitution) VALUES(?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
-        $stmt -> bind_param("sssss", $content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution);
+        $stmt -> bind_param("sssssss", $content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution);
         
         $result = $stmt -> execute();
 
@@ -264,10 +269,10 @@ class ReportController {
         $output = fopen('php://output', 'w');
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); 
     
-        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico', 'Estado'];
+        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico', 'Estado', 'Identidad de Género', 'Rol dentro de la Institución'];
         fputcsv($output, $headers, ';');
     
-        $result = $conn -> query("SELECT content, province, canton, ageBracket, email, state FROM Report ORDER BY creationDate DESC");
+        $result = $conn -> query("SELECT content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY creationDate DESC");
 
         $stateMap = [
             0 => 'En espera',
@@ -288,7 +293,10 @@ class ReportController {
                     $row['canton'],
                     $row['ageBracket'],
                     $row['email'],
-                    $stateText
+                    $stateText,
+                    $row['genderIdentity'], 
+                    $row['roleInInstitution'] 
+ 
                 ];
 
                 fputcsv($output, $cleanedRow, ';');

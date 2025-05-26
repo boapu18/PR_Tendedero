@@ -58,11 +58,14 @@ class ReportRouter{
 
         $data = json_decode(file_get_contents("php://input"), true);
 
+
         $content = $data["description"] ?? null;
         $province = $data["province"] ?? null;
         $canton = $data["canton"] ?? null;
         $email = $data["email"] ?? null;
         $ageBracket = $data["age"] ?? null;
+        $genderIdentity = $data["genderIdentity"] ?? null;
+        $roleInInstitution = $data["roleInInstitution"] ?? null;
         $reportType = $data["typeReport"] ?? null;
     
         if (!$content || trim($content) === "") {
@@ -81,7 +84,8 @@ class ReportRouter{
             }
         }
     
-        $report = new Report($content, $province, $canton, $email, $ageBracket);
+        $report = new Report($content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution, null, 0);
+
     
         try {
     
