@@ -270,10 +270,10 @@ class ReportController {
         $output = fopen('php://output', 'w');
         fprintf($output, chr(0xEF).chr(0xBB).chr(0xBF)); 
     
-        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico', 'Estado', 'Identidad de Género', 'Rol dentro de la Institución'];
+        $headers = ['Contenido', 'Provincia', 'Cantón', 'Rango de edad', 'Correo electrónico', 'Identidad de Género', 'Rol dentro de la Institución', 'Fecha', 'Estado'];
         fputcsv($output, $headers, ';');
     
-        $result = $conn -> query("SELECT content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY creationDate DESC");
+        $result = $conn -> query("SELECT content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate FROM Report ORDER BY creationDate DESC");
 
         $stateMap = [
             0 => 'En espera',
@@ -294,9 +294,10 @@ class ReportController {
                     $row['canton'],
                     $row['ageBracket'],
                     $row['email'],
-                    $stateText,
                     $row['genderIdentity'], 
-                    $row['roleInInstitution'] 
+                    $row['roleInInstitution'],
+                    $row['creationDate'],
+                    $stateText
                 ];
 
                 fputcsv($output, $cleanedRow, ';');
