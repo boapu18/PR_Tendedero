@@ -86,7 +86,6 @@ class ReportRouter{
     
         $report = new Report($content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution, null, 0);
 
-    
         try {
     
             $result = $this -> reportController -> registerReport($report);

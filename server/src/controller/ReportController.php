@@ -79,13 +79,13 @@ class ReportController {
                     $row['canton'],  
                     $row['email'], 
                     $row['ageBracket'],
-                    $row['genderIdentity'] ?? "",
-                    $row['roleInInstitution'] ?? "",
+                    $row['genderIdentity'],
+                    $row['roleInInstitution'],
                     $row['id'], 
                     $row['state'],
                     
                 );
-                $report->setCreationDate($row['creationDate']);
+                $report -> setCreationDate($row['creationDate']);
                 $reports[] = $report;
             }
 
@@ -148,12 +148,12 @@ class ReportController {
                     $row['canton'],  
                     $row['email'], 
                     $row['ageBracket'],
-                    $row['genderIdentity'] ?? "",
-                    $row['roleInInstitution'] ?? "",
+                    $row['genderIdentity'],
+                    $row['roleInInstitution'],
                     $row['id'], 
                     $row['state'], 
                 );
-                $report->setCreationDate($row['creationDate']);
+                $report -> setCreationDate($row['creationDate']);
                 $reports[] = $report;
             }
 
@@ -178,8 +178,8 @@ class ReportController {
         $canton =  $report -> getCanton() ?? "";
         $email = $report -> getEmail() ?? "";
         $ageBracket = $report -> getAgeBracket() ?? "";
-        $genderIdentity = $report->getGenderIdentity() ?? "";
-        $roleInInstitution = $report->getRoleInInstitution() ?? "";
+        $genderIdentity = $report -> getGenderIdentity() ?? "";
+        $roleInInstitution = $report -> getRoleInInstitution() ?? "";
 
         $query = "INSERT INTO Report(content, province, canton, email, ageBracket, genderIdentity, roleInInstitution) VALUES(?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn -> prepare($query);
@@ -213,18 +213,18 @@ class ReportController {
 
         if($result -> num_rows > 0){
             $row = $result -> fetch_assoc();
-            $report = [
-                "id" => $row["id"],
-                "content" => $row["content"],
-                "province" => $row["province"],
-                "canton" => $row["canton"],
-                "ageBracket" => $row["ageBracket"],
-                "email" => $row["email"],
-                "state" => $row["state"],
-                "genderIdentity" => $row["genderIdentity"] ?? "",
-                "roleInInstitution" => $row["roleInInstitution"] ?? "",
-                "creationDate" => $row["creationDate"] ?? ""
-            ];  
+            $report = new Report(
+                $row['content'],  
+                $row['province'], 
+                $row['canton'],  
+                $row['email'], 
+                $row['ageBracket'],
+                $row['genderIdentity'],
+                $row['roleInInstitution'],
+                $row['id'], 
+                $row['state'], 
+            );
+            $report -> setCreationDate($row['creationDate']);  
         }
 
         $this -> database -> close();
@@ -297,7 +297,6 @@ class ReportController {
                     $stateText,
                     $row['genderIdentity'], 
                     $row['roleInInstitution'] 
- 
                 ];
 
                 fputcsv($output, $cleanedRow, ';');

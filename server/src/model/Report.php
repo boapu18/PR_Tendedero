@@ -82,31 +82,29 @@ class Report implements JsonSerializable {
     }
 
     public function getGenderIdentity() {
-        return $this->genderIdentity;
+        return $this -> genderIdentity;
     }
     
     public function setGenderIdentity($genderIdentity) {
-        $this->genderIdentity = $genderIdentity;
+        $this -> genderIdentity = $genderIdentity;
     }
     
     public function getRoleInInstitution() {
-        return $this->roleInInstitution;
+        return $this -> roleInInstitution;
     }
     
     public function setRoleInInstitution($roleInInstitution) {
-        $this->roleInInstitution = $roleInInstitution;
+        $this -> roleInInstitution = $roleInInstitution;
     }
 
     public function getCreationDate() {
-        return $this->creationDate;
+        return $this -> creationDate;
     }
     
     public function setCreationDate($creationDate) {
-        $this->creationDate = $creationDate;
+        $this -> creationDate = $creationDate;
     }
     
-    
-
     public function jsonSerialize() {
         
         $data = [
@@ -117,9 +115,9 @@ class Report implements JsonSerializable {
             'email' => $this -> email,
             'ageBracket' => $this -> ageBracket,
             'state' => $this -> state,
-            'genderIdentity' => $this->genderIdentity,
-            'roleInInstitution' => $this->roleInInstitution,
-            'creationDate' => $this->creationDate,
+            'genderIdentity' => $this -> genderIdentity,
+            'roleInInstitution' => $this -> roleInInstitution,
+            'creationDate' => $this -> creationDate,
         ];
 
         return array_filter($data, function($value) {

@@ -61,6 +61,9 @@ class RouteProtecter {
                 $report -> setCanton(null);
                 $report -> setEmail(null);
                 $report -> setAgeBracket(null);
+                $report -> setGenderIdentity(null);
+                $report -> setRoleInInstitution(null);
+                $report -> setCreationDate(null);
             }
     
             return array_values($filteredReports);
