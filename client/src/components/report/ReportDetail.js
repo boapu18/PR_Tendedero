@@ -181,6 +181,18 @@ function DetailReport() {
                                 readOnly
                             />
                         </div>
+
+                        {/* Date */}
+                        <div className="col-auto me-4 mb-3 mb-lg-0">
+                            <label className="form-label">Fecha de creación</label>
+                            <input
+                                type="text"
+                                className="form-control fixed-width-select"
+                                value={new Date(reportData.creationDate).toLocaleString("es-CR")}
+                                readOnly
+                            />
+                        </div>
+
                     </div>
 
 

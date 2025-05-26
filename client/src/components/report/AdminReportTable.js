@@ -91,6 +91,7 @@ function AdminReportTable(){
                                 <th scope="col" className="align-middle">Rango de edad</th>
                                 <th scope="col" className="align-middle">Provincia</th>
                                 <th scope="col" className="align-middle">Cantón</th>
+                                <th scope="col" className="align-middle">Fecha</th>
                                 <th scope="col" className="align-middle">
                                     Estado                 
                                     <select className="form-select" style={{width: "130px"}} value={reportState} onChange={onChangeReportState}>
@@ -111,6 +112,7 @@ function AdminReportTable(){
                                     <td >{report.ageBracket}</td>
                                     <td>{report.province}</td>
                                     <td>{report.canton}</td>
+                                    <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
                                     <td>{states[report.state]}</td>
                                     <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
                                 </tr>

@@ -11,6 +11,7 @@ class Report implements JsonSerializable {
     private $state;
     private $genderIdentity;
     private $roleInInstitution;
+    private $creationDate;
 
     public function __construct($content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution, $id = null, $state = 0){
         $this -> id = $id;
@@ -95,6 +96,15 @@ class Report implements JsonSerializable {
     public function setRoleInInstitution($roleInInstitution) {
         $this->roleInInstitution = $roleInInstitution;
     }
+
+    public function getCreationDate() {
+        return $this->creationDate;
+    }
+    
+    public function setCreationDate($creationDate) {
+        $this->creationDate = $creationDate;
+    }
+    
     
 
     public function jsonSerialize() {
@@ -109,6 +119,7 @@ class Report implements JsonSerializable {
             'state' => $this -> state,
             'genderIdentity' => $this->genderIdentity,
             'roleInInstitution' => $this->roleInInstitution,
+            'creationDate' => $this->creationDate,
         ];
 
         return array_filter($data, function($value) {

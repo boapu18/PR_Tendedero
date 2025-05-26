@@ -52,11 +52,11 @@ class ReportController {
         $conn = $this -> database -> connect();
 
         if (is_null($state)){
-            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate  FROM Report ORDER BY creationDate DESC LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("ii", $limit, $offset);
         } else {
-            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE (state = ?) ORDER BY creationDate DESC LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate  FROM Report WHERE (state = ?) ORDER BY creationDate DESC LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iii", $state, $limit, $offset);
         }
@@ -85,7 +85,7 @@ class ReportController {
                     $row['state'],
                     
                 );
-
+                $report->setCreationDate($row['creationDate']);
                 $reports[] = $report;
             }
 
@@ -121,11 +121,11 @@ class ReportController {
         $seed = ($ip + $minuteGroup + $hour + $day + $month); 
         
         if (is_null($state)){
-            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate FROM Report ORDER BY RAND(?) LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iii", $seed, $limit, $offset);
         } else {
-            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE (state = ?) ORDER BY RAND(?) LIMIT ? OFFSET ?";
+            $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate FROM Report WHERE (state = ?) ORDER BY RAND(?) LIMIT ? OFFSET ?";
             $stmt = $conn -> prepare($query);
             $stmt -> bind_param("iiii", $state, $seed, $limit, $offset);
         }
@@ -153,7 +153,7 @@ class ReportController {
                     $row['id'], 
                     $row['state'], 
                 );
-                
+                $report->setCreationDate($row['creationDate']);
                 $reports[] = $report;
             }
 
@@ -203,7 +203,7 @@ class ReportController {
         
         $conn = $this -> database -> connect();
 
-        $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution FROM Report WHERE id = ?";
+        $query = "SELECT id, content, province, canton, ageBracket, email, state, genderIdentity, roleInInstitution, creationDate FROM Report WHERE id = ?";
         $stmt = $conn -> prepare($query);
         $stmt -> bind_param("i", $reportId);
         $stmt -> execute();
@@ -222,7 +222,8 @@ class ReportController {
                 "email" => $row["email"],
                 "state" => $row["state"],
                 "genderIdentity" => $row["genderIdentity"] ?? "",
-                "roleInInstitution" => $row["roleInInstitution"] ?? ""
+                "roleInInstitution" => $row["roleInInstitution"] ?? "",
+                "creationDate" => $row["creationDate"] ?? ""
             ];  
         }
 
