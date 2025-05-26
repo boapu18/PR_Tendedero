@@ -143,7 +143,7 @@ function ReportForm() {
 
             {/* Additional fields that show conditionally */}
             <div
-                className={`${showAdditionalInfo ? "" : "invisible"}`}
+                className={`${showAdditionalInfo ? "" : "d-none"}`}
             >
                 {/* Email input */}
                 <div className="mb-4">
@@ -151,7 +151,7 @@ function ReportForm() {
                     <input type="email" className="form-control fixed-width-email" {...register("email")} />
                 </div>
 
-                <div className="row mb-5">
+                <div className="row mb-0 mb-md-4">
                     {/* Province selector */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Provincia</label>

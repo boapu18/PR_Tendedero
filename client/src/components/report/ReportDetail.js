@@ -125,7 +125,7 @@ function DetailReport() {
                     </div>
 
                     {/* Province */}
-                    <div className="row mb-4 text-start">
+                    <div className="row mb-0 mb-md-4 text-start">
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Provincia</label>
                             <input
@@ -160,7 +160,7 @@ function DetailReport() {
                     </div>
 
                     {/* Gender Identity */}
-                    <div className="row mb-4 text-start">
+                    <div className="row mb-4 mb-lg-4 text-start">
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Identidad de género</label>
                             <input
