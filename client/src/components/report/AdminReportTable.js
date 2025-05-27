@@ -82,6 +82,12 @@ function AdminReportTable() {
 
             {(!error && !loadingReports) &&
                 <>
+
+                    <div className="mb-3 d-flex justify-content-between">
+                        <p className="mb-0">Total de denuncias: {totalCount}</p>
+                        <p className="mb-0">Mostrando página {page} de {totalPages}</p>
+                    </div>
+
                     <div className="table-responsive">
                         <table className="table table-bordered">
                             <thead>
@@ -125,12 +131,9 @@ function AdminReportTable() {
                         </table>
                     </div>
 
-                    <div className="mt-3 d-flex justify-content-between">
-                        <p className="mb-0">Total de denuncias: {totalCount}</p>
-                        <p className="mb-0">Mostrando página {page} de {totalPages}</p>
+                    <div className="mt-2">
+                        <TablePagination page={page} totalPages={totalPages} toPage={toPage} />
                     </div>
-
-                    <TablePagination page={page} totalPages={totalPages} toPage={toPage} />
                 </>
             }
 

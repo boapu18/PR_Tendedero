@@ -11,7 +11,7 @@ function OrganizationData(){
                 alt="Logo AMEC"
                 className="img-fluid"
             />
-            <p className="my-2 fw-light">Teléfono: <wbr/> +506</p>
+            <p className="my-2 fw-light">Correo: <wbr/> redamec@uned.ac.cr</p>
             <img
                 src={UNEDLogo}
                 alt="Logo UNED"

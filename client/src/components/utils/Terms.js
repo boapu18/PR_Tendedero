@@ -12,10 +12,13 @@ function Terms(){
 
     return(
         <>
+
+        <h2>Tendedero Virtual de Denuncia</h2>
+
         <p>Bienvenid@ al Tendedero de Denuncias, un espacio seguro donde puede compartir de manera anónima experiencias de acoso o violencia. 
         Nuestro objetivo es visibilizar estas situaciones y generar datos que contribuyan a la investigación del grupo <b>Red Abierta de Mujeres en Ciencia.</b></p>
 
-        <h3>DESCRIPCIÓN</h3>
+        <h3>Descripción</h3>
 
         <p>El tendedero de denuncia es una obra de expresión artística que utiliza la denuncia como vehículo creativo, esta manifestación popular de 
             base feminista fue creada por la pionera del arte feminista Mónica Mayer (Mayer y Lerma 2022).</p>
@@ -25,7 +28,7 @@ function Terms(){
             por miedo a represalias o para evitar la exposición, no denuncian a los agresores.</p>
 
 
-        <h3>CONSENTIMIENTO INFORMADO PARA PARTICIPACIÓN EN TENDEDERO VIRTUAL</h3>
+        <h3>Consentimiento Informado para Participación en el Tendedero Virtual</h3>
 
         <p>La Red Abierta de Mujeres en Ciencias (Red AMEC) es un colectivo feminista de la Universidad Estatal a Distancia, que propicia espacios de reflexión 
             y acción para fomentar la igualdad y equidad de género en los procesos docentes, de investigación y extensión en el área de ciencias mediante la 
@@ -62,13 +65,13 @@ function Terms(){
             puedes comunicarte con las personas miembros de la Red AMEC:</p>
         
         <ul>
-            <li>Ariana Acón Matamoros/ aaconm@uned.ac.cr / Tel: 2202-1825</li>
-            <li>Evelyn Alfaro Vargas/ ealfarov@uned.ac.cr</li>
-            <li>Katya Bermúdez Campos/ kbermudezc@uned.ac.cr / Tel: 202-1821</li>
-            <li>Yency Calderón Badilla/ ycalderon@uned.ac.cr</li>
-            <li>Melissa Céspedes Alvarado/ mcespedesa@uned.ac.cr</li>
-            <li>Diana Herrero Villarreal/ dvillarreal@uned.ac.cr / Tel: 2202-1815</li>
-            <li>Pamela Víquez Araya/ pviquez@uned.ac.cr</li>
+            <li>Ariana Acón Matamoros / aaconm@uned.ac.cr / Tel: 2202-1825</li>
+            <li>Evelyn Alfaro Vargas / ealfarov@uned.ac.cr</li>
+            <li>Katya Bermúdez Campos / kbermudezc@uned.ac.cr / Tel: 202-1821</li>
+            <li>Yency Calderón Badilla / ycalderon@uned.ac.cr</li>
+            <li>Melissa Céspedes Alvarado / mcespedesa@uned.ac.cr</li>
+            <li>Diana Herrero Villarreal / dvillarreal@uned.ac.cr / Tel: 2202-1815</li>
+            <li>Pamela Víquez Araya / pviquez@uned.ac.cr</li>
         </ul>
 
         <p><b><u>Aceptación del Consentimiento:</u></b> Al participar en este proyecto, usted declara que ha leído y comprendido la información proporcionada, 
