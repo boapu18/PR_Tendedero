@@ -35,13 +35,28 @@ function ReportForm() {
 
         try {
 
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
+            const registerResponse = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
 
-            if (response) {
+            if (registerResponse) {
+                
+
+                // Se obtienen las configuraciones para verificar si se debe mostrar en enlace
+                // al formulario
+                const settingsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/settings`);
+                const settings = settingsResponse.data.data.settings;
+                const settingsObjs = Object.fromEntries(settings.map(({ name, value }) => [name, value]));
+
+                let popUpMessage = registerResponse?.data?.message ?? "La denuncia se ha registrado exitosamente";
+
+                if (settingsObjs.showExternalFormLink){
+                    const linkMessage = `.<br><br>Si desea contribuir con mayor produndidad a las investigaciones de la red AMEC,
+                    lo invitamos a completar el siguiente formulario: <a href="${settingsObjs.externalFormLink}" target="_blank">Enlace al formulario</a>`;
+                    popUpMessage += linkMessage;
+                }
 
                 Swal.fire({
                     title: 'Éxito',
-                    text: response?.data?.message,
+                    html: popUpMessage,
                     background: '#e6ffe6',
                     color: '#121212',
                     confirmButtonText: 'Aceptar',
