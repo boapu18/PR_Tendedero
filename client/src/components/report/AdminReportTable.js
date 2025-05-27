@@ -4,37 +4,38 @@ import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import ExportDataButton from "./ExportDataButton";
 
-function AdminReportTable(){
+function AdminReportTable() {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const page = parseInt(searchParams.get("page")) || 1;
     const reportState = searchParams.get("state") || "";
     const [totalPages, setTotalPages] = useState(1);
+    const [totalCount, setTotalCount] = useState(0); 
     const [loadingReports, setLoadingReports] = useState(false);
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(false);
-    const states = {0: "En espera", 1: "Aceptada", 2: "Archivada"};
+    const states = { 0: "En espera", 1: "Aceptada", 2: "Archivada" };
 
     const fetchReports = useCallback(async () => {
-
         setLoadingReports(true);
-
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports`, {
-                params: {page: page, order: 'crono', state: reportState || null},
+                params: { page: page, order: 'crono', state: reportState || null },
                 withCredentials: true
             });
 
-            if (response.data.data){
+            if (response.data.data) {
                 const newReports = response.data.data.reports;
                 const newTotalPages = response.data.data.totalPages;
+                const newTotalCount = response.data.data.totalCount; 
                 setReports([...newReports]);
                 setTotalPages(newTotalPages);
+                setTotalCount(newTotalCount); 
             } else {
                 throw new Error();
             }
-            
-        } catch (e){
+
+        } catch (e) {
             setError(true);
         } finally {
             setLoadingReports(false);
@@ -71,7 +72,7 @@ function AdminReportTable(){
 
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
                 <h2 className="mb-4 mb-md-0">Denuncias registradas</h2>
-                <ExportDataButton/>
+                <ExportDataButton />
             </div>
 
             <div className="d-flex justify-content-center align-items-center">
@@ -80,53 +81,57 @@ function AdminReportTable(){
             </div>
 
             {(!error && !loadingReports) &&
-                
-            <>
-                <div className="table-responsive">
-                    <table className="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th scope="col" className="align-middle">Descripción</th>
-                                <th scope="col" className="align-middle">Correo electrónico</th>
-                                <th scope="col" className="align-middle">Rango de edad</th>
-                                <th scope="col" className="align-middle">Provincia</th>
-                                <th scope="col" className="align-middle">Cantón</th>
-                                <th scope="col" className="align-middle">Identidad de género</th>
-                                <th scope="col" className="align-middle">Rol en la institución</th>
-                                <th scope="col" className="align-middle">Fecha</th>
-                                <th scope="col" className="align-middle">
-                                    Estado                 
-                                    <select className="form-select" style={{width: "130px"}} value={reportState} onChange={onChangeReportState}>
-                                        <option value="">Todos</option>
-                                        {Object.entries(states).map(([key, value]) => (
-                                            <option key={key} value={key}>{value}</option>
-                                        ))}
-                                    </select>
-                                </th>
-                                <th scope="col" className="align-middle">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {reports.map((report) => (
-                                <tr key={report.id}>
-                                    <td className="text-truncate content-cell" style={{maxWidth: "200px"}}>{report.content}</td>
-                                    <td className="text-truncate content-cell" style={{maxWidth: "200px"}}>{report.email}</td>
-                                    <td >{report.ageBracket}</td>
-                                    <td>{report.province}</td>
-                                    <td>{report.canton}</td>
-                                    <td>{report.genderIdentity}</td>
-                                    <td>{report.roleInInstitution}</td>
-                                    <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
-                                    <td>{states[report.state]}</td>
-                                    <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
+                <>
+                    <div className="table-responsive">
+                        <table className="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col" className="align-middle">Descripción</th>
+                                    <th scope="col" className="align-middle">Correo electrónico</th>
+                                    <th scope="col" className="align-middle">Rango de edad</th>
+                                    <th scope="col" className="align-middle">Provincia</th>
+                                    <th scope="col" className="align-middle">Cantón</th>
+                                    <th scope="col" className="align-middle">Identidad de género</th>
+                                    <th scope="col" className="align-middle">Rol en la institución</th>
+                                    <th scope="col" className="align-middle">Fecha</th>
+                                    <th scope="col" className="align-middle">
+                                        Estado
+                                        <select className="form-select" style={{ width: "130px" }} value={reportState} onChange={onChangeReportState}>
+                                            <option value="">Todos</option>
+                                            {Object.entries(states).map(([key, value]) => (
+                                                <option key={key} value={key}>{value}</option>
+                                            ))}
+                                        </select>
+                                    </th>
+                                    <th scope="col" className="align-middle">Acciones</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <TablePagination page={page} totalPages={totalPages} toPage={toPage}/>
-            </>
+                            </thead>
+                            <tbody>
+                                {reports.map((report) => (
+                                    <tr key={report.id}>
+                                        <td className="text-truncate content-cell" style={{ maxWidth: "200px" }}>{report.content}</td>
+                                        <td className="text-truncate content-cell" style={{ maxWidth: "200px" }}>{report.email}</td>
+                                        <td>{report.ageBracket}</td>
+                                        <td>{report.province}</td>
+                                        <td>{report.canton}</td>
+                                        <td>{report.genderIdentity}</td>
+                                        <td>{report.roleInInstitution}</td>
+                                        <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
+                                        <td>{states[report.state]}</td>
+                                        <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className="mt-3 d-flex justify-content-between">
+                        <p className="mb-0">Total de denuncias: {totalCount}</p>
+                        <p className="mb-0">Mostrando página {page} de {totalPages}</p>
+                    </div>
+
+                    <TablePagination page={page} totalPages={totalPages} toPage={toPage} />
+                </>
             }
 
         </div>
