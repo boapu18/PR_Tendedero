@@ -3,6 +3,7 @@ import TablePagination from "../utils/TablePagination";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import ExportDataButton from "./ExportDataButton";
+import { REPORT_STATES } from "../../utils/constants";
 
 function AdminReportTable() {
 
@@ -14,12 +15,11 @@ function AdminReportTable() {
     const [loadingReports, setLoadingReports] = useState(false);
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(false);
-    const states = { 0: "En espera", 1: "Aceptada", 2: "Archivada" };
 
     const fetchReports = useCallback(async () => {
 
         setLoadingReports(true);
-        
+
         try {
 
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports`, {
@@ -103,7 +103,7 @@ function AdminReportTable() {
                                         Estado
                                         <select className="form-select" style={{ width: "130px" }} value={reportState} onChange={onChangeReportState}>
                                             <option value="">Todos</option>
-                                            {Object.entries(states).map(([key, value]) => (
+                                            {Object.entries(REPORT_STATES).map(([key, value]) => (
                                                 <option key={key} value={key}>{value}</option>
                                             ))}
                                         </select>
@@ -122,7 +122,7 @@ function AdminReportTable() {
                                         <td>{report.genderIdentity}</td>
                                         <td>{report.roleInInstitution}</td>
                                         <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
-                                        <td>{states[report.state]}</td>
+                                        <td>{REPORT_STATES[report.state]}</td>
                                         <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
                                     </tr>
                                 ))}

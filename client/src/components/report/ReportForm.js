@@ -4,16 +4,16 @@ import { Tooltip } from "bootstrap";
 import { successAlert, errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { PROVINCE_DATA } from "../../utils/constants";
 
 function ReportForm() {
 
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
-
     const [selectedProvince, setSelectedProvince] = useState("");
     const [descriptionLength, setDescriptionLength] = useState(0);
     const typeReport = watch("typeReport");
     const showAdditionalInfo = typeReport === "addictional-information";
-
+    const filteredCantons = selectedProvince ? PROVINCE_DATA[selectedProvince] || [] : [];
     const navigate = useNavigate();
 
     const handleCancelClick = () => {
@@ -60,18 +60,6 @@ function ReportForm() {
         const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
     }, []);
-
-    const provinceData = {
-        "San José": ["San José", "Escazú", "Desamparados", "Puriscal", "Tarrazú", "Aserrí", "Mora", "Goicochea", "Santa Ana", "Alajuelita", "Vázquez de Coronado", "Acosta", "Tibás", "Moravia", "Montes de Oca", "Turrubares", "Dota", "Curridabat", "Pérez Zeledón", "León Córtes Castro"],
-        "Alajuela": ["Alajuela", "San Ramón", "Grecia", "San Mateo", "Atenas", "Naranjo", "Palmares", "Poás", "Orotina", "San Carlos", "Zarcero", "Sarchí", "Upala", "Los Chiles", "Guatuso", "Río Cuarto"],
-        "Cartago": ["Cartago", "Paraíso", "La Unión", "Jiménez", "Turrialba", "Alvarado", "Oreamuno", "El Guarco"],
-        "Heredia": ["Heredia", "Barva", "Santo Domingo", "Santa Bárbara", "San Rafael", "San Isidro", "Belén", "Flores", "San Pablo", "Sarapiquí"],
-        "Guanacaste": ["Liberia", "Nicoya", "Santa Cruz", "Bagaces", "Carrillo", "Cañas", "Abangares", "Tilarán", "Nandayure", "La Cruz", "Hojancha"],
-        "Puntarenas": ["Puntarenas", "Esparza", "Buenos Aires", "Montes de Oro", "Osa", "Quepos", "Golfito", "Coto Brus", "Parrita", "Corredoes", "Garabito", "Monteverde", "Puerto Jiménez"],
-        "Limón": ["Limón", "Pococí", "Siquirres", "Talamanca", "Matina", "Guácimo"],
-    };
-
-    const filteredCantons = selectedProvince ? provinceData[selectedProvince] || [] : [];
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -126,7 +114,7 @@ function ReportForm() {
                         <label className="form-label">Provincia</label>
                         <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => { setSelectedProvince(e.target.value); setValue("canton", "") }}>
                             <option value="">Seleccione una provincia</option>
-                            {Object.keys(provinceData).map((province) => (
+                            {Object.keys(PROVINCE_DATA).map((province) => (
                                 <option key={province} value={province}>{province}</option>
                             ))}
                         </select>

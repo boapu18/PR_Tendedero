@@ -2,12 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { successAlert, errorAlert, confirmationAlert } from "../../utils/alertInvokers";
-
-const states = {
-    0: "En espera",
-    1: "Aceptada",
-    2: "Archivada"
-};
+import { REPORT_STATES } from "../../utils/constants";
 
 function DetailReport() {
 
@@ -179,7 +174,7 @@ function DetailReport() {
                                 value={reportData.state}
                                 onChange={handleChangeStatus}
                             >
-                                {Object.entries(states).map(([key, value]) => (
+                                {Object.entries(REPORT_STATES).map(([key, value]) => (
                                     <option key={key} value={key}>
                                         {value}
                                     </option>
