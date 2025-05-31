@@ -21,13 +21,9 @@ function ReportList() {
                 params: {page: page, order: 'rand', state: 1} 
             });
 
-            if (response.data.data){
-                const newReports = response.data.data.reports;
-                setReports((prevReports) => [...prevReports, ...newReports]);
-                setMoreReports(newReports.length > 0);
-            } else {
-                throw new Error();
-            }
+            const newReports = response.data.data.reports;
+            setReports((prevReports) => [...prevReports, ...newReports]);
+            setMoreReports(newReports.length > 0);
             
         } catch (e){
             setError(true);

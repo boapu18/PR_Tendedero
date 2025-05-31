@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import Swal from 'sweetalert2';
+import { errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
-import { Tooltip } from "bootstrap";
 
 function LogginForm() {
   
@@ -11,43 +10,20 @@ function LogginForm() {
   const onLoggin = async (data) => {
 
     try {
-
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, 
+      
+      await axios.post(`${process.env.REACT_APP_API_URL}/auth/login`, 
         data, {
         withCredentials: true
       });
 
-      if (response) {
-        window.location.reload();
-      } else {
-        throw new Error();
-      }
+      window.location.reload();
 
     } catch (error) {
 
-      const errorMessage = error.response?.data?.message ? error.response.data.message : "Se produjo un error inesperado, intente nuevamente más tarde";
-
-      Swal.fire({
-        title: 'Error',
-        text: errorMessage,
-        background: '#ffe9e5',
-        color: '#121212',
-        confirmButtonText: 'Aceptar',
-        confirmButtonColor: '#dd2404',
-        icon: 'error',
-        customClass: {
-        popup: 'custom-swal-popup',
-        title: 'custom-swal-title',
-        confirmButton: 'custom-swal-confirm'
-        }
-      });
+      const errorMessage = error.response?.data?.message ?? "Se produjo un error inesperado, intente nuevamente más tarde";
+      errorAlert(errorMessage);
     }
   }
-
-  useEffect(() => {
-    const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-    tooltips.forEach((tooltip) => new Tooltip(tooltip));
-  }, []);
 
   return (
       <form className="d-flex flex-column align-items-center" onSubmit={handleSubmit(onLoggin)}>

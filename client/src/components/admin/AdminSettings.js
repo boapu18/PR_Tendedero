@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import Swal from "sweetalert2";
+import { successAlert, errorAlert } from "../../utils/alertInvokers";
 
 function AdminSettings() {
     
@@ -12,20 +12,18 @@ function AdminSettings() {
     const showExternalFormLink = watch("showExternalFormLink");
 
     const fetchSettings = useCallback(async () => {
+
         setLoadingSettings(true);
 
         try {
+
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/settings`);
 
-            if (response.data.data) {
-                const newSettings = response.data.data.settings;
+            const newSettings = response.data.data.settings;
 
-                newSettings.forEach(setting => {
-                    setValue(setting.name, setting.value);
-                });
-            } else {
-                throw new Error();
-            }
+            newSettings.forEach(setting => {
+                setValue(setting.name, setting.value);
+            });
 
         } catch (e) {
             setError(true);
@@ -50,40 +48,13 @@ function AdminSettings() {
                 withCredentials: true
             });
 
-            const successMessage = response?.data?.message ?? "Configuraciones actualizadas exitosamente";
+            const successMessage = response.data.message;
+            successAlert(successMessage);
             
-            Swal.fire({
-                title: 'Éxito',
-                text: successMessage,
-                background: '#e6ffe6',
-                color: '#121212',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#0FCB06',
-                icon: 'success',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                    title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm'
-                }
-            });
         } catch (error) {
             
             const errorMessage = error.response?.data?.message ?? "Ocurrió un error al actualizar las configuraciones";
-            
-            Swal.fire({
-                title: 'Error',
-                text: errorMessage,
-                background: '#ffe9e5',
-                color: '#121212',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#dd2404',
-                icon: 'error',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                    title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm'
-                }
-            });
+            errorAlert(errorMessage);
         }
     };
     

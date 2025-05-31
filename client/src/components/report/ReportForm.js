@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Tooltip } from "bootstrap";
-import Swal from 'sweetalert2';
+import { successAlert, errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function ReportForm() {
 
-    // Initialize form handling with react-hook-form
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
 
-    // State to handle selected province and conditional fields
     const [selectedProvince, setSelectedProvince] = useState("");
     const [descriptionLength, setDescriptionLength] = useState(0);
     const typeReport = watch("typeReport");
@@ -18,12 +16,10 @@ function ReportForm() {
 
     const navigate = useNavigate();
 
-
     const handleCancelClick = () => {
         navigate("/");
     };
 
-    // Function executed when form is submitted
     const onSubmit = async (data) => {
 
         if (data.typeReport === "anonymous") {
@@ -31,68 +27,32 @@ function ReportForm() {
             delete data.province;
             delete data.canton;
             delete data.age;
+            delete data.genderIdentity;
         }
 
         try {
 
             const registerResponse = await axios.post(`${process.env.REACT_APP_API_URL}/report`, data);
-
-            if (registerResponse) {
                 
+            // Se obtienen las configuraciones para verificar si se debe mostrar en enlace al formulario
+            const settingsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/settings`);
+            const settings = settingsResponse.data.data.settings;
+            const settingsObjs = Object.fromEntries(settings.map(({ name, value }) => [name, value]));
 
-                // Se obtienen las configuraciones para verificar si se debe mostrar en enlace
-                // al formulario
-                const settingsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/settings`);
-                const settings = settingsResponse.data.data.settings;
-                const settingsObjs = Object.fromEntries(settings.map(({ name, value }) => [name, value]));
+            let popUpMessage = registerResponse.data.message;
 
-                let popUpMessage = registerResponse?.data?.message ?? "La denuncia se ha registrado exitosamente";
-
-                if (settingsObjs.showExternalFormLink){
-                    const linkMessage = `.<br><br>Si desea contribuir con mayor profundidad a las investigaciones de la red AMEC,
-                    lo invitamos a completar el siguiente formulario: <a href="${settingsObjs.externalFormLink}" target="_blank">Enlace al formulario</a>`;
-                    popUpMessage += linkMessage;
-                }
-
-                Swal.fire({
-                    title: 'Éxito',
-                    html: popUpMessage,
-                    background: '#e6ffe6',
-                    color: '#121212',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#0FCB06',
-                    icon: 'success',
-                    customClass: {
-                        popup: 'custom-swal-popup',
-                        title: 'custom-swal-title',
-                        confirmButton: 'custom-swal-confirm'
-                    }
-                }).then((result) => {
-                    navigate("/");
-                });
-
-            } else {
-                throw new Error();
+            if (settingsObjs.showExternalFormLink){
+                const linkMessage = `.<br><br>Si desea contribuir con mayor profundidad a las investigaciones de la red AMEC,
+                lo invitamos a completar el siguiente formulario: <a href="${settingsObjs.externalFormLink}" target="_blank">Enlace al formulario</a>`;
+                popUpMessage += linkMessage;
             }
+
+            successAlert(popUpMessage, settingsObjs.showExternalFormLink, () => { navigate("/"); });
 
         } catch (error) {
 
             const errorMessage = error.response?.data?.message ?? "Se produjo un error inesperado, intente nuevamente más tarde";
-
-            Swal.fire({
-                title: 'Error',
-                text: errorMessage,
-                background: '#ffe9e5',
-                color: '#121212',
-                confirmButtonText: 'Aceptar',
-                confirmButtonColor: '#dd2404',
-                icon: 'error',
-                customClass: {
-                    popup: 'custom-swal-popup',
-                    title: 'custom-swal-title',
-                    confirmButton: 'custom-swal-confirm'
-                }
-            });
+            errorAlert(errorMessage);
         }
     };
 
@@ -101,8 +61,6 @@ function ReportForm() {
         tooltips.forEach((tooltip) => new Tooltip(tooltip));
     }, []);
 
-
-    // Province and cantons mapping
     const provinceData = {
         "San José": ["San José", "Escazú", "Desamparados", "Puriscal", "Tarrazú", "Aserrí", "Mora", "Goicochea", "Santa Ana", "Alajuelita", "Vázquez de Coronado", "Acosta", "Tibás", "Moravia", "Montes de Oca", "Turrubares", "Dota", "Curridabat", "Pérez Zeledón", "León Córtes Castro"],
         "Alajuela": ["Alajuela", "San Ramón", "Grecia", "San Mateo", "Atenas", "Naranjo", "Palmares", "Poás", "Orotina", "San Carlos", "Zarcero", "Sarchí", "Upala", "Los Chiles", "Guatuso", "Río Cuarto"],
@@ -113,16 +71,14 @@ function ReportForm() {
         "Limón": ["Limón", "Pococí", "Siquirres", "Talamanca", "Matina", "Guácimo"],
     };
 
-    // Filter cantons based on selected province
     const filteredCantons = selectedProvince ? provinceData[selectedProvince] || [] : [];
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            {/* Form title and subtitle */}
+
             <h2 className="mb-3">Formulario de Registro de Denuncia</h2>
             <p className="text-muted mb-4">Los campos marcados con * son obligatorios</p>
 
-            {/* Description */}
             <div className="mb-4">
                 <label className="form-label">Descripción *</label>
                 <textarea
@@ -140,7 +96,6 @@ function ReportForm() {
                 {errors.description && <div className="text-danger mt-1">{errors.description.message}</div>}
             </div>
 
-            {/* Radio buttons to select type of report */}
             <div className="d-flex align-items-start gap-4 mb-4">
 
                 <div className="form-check">
@@ -153,22 +108,20 @@ function ReportForm() {
                     <label className="form-check-label">Denuncia con información adicional</label>
                 </div>
 
-                {/* Tooltip icon for additional info */}
                 <i className="bi bi-info-circle ms-2" data-bs-toggle="tooltip" data-bs-placement="right" title="Al seleccionar esta opción usted nos ayuda a enriquecer la investigación. Los datos son opcionales"></i>
             </div>
 
-            {/* Additional fields that show conditionally */}
             <div
                 className={`${showAdditionalInfo ? "" : "d-none"}`}
             >
-                {/* Email input */}
+
                 <div className="mb-4">
                     <label className="form-label">Correo electrónico</label>
                     <input type="email" className="form-control fixed-width-email" {...register("email")} />
                 </div>
 
                 <div className="row mb-0 mb-md-4">
-                    {/* Province selector */}
+
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Provincia</label>
                         <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => { setSelectedProvince(e.target.value); setValue("canton", "") }}>
@@ -179,7 +132,6 @@ function ReportForm() {
                         </select>
                     </div>
 
-                    {/* Canton selector */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Cantón</label>
                         <select className="form-select fixed-width-select" {...register("canton")} disabled={!selectedProvince}>
@@ -190,7 +142,6 @@ function ReportForm() {
                         </select>
                     </div>
 
-                    {/* Age range selector */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Rango de edad</label>
                         <select className="form-select fixed-width-select" {...register("age")}>
@@ -206,7 +157,7 @@ function ReportForm() {
                 </div>
 
                 <div className="row mb-5">
-                    {/* Gender Identity */}
+
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Identidad de género</label>
                         <select className="form-select fixed-width-select" {...register("genderIdentity")}>
@@ -222,7 +173,6 @@ function ReportForm() {
                         </select>
                     </div>
 
-                    {/* Role within the institution */}
                     <div className="col-auto me-4 mb-4 mb-lg-0">
                         <label className="form-label">Rol dentro de la institución</label>
                         <select className="form-select fixed-width-select" {...register("roleInInstitution")}>
@@ -237,11 +187,11 @@ function ReportForm() {
 
             </div>
 
-            {/* Buttons */}
             <div className="d-flex justify-content-end mt-5 gap-3">
                 <button type="button" onClick={handleCancelClick} className="cancel-button">Cancelar</button>
                 <button type="submit" className="main-button">Enviar denuncia</button>
             </div>
+
         </form>
     );
 }

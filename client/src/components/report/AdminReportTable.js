@@ -17,23 +17,22 @@ function AdminReportTable() {
     const states = { 0: "En espera", 1: "Aceptada", 2: "Archivada" };
 
     const fetchReports = useCallback(async () => {
+
         setLoadingReports(true);
+        
         try {
+
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports`, {
                 params: { page: page, order: 'crono', state: reportState || null },
                 withCredentials: true
             });
 
-            if (response.data.data) {
-                const newReports = response.data.data.reports;
-                const newTotalPages = response.data.data.totalPages;
-                const newTotalCount = response.data.data.totalCount; 
-                setReports([...newReports]);
-                setTotalPages(newTotalPages);
-                setTotalCount(newTotalCount); 
-            } else {
-                throw new Error();
-            }
+            const newReports = response.data.data.reports;
+            const newTotalPages = response.data.data.totalPages;
+            const newTotalCount = response.data.data.totalCount; 
+            setReports([...newReports]);
+            setTotalPages(newTotalPages);
+            setTotalCount(newTotalCount); 
 
         } catch (e) {
             setError(true);
