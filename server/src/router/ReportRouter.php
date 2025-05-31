@@ -84,8 +84,9 @@ class ReportRouter{
         // Validamos formato y campos obligatorios
         $this -> reportValidator -> validateContent($content);
         $this -> reportValidator -> validateReportType($reportType);
+        $this -> reportValidator -> validateRoleInInstitution($roleInInstitution);
     
-        if ($reportType === "additional-information") {
+        if ($reportType === "additional-information" && $email !== "") {
             $this -> reportValidator -> validateEmail($email);
         }
     

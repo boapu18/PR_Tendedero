@@ -68,6 +68,7 @@ function ReportForm() {
             <p className="text-muted mb-4">Los campos marcados con * son obligatorios</p>
 
             <div className="mb-4">
+
                 <label className="form-label">Descripción *</label>
                 <textarea
                     className="form-control"
@@ -78,10 +79,29 @@ function ReportForm() {
                         onChange: (e) => setDescriptionLength(e.target.value.length)
                     })}
                 />
-                <div className="text-end mt-1" style={{ fontSize: "0.9rem", color: descriptionLength >= 2000 ? "red" : "#666" }}>
-                    {descriptionLength}/2000
+                
+                <div className="d-flex justify-content-between mb-2">
+                    {errors.description && <div className="text-danger mt-1">{errors.description.message}</div>}
+                    <div className="ms-auto mt-1" style={{ fontSize: "0.9rem", color: descriptionLength > 2000 ? "red" : "#666" }}>
+                        {descriptionLength}/2000
+                    </div>
                 </div>
-                {errors.description && <div className="text-danger mt-1">{errors.description.message}</div>}
+
+                <label className="form-label">Rol dentro de la institución *</label>
+                <select className="form-select fixed-width-select" {...register("roleInInstitution", {
+                    required: "El rol dentro de la institución es obligatorio"
+                })}>
+                    <option value="">Seleccione</option>
+                    <option value="Persona estudiante">Persona estudiante</option>
+                    <option value="Persona docente">Persona docente</option>
+                    <option value="Persona administrativa">Persona administrativa</option>
+                    <option value="Otro">Otro</option>
+                </select>
+
+                <div className="d-flex justify-content-between mb-2">
+                    {errors.roleInInstitution && <div className="text-danger mt-1">{errors.roleInInstitution.message}</div>}
+                </div>
+
             </div>
 
             <div className="d-flex align-items-start gap-4 mb-4">
@@ -105,34 +125,34 @@ function ReportForm() {
 
                 <div className="mb-4">
                     <label className="form-label">Correo electrónico</label>
-                    <input type="email" className="form-control fixed-width-email" {...register("email")} />
+                    <input type="email" className="form-control" {...register("email")} />
                 </div>
 
                 <div className="row mb-0 mb-md-4">
 
-                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                    <div className="col-12 col-lg mb-4 mb-lg-0">
                         <label className="form-label">Provincia</label>
-                        <select className="form-select fixed-width-select" {...register("province")} onChange={(e) => { setSelectedProvince(e.target.value); setValue("canton", "") }}>
-                            <option value="">Seleccione una provincia</option>
+                        <select className="form-select" {...register("province")} onChange={(e) => { setSelectedProvince(e.target.value); setValue("canton", "") }}>
+                            <option value="">Seleccione</option>
                             {Object.keys(PROVINCE_DATA).map((province) => (
                                 <option key={province} value={province}>{province}</option>
                             ))}
                         </select>
                     </div>
 
-                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                    <div className="col-12 col-lg mb-4 mb-lg-0">
                         <label className="form-label">Cantón</label>
-                        <select className="form-select fixed-width-select" {...register("canton")} disabled={!selectedProvince}>
-                            <option value="">Seleccione un cantón</option>
+                        <select className="form-select" {...register("canton")} disabled={!selectedProvince}>
+                            <option value="">Seleccione</option>
                             {filteredCantons.map((canton) => (
                                 <option key={canton} value={canton}>{canton}</option>
                             ))}
                         </select>
                     </div>
 
-                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                    <div className="col-12 col-lg mb-4 mb-lg-0">
                         <label className="form-label">Rango de edad</label>
-                        <select className="form-select fixed-width-select" {...register("age")}>
+                        <select className="form-select" {...register("age")}>
                             <option value="">Seleccione</option>
                             <option value="Menos de 18 años">Menos de 18 años</option>
                             <option value="18-24 años">18-24 años</option>
@@ -142,13 +162,10 @@ function ReportForm() {
                             <option value="65 años o más">65 años o más</option>
                         </select>
                     </div>
-                </div>
 
-                <div className="row mb-5">
-
-                    <div className="col-auto me-4 mb-4 mb-lg-0">
+                    <div className="col-12 col-lg mb-4 mb-lg-0">
                         <label className="form-label">Identidad de género</label>
-                        <select className="form-select fixed-width-select" {...register("genderIdentity")}>
+                        <select className="form-select" {...register("genderIdentity")}>
                             <option value="">Seleccione</option>
                             <option value="Mujer">Mujer</option>
                             <option value="Hombre">Hombre</option>
@@ -161,16 +178,6 @@ function ReportForm() {
                         </select>
                     </div>
 
-                    <div className="col-auto me-4 mb-4 mb-lg-0">
-                        <label className="form-label">Rol dentro de la institución</label>
-                        <select className="form-select fixed-width-select" {...register("roleInInstitution")}>
-                            <option value="">Seleccione</option>
-                            <option value="Persona estudiante">Persona estudiante</option>
-                            <option value="Persona docente">Persona docente</option>
-                            <option value="Persona administrativa">Persona administrativa</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
                 </div>
 
             </div>

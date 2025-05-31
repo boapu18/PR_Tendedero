@@ -18,18 +18,13 @@
       background: none !important;
     }
   }  
-  
-  .fixed-width-select {
-    width: 230px;      
-    min-width: 230px;
-    max-width: 230px;
-  }
 
-  .fixed-width-email{
-    width: 510px;      
-    min-width: 230px;
-    max-width: 510px;
-  }
+  @media (min-width: 992px) {
+
+    .fixed-width-select {   
+      max-width: 280px;
+    }
+  }  
 
   .fixed-width-login-input{
     width: 350px;      
