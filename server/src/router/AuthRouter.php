@@ -12,8 +12,8 @@ class AuthRouter {
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $username = $data['username'] ?? null;
-        $password = $data['password'] ?? null;
+        $username = sanitizeText($data['username'] ?? null);
+        $password = sanitizeText($data['password'] ?? null);
 
         if ($this -> authController -> login($username, $password)) {
             respondWithSuccess(null, "Autenticación exitosa", 200);

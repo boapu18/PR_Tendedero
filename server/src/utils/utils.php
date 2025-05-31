@@ -23,3 +23,14 @@ function respondWithSuccess($data, $message, $statusCode){
     
     exit;
 }
+
+function sanitizeText($text){
+
+    if (is_null($text)){
+        return $text;
+    }
+
+    $clean = strip_tags($text);
+    $clean = trim($clean);
+    return $clean;
+}

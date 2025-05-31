@@ -10,6 +10,8 @@ require_once  __DIR__ . "/../src/database/Database.php";
 
 require_once  __DIR__ . "/../src/utils/RouteProtecter.php";
 
+require_once  __DIR__ . "/../src/validators/ReportValidator.php";
+
 require_once  __DIR__ . "/../src/controller/AuthController.php";
 require_once  __DIR__ . "/../src/controller/ReportController.php";
 require_once  __DIR__ . "/../src/controller/SettingController.php";
@@ -47,13 +49,15 @@ if ($is_dev) {
 $router = new Router();
 $database = new Database();
 
+$reportValidator = new ReportValidator();
+
 $authController = new AuthController();
 $settingController = new SettingController($database);
 $reportController = new ReportController($database);
 
 $routeProtecter = new RouteProtecter($authController);
 
-$reportRouter = new ReportRouter($reportController, $routeProtecter);
+$reportRouter = new ReportRouter($reportController, $routeProtecter, $reportValidator);
 $authRouter = new AuthRouter($authController);
 $settingRouter = new SettingRouter($settingController, $routeProtecter);
 

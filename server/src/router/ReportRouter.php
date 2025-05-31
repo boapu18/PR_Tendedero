@@ -4,17 +4,22 @@ class ReportRouter{
 
     private $reportController;
     private $routeProtecter;
+    private $reportValidator;
 
-    public function __construct($reportController, $routeProtecter){
+    public function __construct($reportController, $routeProtecter, $reportValidator){
         $this -> reportController = $reportController;
         $this -> routeProtecter = $routeProtecter;
+        $this -> reportValidator = $reportValidator;
     }
 
+    /**
+     * Obtiene un batch de denuncias
+     */
     public function getReports(){
         
-        $page = $_GET["page"] ?? null;
-        $order = $_GET["order"] ??  null;
-        $state = $_GET["state"] ?? null;
+        $page = sanitizeText($_GET["page"] ?? null);
+        $order = sanitizeText($_GET["order"] ??  null);
+        $state = sanitizeText($_GET["state"] ?? null);
     
         if (is_null($order) || ($order != "crono" && $order != "rand")){
             respondWithError("El orden no es válido", 400);    
@@ -28,6 +33,8 @@ class ReportRouter{
             respondWithError("El estado no es válido", 400);
         }
 
+        // Verificamos los permisos del usuario para consultar las denuncias
+        // según el estado que se pide
         $this -> routeProtecter -> checkGetReportsPermissions((int)$state);
     
         try {
@@ -42,6 +49,9 @@ class ReportRouter{
     
             $totalCount = $this -> reportController -> getReportsCount($state);
             $totalPages = ceil($totalCount / 14);
+
+            // Filtramos datos sensibles de los reportes para
+            // usuarios no autenticados
             $filteredReports = $this -> routeProtecter -> filterReportInformation($reports);
     
             $data = ["reports" => $filteredReports, "totalCount" => $totalCount, "page" => (int)$page, "totalPages" => $totalPages];
@@ -54,34 +64,29 @@ class ReportRouter{
         }
     }
 
+    /**
+     * Registra una denuncia
+     */
     public function postReport(){
 
         $data = json_decode(file_get_contents("php://input"), true);
 
-
-        $content = $data["description"] ?? null;
-        $province = $data["province"] ?? null;
-        $canton = $data["canton"] ?? null;
-        $email = $data["email"] ?? null;
-        $ageBracket = $data["age"] ?? null;
-        $genderIdentity = $data["genderIdentity"] ?? null;
-        $roleInInstitution = $data["roleInInstitution"] ?? null;
-        $reportType = $data["typeReport"] ?? null;
+        // Obtenemos los datos y los sanitizamos
+        $content = sanitizeText($data["description"] ?? null);
+        $province = sanitizeText($data["province"] ?? null);
+        $canton = sanitizeText($data["canton"] ?? null);
+        $email = sanitizeText($data["email"] ?? null);
+        $ageBracket = sanitizeText($data["age"] ?? null);
+        $genderIdentity = sanitizeText($data["genderIdentity"] ?? null);
+        $roleInInstitution = sanitizeText($data["roleInInstitution"] ?? null);
+        $reportType = sanitizeText($data["typeReport"] ?? null);
+        
+        // Validamos formato y campos obligatorios
+        $this -> reportValidator -> validateContent($content);
+        $this -> reportValidator -> validateReportType($reportType);
     
-        if (!$content || trim($content) === "") {
-            respondWithError("La descripción es obligatoria", 400);
-        }
-    
-        $wordCount = str_word_count(strip_tags($content));
-        if ($wordCount > 2000) {
-            respondWithError("La descripción no puede tener más de 2000 caracteres.", 400);
-        }
-    
-        if ($reportType === "addictional-information") {
-    
-            if (trim($email) !== "" && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                respondWithError("El correo electrónico no es válido", 400);
-            }
+        if ($reportType === "additional-information") {
+            $this -> reportValidator -> validateEmail($email);
         }
     
         $report = new Report($content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution, null, 0);
@@ -102,16 +107,16 @@ class ReportRouter{
         }
     }
 
+    /**
+     * Obtiene una denuncia por su identificador
+     */
     public function getReport($params){
 
+        // Verificamos que el usuario cuente con autenticación
         $this -> routeProtecter -> checkAuth();
 
-        $id = $params['id'];
-
-        if(!$id || !is_numeric($id)){
-            respondWithError("Id de reporte no válido", 400);
-            return;
-        }
+        $id = sanitizeText($params['id']);
+        $this -> reportValidator -> validateId($id);
 
         try{
 
@@ -128,16 +133,16 @@ class ReportRouter{
         }
     }
 
+    /**
+     * Elimina una denuncia por su identificador
+     */
     public function deleteReport($params){
 
+        // Verificamos que el usuario cuente con autenticación
         $this -> routeProtecter -> checkAuth();
 
-        $id = $params['id'];
-    
-        if (!$id || !is_numeric($id)) {
-            respondWithError("ID de denuncia no válido", 400);
-            return;
-        }
+        $id = sanitizeText($params['id']);
+        $this -> reportValidator -> validateId($id);
 
         try {
 
@@ -155,24 +160,21 @@ class ReportRouter{
         }
     }
 
+    /**
+     * Actualiza el estado de una denuncia
+     */
     public function patchReport($params) {
 
+        // Verificamos que el usuario cuente con autenticación
         $this -> routeProtecter -> checkAuth();
 
-        $id = $params['id'];
-    
-        if (!$id || !is_numeric($id)) {
-            respondWithError("ID de denuncia no válido", 400);
-            return;
-        }
+        $id = sanitizeText($params['id']);
+        $this -> reportValidator -> validateId($id);
     
         $data = json_decode(file_get_contents("php://input"), true);
-        $newState = $data["state"] ?? null;
-    
-        if (!is_numeric($newState) || !in_array((int)$newState, [0, 1, 2])) {
-            respondWithError("Estado no válido", 400);
-            return;
-        }
+
+        $newState = sanitizeText($data["state"] ?? null );
+        $this -> reportValidator -> validateState($newState);
     
         try {
 
@@ -190,8 +192,12 @@ class ReportRouter{
         }
     }
 
+    /**
+     * Descarga un archivo con todas las denuncias registradas
+     */
     public function downloadCSV() {
 
+        // Verificamos que el usuario cuente con autenticación
         $this -> routeProtecter -> checkAuth();
 
         try {

@@ -8,11 +8,11 @@ import { PROVINCE_DATA } from "../../utils/constants";
 
 function ReportForm() {
 
-    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({ defaultValues: { typeReport: "addictional-information" } });
+    const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({ defaultValues: { typeReport: "additional-information" } });
     const [selectedProvince, setSelectedProvince] = useState("");
     const [descriptionLength, setDescriptionLength] = useState(0);
     const typeReport = watch("typeReport");
-    const showAdditionalInfo = typeReport === "addictional-information";
+    const showAdditionalInfo = typeReport === "additional-information";
     const filteredCantons = selectedProvince ? PROVINCE_DATA[selectedProvince] || [] : [];
     const navigate = useNavigate();
 
@@ -92,7 +92,7 @@ function ReportForm() {
                 </div>
 
                 <div className="form-check">
-                    <input className="form-check-input" type="radio" value="addictional-information" {...register("typeReport", { required: true })} />
+                    <input className="form-check-input" type="radio" value="additional-information" {...register("typeReport", { required: true })} />
                     <label className="form-check-label">Denuncia con información adicional</label>
                 </div>
 
