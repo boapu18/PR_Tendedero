@@ -79,7 +79,8 @@ function DetailReport() {
 
             {!loading && !error && reportData && (
                 <>
-                    <h2 className="mb-4 text-start">Detalle de Denuncia</h2>
+                    <h2 className="text-start">Detalle de Denuncia</h2>
+                    <p className="text-muted mb-4">Fecha de registro: {new Date(reportData.creationDate).toLocaleString("es-CR")}</p>
 
                     <div className="mb-4 text-start">
                         <label className="form-label">Descripción</label>
@@ -102,31 +103,32 @@ function DetailReport() {
                     </div>
 
                     <div className="row mb-0 mb-md-4 text-start">
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
+
+                        <div className="col-12 col-md mb-4 mb-lg-0">
                             <label className="form-label">Provincia</label>
                             <input
                                 type="text"
-                                className="form-control fixed-width-select"
+                                className="form-control"
                                 value={reportData.province || ""}
                                 readOnly
                             />
                         </div>
 
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
+                        <div className="col-12 col-md mb-4 mb-lg-0">
                             <label className="form-label">Cantón</label>
                             <input
                                 type="text"
-                                className="form-control fixed-width-select"
+                                className="form-control"
                                 value={reportData.canton || ""}
                                 readOnly
                             />
                         </div>
 
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
+                        <div className="col-12 col-md mb-4 mb-lg-0">
                             <label className="form-label">Rango de edad</label>
                             <input
                                 type="text"
-                                className="form-control fixed-width-select"
+                                className="form-control"
                                 value={reportData.ageBracket || ""}
                                 readOnly
                             />
@@ -134,32 +136,23 @@ function DetailReport() {
                     </div>
 
                     <div className="row mb-4 mb-lg-4 text-start">
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
+
+                        <div className="col-12 col-md mb-4 mb-lg-0">
                             <label className="form-label">Identidad de género</label>
                             <input
                                 type="text"
-                                className="form-control fixed-width-select"
+                                className="form-control"
                                 value={reportData.genderIdentity || ""}
                                 readOnly
                             />
                         </div>
 
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
+                        <div className="col-12 col-md mb-4 mb-lg-0">
                             <label className="form-label">Rol dentro de la institución</label>
                             <input
                                 type="text"
-                                className="form-control fixed-width-select"
+                                className="form-control"
                                 value={reportData.roleInInstitution || ""}
-                                readOnly
-                            />
-                        </div>
-
-                        <div className="col-auto me-4 mb-3 mb-lg-0">
-                            <label className="form-label">Fecha de creación</label>
-                            <input
-                                type="text"
-                                className="form-control fixed-width-select"
-                                value={new Date(reportData.creationDate).toLocaleString("es-CR")}
                                 readOnly
                             />
                         </div>
