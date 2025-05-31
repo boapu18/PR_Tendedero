@@ -56,13 +56,13 @@
     cursor: pointer;
   }
   
-  .invisible-placeholder {
+.invisible-placeholder {
     visibility: hidden;
     height: 0;
     overflow: hidden;
-  }
+}
 
-  .custom-swal-popup {
+.custom-swal-popup {
     border-radius: 15px;
     padding: 2rem;
 }
@@ -72,10 +72,10 @@
     font-weight: bold;
 }
 
-.custom-swal-confirm {
-    font-size: 1rem;
-    padding: 0.5rem 1.5rem;
-    border-radius: 6px;
+.custom-swal-button {
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  border-radius: 6px;
 }
 
 .report-card-container {

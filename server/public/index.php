@@ -59,6 +59,7 @@ $settingRouter = new SettingRouter($settingController, $routeProtecter);
 
 $router -> get("/reports", [$reportRouter, 'getReports']);
 $router -> get("/report/:id", [$reportRouter, 'getReport']);
+$router -> delete("/report/:id", [$reportRouter, 'deleteReport']);
 $router -> post("/report", [$reportRouter, 'postReport']);
 $router -> patch("/report/:id", [$reportRouter, 'patchReport']);
 $router -> get("/reports/download-csv", [$reportRouter, 'downloadCSV']);

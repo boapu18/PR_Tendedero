@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import Swal from "sweetalert2";
+import { successAlert, errorAlert, confirmationAlert } from "../../utils/alertInvokers";
 
 const states = {
     0: "En espera",
@@ -17,6 +17,7 @@ function DetailReport() {
     const [error, setError] = useState(false);
 
     useEffect(() => {
+
         setLoading(true);
         setError(false);
 
@@ -26,83 +27,65 @@ function DetailReport() {
                 setLoading(false);
             })
             .catch(err => {
-                console.error("Error cargando la denuncia:", err);
                 setError(true);
                 setLoading(false);
             });
+
     }, [id]);
 
-
     const handleChangeStatus = (e) => {
+
         const newState = parseInt(e.target.value);
 
         axios.patch(`${process.env.REACT_APP_API_URL}/report/${id}`, { state: newState }, { withCredentials: true })
-            .then(() => {
-                Swal.fire({
-                    title: 'Éxito',
-                    text: 'Estado actualizado correctamente',
-                    background: '#e6ffe6',
-                    color: '#121212',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#0FCB06',
-                    icon: 'success',
-                    customClass: {
-                        popup: 'custom-swal-popup',
-                        title: 'custom-swal-title',
-                        confirmButton: 'custom-swal-confirm'
-                    }
-                });
+            .then((response) => {
                 setReportData(prev => ({ ...prev, state: newState }));
+                successAlert(response.data.message);
             })
-            .catch(() => {
-                Swal.fire({
-                    title: 'Error',
-                    text: 'No se pudo actualizar el estado',
-                    background: '#ffe9e5',
-                    color: '#121212',
-                    confirmButtonText: 'Aceptar',
-                    confirmButtonColor: '#dd2404',
-                    icon: 'error',
-                    customClass: {
-                        popup: 'custom-swal-popup',
-                        title: 'custom-swal-title',
-                        confirmButton: 'custom-swal-confirm'
-                    }
-                });
+            .catch((error) => {
+                errorAlert(error.response.data.message);
             });
     };
+
+    const handleDeleteReport = async () => {
+
+        const confirmation = await confirmationAlert("¿Está seguro que desea eliminar la denuncia?");
+
+        try {
+
+            if (confirmation){
+                const response = await axios.delete(`${process.env.REACT_APP_API_URL}/report/${id}`, { withCredentials: true });
+                successAlert(response.data.message, false, () => { handleBack(); });
+            }
+            
+        } catch (error) {
+            errorAlert(error.response.data.message);
+        }
+    }
 
     const handleBack = () => {
         window.history.back();
     };
 
-    const handleBackError = () => {
-        window.history.back();
-    }
-
-
     return (
         <>
-            {/* Loader */}
-            {loading && <p className="my-5">Cargando denuncia...</p>}
 
-            {/* Error */}
-            {!loading && error && (
-                <div>
-                    <p className="text-danger my-5">Ocurrió un error al cargar la denuncia.</p>
-                    <button className="cancel-button" onClick={handleBackError}>
+            <div className="d-flex justify-content-center align-items-center">
+                {loading && <p>Cargando...</p>}
+                {error && 
+                <div className="d-flex flex-column align-items-center">
+                    <p className="mb-4">Ocurrió un error al cargar la denuncia</p>
+                    <button className="cancel-button" onClick={handleBack}>
                         Regresar
                     </button>
                 </div>
-            )}
+                }
+            </div>
 
-
-            {/* Main content */}
             {!loading && !error && reportData && (
                 <>
                     <h2 className="mb-4 text-start">Detalle de Denuncia</h2>
 
-                    {/* Description */}
                     <div className="mb-4 text-start">
                         <label className="form-label">Descripción</label>
                         <textarea
@@ -113,7 +96,6 @@ function DetailReport() {
                         />
                     </div>
 
-                    {/* Email */}
                     <div className="mb-4 text-start">
                         <label className="form-label">Correo electrónico</label>
                         <input
@@ -124,7 +106,6 @@ function DetailReport() {
                         />
                     </div>
 
-                    {/* Province */}
                     <div className="row mb-0 mb-md-4 text-start">
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Provincia</label>
@@ -136,7 +117,6 @@ function DetailReport() {
                             />
                         </div>
 
-                        {/* Canton */}
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Cantón</label>
                             <input
@@ -147,7 +127,6 @@ function DetailReport() {
                             />
                         </div>
 
-                        {/* Age */}
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Rango de edad</label>
                             <input
@@ -159,7 +138,6 @@ function DetailReport() {
                         </div>
                     </div>
 
-                    {/* Gender Identity */}
                     <div className="row mb-4 mb-lg-4 text-start">
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Identidad de género</label>
@@ -171,7 +149,6 @@ function DetailReport() {
                             />
                         </div>
 
-                        {/* Role */}
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Rol dentro de la institución</label>
                             <input
@@ -182,7 +159,6 @@ function DetailReport() {
                             />
                         </div>
 
-                        {/* Date */}
                         <div className="col-auto me-4 mb-3 mb-lg-0">
                             <label className="form-label">Fecha de creación</label>
                             <input
@@ -195,8 +171,6 @@ function DetailReport() {
 
                     </div>
 
-
-                    {/* State*/}
                     <div className="d-flex flex-column align-items-end mb-5">
                         <div style={{ width: "200px" }}>
                             <label className="form-label">Estado</label>
@@ -214,8 +188,10 @@ function DetailReport() {
                         </div>
                     </div>
 
-                    {/* Button*/}
                     <div className="d-flex justify-content-end">
+                        <button className="btn btn-danger me-3" onClick={handleDeleteReport}>
+                            Eliminar denuncia
+                        </button>
                         <button className="cancel-button" onClick={handleBack}>
                             Regresar
                         </button>

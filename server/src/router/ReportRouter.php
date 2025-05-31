@@ -93,7 +93,7 @@ class ReportRouter{
             if ($result){
                 respondWithSuccess(null, "La denuncia se ha registrado exitosamente", 200);
             } else {
-                respondWithError("No se pudo registrar la denuncia, intente nuevamente más tarde", 500);
+                respondWithError("No se pudo registrar la denuncia", 500);
             }
     
         } catch (Exception $e){
@@ -124,7 +124,34 @@ class ReportRouter{
             }
         } catch (Exception $e) {
             error_log($e -> getMessage());
-            respondWithError("Se produjo un error inesperado", 500);
+            respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
+        }
+    }
+
+    public function deleteReport($params){
+
+        $this -> routeProtecter -> checkAuth();
+
+        $id = $params['id'];
+    
+        if (!$id || !is_numeric($id)) {
+            respondWithError("ID de denuncia no válido", 400);
+            return;
+        }
+
+        try {
+
+            $success = $this -> reportController -> deleteReport((int)$id);
+    
+            if ($success) {
+                respondWithSuccess(null, "La denuncia se ha eliminado exitosamente", 200);
+            } else {
+                respondWithError("No se pudo eliminar la denuncia", 500);
+            }
+            
+        } catch (Exception $e) {
+            error_log($e -> getMessage());
+            respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
         }
     }
 
@@ -159,7 +186,7 @@ class ReportRouter{
             
         } catch (Exception $e) {
             error_log($e -> getMessage());
-            respondWithError("Se produjo un error inesperado", 500);
+            respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
         }
     }
 
@@ -171,7 +198,7 @@ class ReportRouter{
             $this -> reportController -> downloadCSV();
         } catch (Exception $e) {
             error_log($e -> getMessage());
-            respondWithError("Se produjo un error inesperado", 500);
+            respondWithError("Se produjo un error inesperado, intente nuevamente más tarde", 500);
         }
     }
     

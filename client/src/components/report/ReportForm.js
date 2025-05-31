@@ -49,7 +49,7 @@ function ReportForm() {
                 let popUpMessage = registerResponse?.data?.message ?? "La denuncia se ha registrado exitosamente";
 
                 if (settingsObjs.showExternalFormLink){
-                    const linkMessage = `.<br><br>Si desea contribuir con mayor produndidad a las investigaciones de la red AMEC,
+                    const linkMessage = `.<br><br>Si desea contribuir con mayor profundidad a las investigaciones de la red AMEC,
                     lo invitamos a completar el siguiente formulario: <a href="${settingsObjs.externalFormLink}" target="_blank">Enlace al formulario</a>`;
                     popUpMessage += linkMessage;
                 }

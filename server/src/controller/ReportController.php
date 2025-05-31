@@ -233,12 +233,33 @@ class ReportController {
         return $report; 
     }
 
+    /**
+     * Elimina una denuncia.
+     * 
+     * @param int $reportId El ID de la denuncia a eliminar.
+     * @return bool Retorna true si la denuncia se eliminó correctamente, y false en el caso contrario.
+     */
+    public function deleteReport($reportId){
+
+        $conn = $this -> database -> connect();
+
+        $query = "DELETE FROM Report WHERE id = ?";
+        $stmt = $conn -> prepare($query);
+        $stmt -> bind_param("i", $reportId);
+
+        $success = $stmt -> execute();
+
+        $stmt -> close();
+        $this -> database -> close();
+
+        return $success;
+    }
 
     /**
      * Actualiza el estado de una denuncia.
      * 
-     * @param int $reportId El ID del reporte a actualizar el estado.
-     * @param int $state El nuevo estado del reporte.
+     * @param int $reportId El ID de la denuncia a actualizar el estado.
+     * @param int $state El nuevo estado de la denuncia.
      * @return bool Retorna true si el estado se actualizó correctamente, y false en el caso contrario.
      */
     public function updateReportState($reportId, $state){

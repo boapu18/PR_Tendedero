@@ -16,6 +16,10 @@ class Router {
         $this -> addRoute('PATCH', $path, $handler);
     }
 
+    public function delete($path, $handler) {
+        $this -> addRoute('DELETE', $path, $handler);
+    }
+
     private function addRoute($method, $path, $handler) {
 
         $regex = preg_replace('#:([\w]+)#', '([^/]+)', $path);
