@@ -2,6 +2,8 @@ import React, { useRef } from "react";
 import ReportCard from "./ReportCard";
 import { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
+import Masonry from 'react-masonry-css';
+import Loader from "../utils/Loader";
 
 function ReportList() {
 
@@ -11,10 +13,12 @@ function ReportList() {
     const [page, setPage] = useState(1);
     const [error, setError] = useState(false);
     const observer = useRef();
+    const [loadingErrorMessage, setLoadingErrorMessage] = useState("");
 
     const fetchReports = useCallback(async () => {
 
         setLoadingReports(true);
+        setError(false);
 
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/reports`, {
@@ -26,6 +30,7 @@ function ReportList() {
             setMoreReports(newReports.length > 0);
             
         } catch (e){
+            setLoadingErrorMessage(e.response.data.message);
             setError(true);
         } finally {
             setLoadingReports(false);
@@ -62,11 +67,20 @@ function ReportList() {
         }
 
     }, [loadingReports, moreReports]);
+
+    const breakpointColumnsObj = {
+        default: 2,
+        1199: 1,
+    };
     
     return (
     
     <div className="mb-5" style={{marginTop: "80px"}}>
-      <div className="d-flex flex-wrap">
+      
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="masonry-grid"
+      >
 
         {
             reports.map((report, i) => {
@@ -74,18 +88,27 @@ function ReportList() {
                     <div 
                         key={i} 
                         ref={reports.length === i + 1 ? lastReportRef : null}
-                        className="col-12 col-xl-6 border-top border-1 border-secondary" style={{marginBottom: "4rem"}}> 
+                        className="mb-5"
+                    > 
+                        <div 
+                            className="my-0"
+                            style={{
+                                height: '1px',
+                                width: '100%',
+                                background: 'linear-gradient(to right, transparent 0%, #282D2E 35%, #282D2E 65%, transparent 100%)',
+                            }}
+                        />
                         <ReportCard report={report}/>
                     </div>
                 )
             })
         }
 
-      </div>
+      </Masonry>
 
       <div className="d-flex justify-content-center align-items-center my-4">
-        {loadingReports && <p>Cargando...</p>}
-        {error && <p>Ocurrió un error al cargar las denuncias</p>}
+        {loadingReports && <Loader/>}
+        {error && <p className="text-center">{loadingErrorMessage}</p>}
       </div>
 
     </div>

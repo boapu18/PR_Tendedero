@@ -4,6 +4,7 @@ import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import ExportDataButton from "./ExportDataButton";
 import { REPORT_STATES } from "../../utils/constants";
+import Loader from "../utils/Loader";
 
 function AdminReportTable() {
 
@@ -15,10 +16,12 @@ function AdminReportTable() {
     const [loadingReports, setLoadingReports] = useState(false);
     const [reports, setReports] = useState([]);
     const [error, setError] = useState(false);
+    const [loadingErrorMessage, setLoadingErrorMessage] = useState("");
 
     const fetchReports = useCallback(async () => {
 
         setLoadingReports(true);
+        setError(false);
 
         try {
 
@@ -35,6 +38,7 @@ function AdminReportTable() {
             setTotalCount(newTotalCount); 
 
         } catch (e) {
+            setLoadingErrorMessage(e.response.data.message);
             setError(true);
         } finally {
             setLoadingReports(false);
@@ -69,18 +73,18 @@ function AdminReportTable() {
     return (
         <div className="my-5">
 
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-                <h2 className="mb-4 mb-md-0">Denuncias registradas</h2>
-                <ExportDataButton />
-            </div>
-
             <div className="d-flex justify-content-center align-items-center">
-                {loadingReports && <p>Cargando...</p>}
-                {error && <p>Ocurrió un error al cargar las denuncias</p>}
+                {loadingReports && <Loader/>}
+                {error && <p className="text-center">{loadingErrorMessage}</p>}
             </div>
 
             {(!error && !loadingReports) &&
                 <>
+
+                    <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                        <h2 className="mb-4 mb-md-0">Denuncias registradas</h2>
+                        <ExportDataButton />
+                    </div>
 
                     <div className="mb-3 d-flex justify-content-between">
                         <p className="mb-0">Total de denuncias: {totalCount}</p>

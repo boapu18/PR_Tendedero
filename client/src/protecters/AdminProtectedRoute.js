@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LogginPage from '../pages/LogginPage';
 import axios from "axios";
+import Loader from '../components/utils/Loader';
 
 function AdminProtectedRoute({ children }){
 
@@ -27,7 +28,7 @@ function AdminProtectedRoute({ children }){
     if (loading){
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
-                <p>Cargando...</p>
+                <Loader/>
             </div>
         );
     }

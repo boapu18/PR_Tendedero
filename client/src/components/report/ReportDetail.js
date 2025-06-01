@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { successAlert, errorAlert, confirmationAlert } from "../../utils/alertInvokers";
 import { REPORT_STATES } from "../../utils/constants";
+import Loader from "../utils/Loader";
 
 function DetailReport() {
 
@@ -10,6 +11,7 @@ function DetailReport() {
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+    const [loadingErrorMessage, setLoadingErrorMessage] = useState("");
 
     useEffect(() => {
 
@@ -22,6 +24,7 @@ function DetailReport() {
                 setLoading(false);
             })
             .catch(err => {
+                setLoadingErrorMessage(err.response.data.message);
                 setError(true);
                 setLoading(false);
             });
@@ -65,15 +68,15 @@ function DetailReport() {
     return (
         <>
 
-            <div className="d-flex justify-content-center align-items-center">
-                {loading && <p>Cargando...</p>}
+            <div className={`d-flex justify-content-center align-items-center ${loading || error ? "vh-100" : ""}`}>
+                {loading && <Loader/>}
                 {error && 
-                <div className="d-flex flex-column align-items-center">
-                    <p className="mb-4">Ocurrió un error al cargar la denuncia</p>
-                    <button className="cancel-button" onClick={handleBack}>
-                        Regresar
-                    </button>
-                </div>
+                    <div className="d-flex flex-column align-items-center">
+                        <p className="mb-4 text-center">{loadingErrorMessage}</p>
+                        <button className="cancel-button" onClick={handleBack}>
+                            Regresar
+                        </button>
+                    </div>
                 }
             </div>
 

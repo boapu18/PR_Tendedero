@@ -2,18 +2,21 @@ import React, { useEffect, useCallback, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { successAlert, errorAlert } from "../../utils/alertInvokers";
+import Loader from "../utils/Loader";
 
 function AdminSettings() {
     
     const { register, setValue, watch, handleSubmit } = useForm();
     const [loadingSettings, setLoadingSettings] = useState(false);
     const [error, setError] = useState(false);
+    const [loadingErrorMessage, setLoadingErrorMessage] = useState("");
 
     const showExternalFormLink = watch("showExternalFormLink");
 
     const fetchSettings = useCallback(async () => {
 
         setLoadingSettings(true);
+        setError(false);
 
         try {
 
@@ -26,6 +29,7 @@ function AdminSettings() {
             });
 
         } catch (e) {
+            setLoadingErrorMessage(e.response.data.message);
             setError(true);
         } finally {
             setLoadingSettings(false);
@@ -61,16 +65,19 @@ function AdminSettings() {
     return (
         <div className="my-5">
 
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
-                <h2 className="mb-4 mb-md-0">Configuraciones</h2>
-            </div>
-
             <div className="d-flex justify-content-center align-items-center">
-                {loadingSettings && <p>Cargando...</p>}
-                {error && <p>Ocurrió un error al cargar las configuraciones</p>}
+                {loadingSettings && <Loader/>}
+                {error && <p className="text-center">{loadingErrorMessage}</p>}
             </div>
 
             {(!error && !loadingSettings) &&
+
+                <>
+
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+                    <h2 className="mb-4 mb-md-0">Configuraciones</h2>
+                </div>
+                
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-3 row">
                         <div className="col">
@@ -120,6 +127,7 @@ function AdminSettings() {
                     </div>
 
                 </form>
+                </>
             }
 
         </div>
