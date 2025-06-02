@@ -9,3 +9,32 @@ export const PROVINCE_DATA = {
     "Puntarenas": ["Puntarenas", "Esparza", "Buenos Aires", "Montes de Oro", "Osa", "Quepos", "Golfito", "Coto Brus", "Parrita", "Corredoes", "Garabito", "Monteverde", "Puerto Jiménez"],
     "Limón": ["Limón", "Pococí", "Siquirres", "Talamanca", "Matina", "Guácimo"],
 };
+
+export const GENDER_IDENTITY_DATA = [
+    "Mujer", 
+    "Hombre", 
+    "Mujer trans", 
+    "Hombre trans", 
+    "Persona no binaria", 
+    "Persona de género fluido", 
+    "Persona agénero", 
+    "Otro"
+];
+
+export const AGE_BRACKET_DATA = [
+    "Menos de 18 años",
+    "18-24 años",
+    "25-34 años",
+    "45-54 años",
+    "55-64 años",
+    "65 años o más"
+];
+
+export const ROLE_IN_INSTITUTION_DATA = [
+    "Persona estudiante",
+    "Persona docente",
+    "Persona administrativa",
+    "Otro"
+];
+  
+  

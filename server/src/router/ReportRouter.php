@@ -85,9 +85,22 @@ class ReportRouter{
         $this -> reportValidator -> validateContent($content);
         $this -> reportValidator -> validateReportType($reportType);
         $this -> reportValidator -> validateRoleInInstitution($roleInInstitution);
-    
-        if ($reportType === "additional-information" && $email !== "") {
+        
+        // Si el reporte viene con información adicional, validamos los campos presentes
+        if ($reportType === "additional-information") {
             $this -> reportValidator -> validateEmail($email);
+            $this -> reportValidator -> validateProvince($province);
+            $this -> reportValidator -> validateCanton($canton);
+            $this -> reportValidator -> validateAgeBracket($ageBracket);
+            $this -> reportValidator -> validateGenderIdentity($genderIdentity);
+        }
+        else {
+            // Si no, colocamos los campos opcionales en null (para asegurar consistencia con el tipo de denuncia)
+            $province = null;
+            $canton = null;
+            $ageBracket = null;
+            $genderIdentity = null;
+            $email = null;
         }
     
         $report = new Report($content, $province, $canton, $email, $ageBracket, $genderIdentity, $roleInInstitution, null, 0);

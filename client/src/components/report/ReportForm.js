@@ -4,7 +4,7 @@ import { Tooltip } from "bootstrap";
 import { successAlert, errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { PROVINCE_DATA } from "../../utils/constants";
+import { PROVINCE_DATA, GENDER_IDENTITY_DATA, AGE_BRACKET_DATA, ROLE_IN_INSTITUTION_DATA } from "../../utils/constants";
 
 function ReportForm() {
 
@@ -92,10 +92,7 @@ function ReportForm() {
                     required: "El rol dentro de la institución es obligatorio"
                 })}>
                     <option value="">Seleccione</option>
-                    <option value="Persona estudiante">Persona estudiante</option>
-                    <option value="Persona docente">Persona docente</option>
-                    <option value="Persona administrativa">Persona administrativa</option>
-                    <option value="Otro">Otro</option>
+                    {ROLE_IN_INSTITUTION_DATA.map((role) => (<option key={role} value={role}>{role}</option>))}
                 </select>
 
                 <div className="d-flex justify-content-between mb-2">
@@ -154,12 +151,7 @@ function ReportForm() {
                         <label className="form-label">Rango de edad</label>
                         <select className="form-select" {...register("age")}>
                             <option value="">Seleccione</option>
-                            <option value="Menos de 18 años">Menos de 18 años</option>
-                            <option value="18-24 años">18-24 años</option>
-                            <option value="25-34 años">25-34 años</option>
-                            <option value="45-54 años">45-54 años</option>
-                            <option value="55-64 años">55-64 años</option>
-                            <option value="65 años o más">65 años o más</option>
+                            {AGE_BRACKET_DATA.map((ageRange) => (<option key={ageRange} value={ageRange}>{ageRange}</option>))}
                         </select>
                     </div>
 
@@ -167,14 +159,7 @@ function ReportForm() {
                         <label className="form-label">Identidad de género</label>
                         <select className="form-select" {...register("genderIdentity")}>
                             <option value="">Seleccione</option>
-                            <option value="Mujer">Mujer</option>
-                            <option value="Hombre">Hombre</option>
-                            <option value="Mujer trans">Mujer trans</option>
-                            <option value="Hombre trans">Hombre trans</option>
-                            <option value="Persona no binaria">Persona no binaria</option>
-                            <option value="Persona de género fluido">Persona de género fluido</option>
-                            <option value="Persona agénero">Persona agénero</option>
-                            <option value="Otro">Otro</option>
+                            {GENDER_IDENTITY_DATA.map((gender) => (<option key={gender} value={gender}>{gender}</option>))}
                         </select>
                     </div>
 
