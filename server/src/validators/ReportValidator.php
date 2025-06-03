@@ -49,7 +49,7 @@ class ReportValidator {
      */
     public function validateRoleInInstitution($roleInInstitution){
 
-        if (is_null($roleInInstitution) || $roleInInstitution === "" || !in_array($roleInInstitution, ["Persona estudiante", "Persona docente", "Persona administrativa", "Otro"])) {
+        if (is_null($roleInInstitution) || $roleInInstitution === "" || !in_array($roleInInstitution, ["Persona estudiante", "Persona docente", "Persona administrativa", "Otro"], true)) {
             respondWithError("El rol en la institución es obligatorio", 400);
         }
     }
@@ -71,7 +71,7 @@ class ReportValidator {
      */
     public function validateProvince($province){
 
-        if (!is_null($province) && !empty($province) && !in_array($province, ["San José", "Alajuela", "Cartago", "Heredia", "Guanacaste", "Puntarenas", "Limón"])){
+        if (!is_null($province) && !empty($province) && !in_array($province, ["San José", "Alajuela", "Cartago", "Heredia", "Guanacaste", "Puntarenas", "Limón"], true)){
             respondWithError("Provincia no válida", 400);
         }
     }
@@ -93,7 +93,7 @@ class ReportValidator {
                                                      "Cañas", "Abangares", "Tilarán", "Nandayure", "La Cruz", "Hojancha", "Puntarenas", "Esparza", 
                                                      "Buenos Aires", "Montes de Oro", "Osa", "Quepos", "Golfito", "Coto Brus", 
                                                      "Parrita", "Corredoes", "Garabito", "Monteverde", "Puerto Jiménez", "Limón", 
-                                                     "Pococí", "Siquirres", "Talamanca", "Matina", "Guácimo"])){
+                                                     "Pococí", "Siquirres", "Talamanca", "Matina", "Guácimo"], true)){
             respondWithError("Cantón no válido", 400);
         }
     }
@@ -104,7 +104,7 @@ class ReportValidator {
      */
     public function validateAgeBracket($ageBracket){
 
-        if (!is_null($ageBracket) && !empty($ageBracket) && !in_array($ageBracket, ["Menos de 18 años", "18-24 años", "25-34 años", "45-54 años", "55-64 años", "65 años o más"])){
+        if (!is_null($ageBracket) && !empty($ageBracket) && !in_array($ageBracket, ["Menos de 18 años", "18-24 años", "25-34 años", "45-54 años", "55-64 años", "65 años o más"], true)){
             respondWithError("Rango de edad no válido", 400);
         }
     }
@@ -115,7 +115,7 @@ class ReportValidator {
      */
     public function validateGenderIdentity($genderIdentity){
 
-        if (!is_null($genderIdentity) && !empty($genderIdentity) && !in_array($genderIdentity, ["Mujer", "Hombre", "Mujer trans", "Hombre trans", "Persona no binaria", "Persona de género fluido", "Persona agénero", "Otro"])){
+        if (!is_null($genderIdentity) && !empty($genderIdentity) && !in_array($genderIdentity, ["Mujer", "Hombre", "Mujer trans", "Hombre trans", "Persona no binaria", "Persona de género fluido", "Persona agénero", "Otro"], true)){
             respondWithError("Identidad de género no válida", 400);
         }
     }

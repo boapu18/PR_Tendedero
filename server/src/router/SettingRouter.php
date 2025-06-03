@@ -39,7 +39,6 @@ class SettingRouter {
         // Se verifica que se envíe al menos una configuración
         if (is_null($settings) || count($settings) == 0){
             respondWithError("Debe incluir al menos una configuración", 400);
-            return;
         }
         
         // Se convierten las configuraciones a objetos Setting
@@ -49,10 +48,9 @@ class SettingRouter {
         foreach ($settings as $setting) {
 
             if (isset($setting['name']) && isset($setting['value'])) {
-                $settingsObjects[] = new Setting($setting['name'], $setting['value']);
+                $settingsObjects[] = new Setting(sanitizeText($setting['name']), sanitizeText($setting['value']));
             } else {
                 respondWithError("Cada configuración enviada debe tener un campo 'name' y 'value'", 400);
-                return;
             }
         }
 
