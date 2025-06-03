@@ -13,14 +13,16 @@ class ReportRouter{
     }
 
     /**
-     * Obtiene un batch de denuncias
+     * Obtiene un batch de denuncias según los filtros de entrada.
      */
     public function getReports(){
         
+        // Se obtienen y sanitizan los filtros
         $page = sanitizeText($_GET["page"] ?? null);
         $order = sanitizeText($_GET["order"] ??  null);
         $state = sanitizeText($_GET["state"] ?? null);
-    
+        
+        // Se validan los filtros
         if (is_null($order) || ($order != "crono" && $order != "rand")){
             respondWithError("El orden no es válido", 400);    
         }
@@ -65,7 +67,7 @@ class ReportRouter{
     }
 
     /**
-     * Registra una denuncia
+     * Registra una denuncia.
      */
     public function postReport(){
 
@@ -122,7 +124,7 @@ class ReportRouter{
     }
 
     /**
-     * Obtiene una denuncia por su identificador
+     * Obtiene una denuncia por su identificador.
      */
     public function getReport($params){
 
@@ -148,7 +150,7 @@ class ReportRouter{
     }
 
     /**
-     * Elimina una denuncia por su identificador
+     * Elimina una denuncia por su identificador.
      */
     public function deleteReport($params){
 
@@ -175,7 +177,7 @@ class ReportRouter{
     }
 
     /**
-     * Actualiza el estado de una denuncia
+     * Actualiza el estado de una denuncia.
      */
     public function patchReport($params) {
 
@@ -207,7 +209,7 @@ class ReportRouter{
     }
 
     /**
-     * Descarga un archivo con todas las denuncias registradas
+     * Descarga un archivo con todas las denuncias registradas.
      */
     public function downloadCSV() {
 

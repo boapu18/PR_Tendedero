@@ -15,6 +15,9 @@ class Database {
         $this -> database = getenv('DATABASE');
     }
 
+    /**
+     * @return mysqli Retorna el objeto de conexión a la base de datos.
+     */
     public function connect(){
 
         if (!$this -> conn){
@@ -28,6 +31,9 @@ class Database {
         return $this -> conn;
     }
 
+    /**
+     * Cierra la conexión a la base de datos.
+     */
     public function close(){
         if ($this -> conn){
             $this -> conn -> close();

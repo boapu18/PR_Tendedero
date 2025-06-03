@@ -10,6 +10,9 @@ class SettingRouter {
         $this -> routeProtecter = $routeProtecter;
     }
 
+    /**
+     * Obtiene las configuraciones del sistema.
+     */
     public function getSettings(){
 
         try {
@@ -22,6 +25,9 @@ class SettingRouter {
         }
     }
 
+    /**
+     * Actualiza las configuraciones del sistema.
+     */
     public function patchSettings(){
 
         // Verificación de autorización

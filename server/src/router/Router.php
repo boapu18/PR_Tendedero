@@ -4,18 +4,30 @@ class Router {
     
     private $routes = [];
 
+    /**
+     * Asocia un endpoint para el método GET a una función.
+     */
     public function get($path, $handler) {
         $this -> addRoute('GET', $path, $handler);
     }
 
+    /**
+     * Asocia un endpoint para el método POST a una función.
+     */
     public function post($path, $handler) {
         $this -> addRoute('POST', $path, $handler);
     }
 
+    /**
+     * Asocia un endpoint para el método PATCH a una función.
+     */
     public function patch($path, $handler) {
         $this -> addRoute('PATCH', $path, $handler);
     }
 
+    /**
+     * Asocia un endpoint para el método DELETE a una función.
+     */
     public function delete($path, $handler) {
         $this -> addRoute('DELETE', $path, $handler);
     }
@@ -37,6 +49,11 @@ class Router {
         return $matches[1];
     }
 
+    /**
+     * Obtiene la solicitud entrante y llama la función correspondiente
+     * al endpoint solicitado. Si no hay una función asociada al
+     * endpoint solicitado, devuelve un 404: Ruta no encontrada.
+     */
     public function dispatch() {
 
         $requestUri = $_SERVER["REQUEST_URI"];

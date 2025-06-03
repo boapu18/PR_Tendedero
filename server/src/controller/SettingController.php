@@ -26,6 +26,7 @@ class SettingController {
         $this -> database -> close();
         $stmt -> close();
 
+        // Construye los objetos Setting
         if ($result -> num_rows > 0) {
 
             $settings = [];
@@ -57,6 +58,7 @@ class SettingController {
 
         $conn = $this -> database -> connect();
 
+        // Inicia una transacción
         $conn -> begin_transaction();
 
         $query = "UPDATE Setting SET value = ? WHERE name = ?";
@@ -64,6 +66,7 @@ class SettingController {
 
         try {
 
+            // Actualiza cada configuración enviada
             foreach ($settings as $setting) {
 
                 $value = $setting -> getValueStr();
@@ -76,7 +79,9 @@ class SettingController {
                 }
             }
             
+            // Confifirma la transacción
             $conn -> commit();
+
             $this -> database -> close();
             $stmt -> close();
 
@@ -87,7 +92,10 @@ class SettingController {
             error_log($e -> getMessage());
 
             if (isset($conn) && $conn -> in_transaction) {
+
+                // Si hay un error, hace rollback a la transacción
                 $conn -> rollback();
+                
                 $this -> database -> close();
                 $stmt -> close();
             }
