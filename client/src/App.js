@@ -9,21 +9,23 @@ import AdminProtectedRoute from "./protecters/AdminProtectedRoute";
 import AdminDetailPage from "./pages/AdminDetailPage";
 import AdminReportTable from "./components/report/AdminReportTable";
 import AdminSettings from "./components/admin/AdminSettings";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/">
-          <Route index element={<TermsProtectedRoute><ReportVisualizer/></TermsProtectedRoute>}></Route>
-          <Route path="report" element={<TermsProtectedRoute><FormPage/></TermsProtectedRoute>}></Route>
-          <Route path="terms-of-use" element={<TermsPage/>}></Route>
+          <Route index element={ <TermsProtectedRoute> <ReportVisualizer/> </TermsProtectedRoute> }></Route>
+          <Route path="report" element={ <TermsProtectedRoute> <FormPage/> </TermsProtectedRoute> }></Route>
+          <Route path="terms-of-use" element={ <TermsPage/> }></Route>
         </Route>
-        <Route path="/admin" element={<AdminProtectedRoute><AdminMainPage/></AdminProtectedRoute>}>
-          <Route index element={<AdminReportTable/>}></Route>
-          <Route path="config" element={<AdminSettings/>}></Route>
+        <Route path="/admin" element={ <AdminProtectedRoute> <AdminMainPage/> </AdminProtectedRoute> }>
+          <Route index element={ <AdminReportTable/> }></Route>
+          <Route path="config" element={ <AdminSettings/> }></Route>
         </Route>
-        <Route path="/admin/report/:id" element={<AdminProtectedRoute><AdminDetailPage/></AdminProtectedRoute>}/>
+        <Route path="/admin/report/:id" element={ <AdminProtectedRoute> <AdminDetailPage/> </AdminProtectedRoute> }/>
       </Routes>
     </BrowserRouter>
   );
