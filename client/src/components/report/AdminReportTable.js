@@ -127,7 +127,7 @@ function AdminReportTable() {
                                         <td>{report.roleInInstitution}</td>
                                         <td>{new Date(report.creationDate).toLocaleString("es-CR")}</td>
                                         <td>{REPORT_STATES[report.state]}</td>
-                                        <td><Link to={"/admin/report/" + report.id}>Ver detalle</Link></td>
+                                        <td><Link to={"/admin/report/" + report.id} state={{ from: "table" }}>Ver detalle</Link></td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { successAlert, errorAlert, confirmationAlert } from "../../utils/alertInvokers";
 import { REPORT_STATES, DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
@@ -8,6 +8,8 @@ import Loader from "../utils/Loader";
 function DetailReport() {
 
     const { id } = useParams();
+    const location = useLocation();
+    const navigate = useNavigate();
     const [reportData, setReportData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
@@ -65,7 +67,11 @@ function DetailReport() {
     }
 
     const handleBack = () => {
-        window.history.back();
+        if (location.state?.from === "table") {
+            window.history.back();
+        } else {
+            navigate("/admin");
+        }
     };
 
     return (
