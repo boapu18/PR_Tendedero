@@ -36,5 +36,7 @@ export const ROLE_IN_INSTITUTION_DATA = [
     "Persona administrativa",
     "Otro"
 ];
+
+export const DEFAULT_ERROR_MESSAGE = "Se produjo un error inesperado, intente nuevamente más tarde";
   
   

@@ -4,7 +4,7 @@ import { Tooltip } from "bootstrap";
 import { successAlert, errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { PROVINCE_DATA, GENDER_IDENTITY_DATA, AGE_BRACKET_DATA, ROLE_IN_INSTITUTION_DATA } from "../../utils/constants";
+import { PROVINCE_DATA, GENDER_IDENTITY_DATA, AGE_BRACKET_DATA, ROLE_IN_INSTITUTION_DATA, DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 
 function ReportForm() {
 
@@ -50,9 +50,7 @@ function ReportForm() {
             successAlert(popUpMessage, settingsObjs.showExternalFormLink, () => { navigate("/"); });
 
         } catch (error) {
-
-            const errorMessage = error.response?.data?.message ?? "Se produjo un error inesperado, intente nuevamente más tarde";
-            errorAlert(errorMessage);
+            errorAlert(error.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
         }
     };
 

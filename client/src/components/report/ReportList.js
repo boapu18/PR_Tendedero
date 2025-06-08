@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from 'axios';
 import Masonry from 'react-masonry-css';
 import Loader from "../utils/Loader";
+import { DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 
 function ReportList() {
 
@@ -30,7 +31,7 @@ function ReportList() {
             setMoreReports(newReports.length > 0);
             
         } catch (e){
-            setLoadingErrorMessage(e.response.data.message);
+            setLoadingErrorMessage(e.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
             setError(true);
         } finally {
             setLoadingReports(false);

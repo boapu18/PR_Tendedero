@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { successAlert, errorAlert } from "../../utils/alertInvokers";
 import Loader from "../utils/Loader";
+import { DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 
 function AdminSettings() {
     
@@ -29,7 +30,7 @@ function AdminSettings() {
             });
 
         } catch (e) {
-            setLoadingErrorMessage(e.response.data.message);
+            setLoadingErrorMessage(e.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
             setError(true);
         } finally {
             setLoadingSettings(false);
@@ -46,6 +47,7 @@ function AdminSettings() {
         const payload = Object.entries(data).map(([name, value]) => ({name, value}));
         
         try {
+            
             const response = await axios.patch(`${process.env.REACT_APP_API_URL}/settings`, { 
                 settings: payload 
             }, {
@@ -56,8 +58,7 @@ function AdminSettings() {
             successAlert(successMessage);
             
         } catch (error) {
-            
-            const errorMessage = error.response?.data?.message ?? "Ocurrió un error al actualizar las configuraciones";
+            const errorMessage = error.response?.data?.message ?? DEFAULT_ERROR_MESSAGE;
             errorAlert(errorMessage);
         }
     };

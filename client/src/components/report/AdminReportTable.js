@@ -3,7 +3,7 @@ import TablePagination from "../utils/TablePagination";
 import axios from "axios";
 import { Link, useSearchParams } from "react-router-dom";
 import ExportDataButton from "./ExportDataButton";
-import { REPORT_STATES } from "../../utils/constants";
+import { REPORT_STATES, DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 import Loader from "../utils/Loader";
 
 function AdminReportTable() {
@@ -38,7 +38,7 @@ function AdminReportTable() {
             setTotalCount(newTotalCount); 
 
         } catch (e) {
-            setLoadingErrorMessage(e.response.data.message);
+            setLoadingErrorMessage(e.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
             setError(true);
         } finally {
             setLoadingReports(false);

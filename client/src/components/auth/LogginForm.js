@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { errorAlert } from "../../utils/alertInvokers";
 import axios from "axios";
+import { DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 
 function LogginForm() {
   
@@ -19,8 +20,7 @@ function LogginForm() {
       window.location.reload();
 
     } catch (error) {
-
-      const errorMessage = error.response?.data?.message ?? "Se produjo un error inesperado, intente nuevamente más tarde";
+      const errorMessage = error.response?.data?.message ?? DEFAULT_ERROR_MESSAGE;
       errorAlert(errorMessage);
     }
   }

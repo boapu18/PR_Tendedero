@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { successAlert, errorAlert, confirmationAlert } from "../../utils/alertInvokers";
-import { REPORT_STATES } from "../../utils/constants";
+import { REPORT_STATES, DEFAULT_ERROR_MESSAGE } from "../../utils/constants";
 import Loader from "../utils/Loader";
 
 function DetailReport() {
@@ -24,13 +24,14 @@ function DetailReport() {
                 setLoading(false);
             })
             .catch(err => {
-                setLoadingErrorMessage(err.response.data.message);
+                setLoadingErrorMessage(err.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
                 setError(true);
                 setLoading(false);
             });
 
     }, [id]);
 
+    // Actualiza el estado de la denuncia
     const handleChangeStatus = (e) => {
 
         const newState = parseInt(e.target.value);
@@ -41,10 +42,12 @@ function DetailReport() {
                 successAlert(response.data.message);
             })
             .catch((error) => {
-                errorAlert(error.response.data.message);
+                errorAlert(error.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
             });
     };
 
+    // Elimina la denuncia
+    // Primero despliega el modal para pedir la confirmación al usuario
     const handleDeleteReport = async () => {
 
         const confirmation = await confirmationAlert("¿Está seguro que desea eliminar la denuncia?");
@@ -57,7 +60,7 @@ function DetailReport() {
             }
             
         } catch (error) {
-            errorAlert(error.response.data.message);
+            errorAlert(error.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
         }
     }
 
