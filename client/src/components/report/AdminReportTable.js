@@ -92,18 +92,18 @@ function AdminReportTable() {
                     </div>
 
                     <div className="table-responsive">
-                        <table className="table table-bordered">
+                        <table className="table table-bordered" style={{ tableLayout: "fixed", width: "100%" }}>
                             <thead>
                                 <tr>
-                                    <th scope="col" className="align-middle">Descripción</th>
-                                    <th scope="col" className="align-middle">Correo electrónico</th>
-                                    <th scope="col" className="align-middle">Rango de edad</th>
-                                    <th scope="col" className="align-middle">Provincia</th>
-                                    <th scope="col" className="align-middle">Cantón</th>
-                                    <th scope="col" className="align-middle">Identidad de género</th>
-                                    <th scope="col" className="align-middle">Rol en la institución</th>
-                                    <th scope="col" className="align-middle">Fecha</th>
-                                    <th scope="col" className="align-middle">
+                                    <th style={{ width: "300px" }}scope="col" className="align-middle">Descripción</th>
+                                    <th style={{ width: "250px" }}scope="col" className="align-middle">Correo electrónico</th>
+                                    <th style={{ width: "150px" }} scope="col" className="align-middle">Rango de edad</th>
+                                    <th style={{ width: "150px" }}scope="col" className="align-middle">Provincia</th>
+                                    <th style={{ width: "150px" }} scope="col" className="align-middle">Cantón</th>
+                                    <th style={{ width: "150px" }} scope="col" className="align-middle">Identidad de género</th>
+                                    <th style={{ width: "200px" }} scope="col" className="align-middle">Rol en la institución</th>
+                                    <th style={{ width: "200px" }} scope="col" className="align-middle">Fecha</th>
+                                    <th style={{ width: "150px" }} scope="col" className="align-middle">
                                         Estado
                                         <select className="form-select" style={{ width: "130px" }} value={reportState} onChange={onChangeReportState}>
                                             <option value="">Todos</option>
@@ -112,14 +112,14 @@ function AdminReportTable() {
                                             ))}
                                         </select>
                                     </th>
-                                    <th scope="col" className="align-middle">Acciones</th>
+                                    <th style={{ width: "150px" }} scope="col" className="align-middle">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {reports.map((report) => (
                                     <tr key={report.id}>
-                                        <td className="text-truncate content-cell" style={{ maxWidth: "200px" }}>{report.content}</td>
-                                        <td className="text-truncate content-cell" style={{ maxWidth: "200px" }}>{report.email}</td>
+                                        <td style={{ width: "300px", maxWidth: "300px" }} className="text-truncate content-cell">{report.content}</td>
+                                        <td style={{ width: "250px", maxWidth: "250px" }} className="text-truncate content-cell">{report.email}</td>
                                         <td>{report.ageBracket}</td>
                                         <td>{report.province}</td>
                                         <td>{report.canton}</td>
