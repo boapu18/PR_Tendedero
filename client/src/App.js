@@ -11,6 +11,7 @@ import AdminReportTable from "./components/report/AdminReportTable";
 import AdminSettings from "./components/admin/AdminSettings";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import HeaderAndFooter from "./components/utils/HeaderAndFooter";
+import AboutPage from "./pages/AboutPage";
 
 function App() {
     return (
@@ -35,6 +36,14 @@ function App() {
                         }
                     ></Route>
                     <Route path="terms-of-use" element={<TermsPage />}></Route>
+                    <Route
+                        path="about"
+                        element={
+                            <TermsProtectedRoute>
+                                <AboutPage />
+                            </TermsProtectedRoute>
+                        }
+                    ></Route>
                     <Route
                         path="amatista"
                         element={

@@ -12,6 +12,10 @@ function ClientNavBar() {
         navigate("/terms-of-use");
     };
 
+    const handleAboutButtonClick = () => {
+        navigate("/about");
+    };
+
     return (
         <div
             className="border-bottom border-1 border-dark sticky-top"
@@ -52,6 +56,14 @@ function ClientNavBar() {
                             data-bs-dismiss="offcanvas"
                         >
                             Registrar denuncia
+                        </button>
+
+                        <button
+                            className="main-button mb-3"
+                            onClick={handleAboutButtonClick}
+                            data-bs-dismiss="offcanvas"
+                        >
+                            Acerca del sitio
                         </button>
 
                         <button
