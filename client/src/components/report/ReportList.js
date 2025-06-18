@@ -23,9 +23,12 @@ function ReportList() {
                 params: { page: page, order: "rand", state: 1 },
             });
 
+            const currentPage = response.data.data.page;
+            const totalPages = response.data.data.totalPages;
             const newReports = response.data.data.reports;
+
             setReports((prevReports) => [...prevReports, ...newReports]);
-            setMoreReports(newReports.length > 0);
+            setMoreReports(currentPage !== totalPages);
         } catch (e) {
             setLoadingErrorMessage(e.response?.data?.message ?? DEFAULT_ERROR_MESSAGE);
             setError(true);
@@ -78,7 +81,6 @@ function ReportList() {
                         Cargar más denuncias
                     </button>
                 )}
-                {!loadingReports && !error && !moreReports && <p>No hay más denuncias por ver</p>}
             </div>
         </div>
     );

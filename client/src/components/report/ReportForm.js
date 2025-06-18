@@ -20,6 +20,7 @@ function ReportForm() {
         watch,
         formState: { errors },
     } = useForm({ defaultValues: { typeReport: "additional-information" } });
+
     const [selectedProvince, setSelectedProvince] = useState("");
     const [descriptionLength, setDescriptionLength] = useState(0);
     const typeReport = watch("typeReport");
