@@ -1,70 +1,127 @@
   
-  html {
-    font-size: 16px;
-  }
+:root{
+  --blanco: #FFFFFF;
+  --azul1: #00519E;   
+  --azul2:#007BC0;
+  --azul3: #000066;
+	--negro: #000000;
+  --gris: #555555;
+	--gris3:#EEEEEE; 
+}
   
-  body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.5;
-  }
+body {
+  font-family: 'Open Sans'; 
+  font-weight: normal; 
+  font-size: 1.125em;
+  line-height: 1.5em;
+  color: var(--negro);
+}
+
+a, .link {
+  color: var(--azul3);
+}
+
+.top.unedl.t-2 {
+  background: var(--gris3); 
+  padding: 10px;
+}
+
+.top.unedl.t-2 a.title {
+  color: var(--azul1);
+  background: url("https://rg.uned.ac.cr/logos/uned_azul.svg") no-repeat;
+	background-size: 85px 25px;
+  padding-left: 90px;
+  font-family: 'Open Sans';
+	text-decoration: none;
+}
+
+.top.unedl.t-2 a:hover{
+  text-decoration: underline;
+}
+
+.espacio{
+  padding-left:40px;
+}
+
+.footer{
+  font-family: 'Open Sans';
+  font-size: 0.875em;
+  color:var(--gris);
+  margin-top: 8px;
+  text-align: right;
+}
+
+.desc {
+  font-family: 'Open Sans';
+  font-size: 1.75em; 
+  color: var(--blanco);  
+  padding:40px;
+  line-height: 1;
+}
+
+.topbg{
+  background:  var(--azul1); 
+  padding: 10px; 
+  height: auto; 
+  margin-bottom: 30px;
+}
   
+.bg-gradient-purple {
+  background: linear-gradient(to bottom, #EABDFF, #CA57FF, #7D06B5);
+}
+
+@media (max-width: 768px) {
+
   .bg-gradient-purple {
-    background: linear-gradient(to bottom, #EABDFF, #CA57FF, #7D06B5);
+    background: none !important;
   }
+}  
 
-  @media (max-width: 768px) {
+@media (min-width: 992px) {
 
-    .bg-gradient-purple {
-      background: none !important;
-    }
-  }  
-
-  @media (min-width: 992px) {
-
-    .fixed-width-select {   
-      max-width: 280px;
-    }
-  }  
-
-  .fixed-width-login-input{
-    width: 350px;      
-    min-width: 350px;
-    max-width: 350px;
+  .fixed-width-select {   
+    max-width: 280px;
   }
+}  
+
+.fixed-width-login-input{
+  width: 350px;      
+  min-width: 350px;
+  max-width: 350px;
+}
     
-  .cancel-button {
-    background: #ABABAB;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+.secondary-button {
+  background: #ABABAB;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
   
-  }
-  
-  .main-button {
-    background: #7D06B5;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-  }
+.main-button {
+  background: #7D06B5;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
   
 .invisible-placeholder {
-    visibility: hidden;
-    height: 0;
-    overflow: hidden;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
 }
 
 .custom-swal-popup {
-    border-radius: 15px;
-    padding: 2rem;
+  border-radius: 15px;
+  padding: 2rem;
 }
 
 .custom-swal-title {
-    font-size: 1.7rem;
-    font-weight: bold;
+  font-size: 1.7rem;
+  font-weight: bold;
 }
 
 .custom-swal-button {

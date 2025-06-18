@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import LogginPage from '../pages/LogginPage';
+import React, { useEffect, useState } from "react";
+import LogginPage from "../pages/LogginPage";
 import axios from "axios";
-import Loader from '../components/utils/Loader';
+import Loader from "../components/utils/Loader";
 
-function AdminProtectedRoute({ children }){
-
+function AdminProtectedRoute({ children }) {
     const [loading, setLoading] = useState(true);
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-
-        async function checkLoggedIn(){
+        async function checkLoggedIn() {
             try {
-                await axios.get(`${process.env.REACT_APP_API_URL}/auth/logged-in`, { withCredentials: true });
+                await axios.get(`${process.env.REACT_APP_API_URL}/auth/logged-in`, {
+                    withCredentials: true,
+                });
                 setAuthenticated(true);
             } catch (e) {
                 setAuthenticated(false);
@@ -22,22 +22,21 @@ function AdminProtectedRoute({ children }){
         }
 
         checkLoggedIn();
-
     }, []);
 
-    if (loading){
+    if (loading) {
         return (
             <div className="d-flex justify-content-center align-items-center vh-100">
-                <Loader/>
+                <Loader />
             </div>
         );
     }
 
-    if (authenticated){
+    if (authenticated) {
         return children;
     }
 
-    return <LogginPage/>;
+    return <LogginPage />;
 }
 
 export default AdminProtectedRoute;

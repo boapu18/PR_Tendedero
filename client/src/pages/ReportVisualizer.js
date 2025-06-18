@@ -1,30 +1,19 @@
 import React from "react";
-import NavBar from "../components/navbars/ClientNavBar";
+import ClientNavBar from "../components/navbars/ClientNavBar";
 import ReportList from "../components/report/ReportList";
-import OrganizationData from "../components/utils/OrganizationData";
 
-function ReportVisualizer(){
-    
+function ReportVisualizer() {
     return (
         <div className="container-fluid">
             <div className="row">
-                
-                <div className="col-12 col-md-2">
-                </div>
-                
+                <div className="col-12 col-md-2"></div>
+
                 <div className="col-12 col-md-8">
-                    <NavBar/>
-                    <ReportList/>
+                    <ClientNavBar />
+                    <ReportList />
                 </div>
 
-                <div className="col-12 col-md-2">
-                    <div className="d-none d-xl-block col-xl-2">
-                        <div className="position-fixed bottom-0">
-                            <OrganizationData />
-                        </div>
-                    </div>
-                </div>
-
+                <div className="col-12 col-md-2"></div>
             </div>
         </div>
     );

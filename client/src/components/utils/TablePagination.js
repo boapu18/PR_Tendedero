@@ -1,7 +1,6 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
-function TablePagination({page, totalPages, toPage}){
-
+function TablePagination({ page, totalPages, toPage }) {
     const [pageNumbers, setPageNumbers] = useState([1]);
 
     useEffect(() => {
@@ -20,7 +19,7 @@ function TablePagination({page, totalPages, toPage}){
         setPageNumbers(newPageNumbers);
     }, [page, totalPages]);
 
-    return(
+    return (
         <nav className="d-flex justify-content-center">
             <ul className="pagination">
                 {page > 1 ? (
@@ -29,9 +28,10 @@ function TablePagination({page, totalPages, toPage}){
                             <span>&laquo;</span>
                         </button>
                     </li>
-                ) : (<></>)}
-                
-                
+                ) : (
+                    <></>
+                )}
+
                 {pageNumbers.map((number) => (
                     <li key={number} className={`page-item ${number === page ? "active" : ""}`}>
                         <button className="page-link" onClick={() => toPage(number)}>
@@ -39,14 +39,16 @@ function TablePagination({page, totalPages, toPage}){
                         </button>
                     </li>
                 ))}
-                
+
                 {page < totalPages ? (
                     <li className="page-item">
                         <button className="page-link" onClick={() => toPage(page + 1)}>
                             <span>&raquo;</span>
                         </button>
                     </li>
-                ) : (<></>)}
+                ) : (
+                    <></>
+                )}
             </ul>
         </nav>
     );
