@@ -9,7 +9,9 @@ function HeaderAndFooter() {
                     <div className="row">
                         <div className="col-xs-12 col-md-12 col-lg-12">
                             <a href="https://www.uned.ac.cr/" className="title">
-                                Universidad Estatal a Distancia, Costa Rica
+                                <span className="d-none d-md-inline">
+                                    Universidad Estatal a Distancia, Costa Rica
+                                </span>
                             </a>
                         </div>
                     </div>

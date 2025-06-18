@@ -39,31 +39,12 @@ a, .link {
   text-decoration: underline;
 }
 
-.espacio{
-  padding-left:40px;
-}
-
 .footer{
   font-family: 'Open Sans';
   font-size: 0.875em;
   color:var(--gris);
   margin-top: 8px;
   text-align: right;
-}
-
-.desc {
-  font-family: 'Open Sans';
-  font-size: 1.75em; 
-  color: var(--blanco);  
-  padding:40px;
-  line-height: 1;
-}
-
-.topbg{
-  background:  var(--azul1); 
-  padding: 10px; 
-  height: auto; 
-  margin-bottom: 30px;
 }
   
 .bg-gradient-purple {
