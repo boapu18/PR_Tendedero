@@ -87,9 +87,8 @@ a, .link {
   cursor: pointer;
 }
 
-.secondary-button.small {
-  padding: 5px 10px; 
-  font-size: 0.875rem;
+.secondary-button:hover {
+  background: #787878;
 }
   
 .main-button {
@@ -99,6 +98,10 @@ a, .link {
   padding: 10px 20px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.main-button:hover {
+  background: #A206EA;
 }
   
 .invisible-placeholder {

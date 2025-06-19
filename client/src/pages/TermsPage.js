@@ -22,12 +22,10 @@ function TermsPage() {
         <PurpleBackground>
             <div className="container py-4">
                 <div className="p-1 p-md-5 m-0 m-md-2 rounded-0 shadow-none rounded-4 shadow bg-white">
-                    {showBackButton && (
-                        <div className="mb-4">
-                            <BackButton backTo={"/"} />
-                        </div>
-                    )}
-                    <h1>Tendedero Virtual de Denuncia</h1>
+                    <div className="d-flex mb-2 gap-1 align-items-center">
+                        {showBackButton && <BackButton backTo={"/"} />}
+                        <h1>Tendedero Virtual de Denuncia</h1>
+                    </div>
 
                     <p>
                         Bienvenid@ al Tendedero de Denuncias, un espacio seguro donde puede
